@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyConv - YouTube to MP3 Converter (320kbps) & 4K Video Downloader</title>
+    <meta name="description" content="Free online YouTube to MP3 and MP4 converter. Download high-quality audio at 320kbps or videos up to 4K Ultra HD. Fast, secure, and no installation required.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #070714;
+            --card-bg: rgba(18, 18, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --primary: #7C3AED;
+            --accent: #00F2FE;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --danger: #EF4444;
+            --success: #10B981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Glows */
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        .glow-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+        }
+        .glow-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(7, 7, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand span {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        main {
+            flex: 1;
+            padding: 4rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text-main), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Converter Box */
+        .converter-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin-bottom: 3rem;
+        }
+
+        /* Input Area */
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 0.5rem;
+            border: 1px solid var(--card-border);
+            transition: border-color 0.3s;
+        }
+        
+        .input-group:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-paste {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+        .btn-paste:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, var(--primary), #9333EA);
+            color: white;
+        }
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 0.3rem;
+            margin-bottom: 1.5rem;
+            gap: 0.3rem;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--text-muted);
+        }
+
+        .tab.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Options */
+        .options-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .options-panel.active {
+            display: flex;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .option-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.8rem;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        select option {
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        /* Trimmer */
+        .trimmer-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .trimmer-inputs {
+            display: none;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .trimmer-inputs.active {
+            display: flex;
+        }
+
+        .trimmer-inputs input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.6rem;
+            border-radius: 6px;
+            width: 100px;
+            text-align: center;
+        }
+
+        /* Convert Button Area */
+        .convert-area {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-convert {
+            background: linear-gradient(135deg, var(--accent), #0284C7);
+            color: #000;
+            font-size: 1.2rem;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .btn-convert:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Progress Area */
+        .progress-area {
+            display: none;
+            margin-top: 1.5rem;
+        }
+        .progress-area.active {
+            display: block;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.1);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .progress-bar-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .status-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Result Area */
+        .result-area {
+            display: none;
+            margin-top: 2rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--card-border);
+        }
+        .result-area.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-preview {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            text-align: left;
+        }
+
+        .video-thumb {
+            width: 120px;
+            height: 68px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #333;
+        }
+
+        .video-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-info p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .download-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .btn-download {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-download:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .mirrors {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-mirror {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 0.6rem;
+            justify-content: center;
+        }
+        .btn-mirror:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+
+        /* How to Use */
+        .section-title {
+            text-align: center;
+            margin: 4rem 0 2rem;
+            font-size: 1.8rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .step-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .faq-question:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.2rem;
+            max-height: 200px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(7, 7, 20, 0.9);
+            border-top: 1px solid var(--card-border);
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .input-group { flex-direction: column; }
+            .btn-paste, .btn-search { width: 100%; justify-content: center; }
+            .mirrors { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <header>
+        <div class="brand">
+            <a href="../../index.html">
+                <i class="fa-solid fa-layer-group" style="color: var(--accent)"></i>
+                ToolsHub | <span>EasyConv</span>
+            </a>
+        </div>
+        <nav class="nav-links">
+            <a href="../../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>EasyConv - YouTube to MP3 & MP4 Converter</h1>
+            <p>Fast, secure, and high-quality YouTube downloads. Convert videos to 320kbps MP3 audio or up to 4K Ultra HD MP4 video instantly.</p>
+        </div>
+
+        <div class="converter-card">
+            <div class="input-group">
+                <input type="text" id="urlInput" placeholder="Paste YouTube URL or search keywords here..." autocomplete="off">
+                <button class="btn btn-paste" id="pasteBtn" title="Paste from clipboard">
+                    <i class="fa-solid fa-paste"></i> Paste
+                </button>
+                <button class="btn btn-search" id="searchBtn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" data-type="mp3"><i class="fa-solid fa-music"></i> MP3 (Audio)</div>
+                <div class="tab" data-type="mp4"><i class="fa-solid fa-video"></i> MP4 (Video)</div>
+            </div>
+
+            <!-- MP3 Options -->
+            <div class="options-panel active" id="mp3Options">
+                <div class="option-group">
+                    <label>Audio Quality (Bitrate)</label>
+                    <select id="audioBitrate">
+                        <option value="64">64 kbps (Low)</option>
+                        <option value="128">128 kbps (Standard)</option>
+                        <option value="192">192 kbps (Good)</option>
+                        <option value="256">256 kbps (High)</option>
+                        <option value="320" selected>320 kbps (Extreme - Best)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- MP4 Options -->
+            <div class="options-panel" id="mp4Options">
+                <div class="option-group">
+                    <label>Video Resolution</label>
+                    <select id="videoRes">
+                        <option value="360">360p (SD)</option>
+                        <option value="480">480p (HQ)</option>
+                        <option value="720">720p (HD)</option>
+                        <option value="1080" selected>1080p (Full HD)</option>
+                        <option value="4k">4K (Ultra HD)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Trimmer -->
+            <div class="option-group">
+                <label class="trimmer-check">
+                    <input type="checkbox" id="trimCheck"> Trim Audio/Video
+                </label>
+                <div class="trimmer-inputs" id="trimInputs">
+                    <input type="text" placeholder="Start (mm:ss)" pattern="[0-9]{1,2}:[0-9]{2}">
+                    <span style="align-self: center; color: var(--text-muted)">to</span>
+                    <input type="text" placeholder="End (mm:ss)" pattern="[0-9]{1,2}:[0-9]{2}">
+                </div>
+            </div>
+
+            <div class="convert-area" id="convertArea">
+                <button class="btn btn-convert" id="convertBtn">Convert Now</button>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-area" id="progressArea">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="status-text">
+                    <span id="statusMessage">Initializing...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div class="result-area" id="resultArea">
+                <div class="video-preview">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Video Thumbnail" class="video-thumb" id="resThumb">
+                    <div class="video-info">
+                        <h3 id="resTitle">Sample YouTube Video Title Example</h3>
+                        <p id="resMeta">Channel Name • 4:20</p>
+                    </div>
+                </div>
+                <div class="download-actions">
+                    <button class="btn btn-download" id="dlBtn"><i class="fa-solid fa-download"></i> Download File</button>
+                    <div class="mirrors">
+                        <button class="btn btn-mirror"><i class="fa-solid fa-link"></i> Cobalt Mirror</button>
+                        <button class="btn btn-mirror"><i class="fa-solid fa-link"></i> Invidious Mirror</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">How to Use EasyConv</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-link"></i></div>
+                <h3>1. Copy URL</h3>
+                <p>Copy the YouTube video URL or enter search keywords in the input box.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-sliders"></i></div>
+                <h3>2. Choose Format</h3>
+                <p>Select MP3 for audio or MP4 for video, then choose your desired quality.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-bolt"></i></div>
+                <h3>3. Convert</h3>
+                <p>Click "Convert Now" and our servers will process the file instantly.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-download"></i></div>
+                <h3>4. Download</h3>
+                <p>Click the download button to save the file directly to your device.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">Is EasyConv completely free to use? <i class="fa-solid fa-plus faq-icon"></i></div>
+                <div class="faq-answer">Yes! EasyConv is 100% free with no hidden fees, subscriptions, or download limits. You can convert as many videos as you want.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Is it safe to download files from this site? <i class="fa-solid fa-plus faq-icon"></i></div>
+                <div class="faq-answer">Absolutely. We do not require registration, we don't install any software on your device, and all downloaded files are scanned for viruses.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What formats and qualities are supported? <i class="fa-solid fa-plus faq-icon"></i></div>
+                <div class="faq-answer">We support MP3 audio (up to 320kbps) and MP4 video (from 360p up to 4K Ultra HD, depending on the original video's quality).</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How can I download YouTube Shorts? <i class="fa-solid fa-plus faq-icon"></i></div>
+                <div class="faq-answer">You can download Shorts exactly the same way as regular videos. Just paste the Short URL into the converter box and select your format.</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">DMCA / Copyright Claims</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 ToolsHub | EasyConv. All rights reserved.<br>
+            <span style="opacity:0.5; font-size:0.7rem;">Disclaimer: This tool is for personal use only. Do not download copyrighted material without permission.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching
+        const tabs = document.querySelectorAll('.tab');
+        const mp3Options = document.getElementById('mp3Options');
+        const mp4Options = document.getElementById('mp4Options');
+        let currentType = 'mp3';
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentType = tab.dataset.type;
+                
+                if(currentType === 'mp3') {
+                    mp3Options.classList.add('active');
+                    mp4Options.classList.remove('active');
+                } else {
+                    mp3Options.classList.remove('active');
+                    mp4Options.classList.add('active');
+                }
+            });
+        });
+
+        // Trimmer Toggle
+        const trimCheck = document.getElementById('trimCheck');
+        const trimInputs = document.getElementById('trimInputs');
+        trimCheck.addEventListener('change', (e) => {
+            if(e.target.checked) {
+                trimInputs.classList.add('active');
+            } else {
+                trimInputs.classList.remove('active');
+            }
+        });
+
+        // Paste functionality
+        const pasteBtn = document.getElementById('pasteBtn');
+        const urlInput = document.getElementById('urlInput');
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                urlInput.value = text;
+            } catch (err) {
+                alert('Clipboard access denied. Please paste manually.');
+            }
+        });
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(faq => faq.classList.remove('active'));
+                if(!isActive) item.classList.add('active');
+            });
+        });
+
+        // Simulation Logic
+        const convertBtn = document.getElementById('convertBtn');
+        const convertArea = document.getElementById('convertArea');
+        const progressArea = document.getElementById('progressArea');
+        const progressBar = document.getElementById('progressBar');
+        const statusMessage = document.getElementById('statusMessage');
+        const progressPercent = document.getElementById('progressPercent');
+        const resultArea = document.getElementById('resultArea');
+        const dlBtn = document.getElementById('dlBtn');
+
+        convertBtn.addEventListener('click', () => {
+            const input = urlInput.value.trim();
+            if(!input) {
+                alert('Please enter a valid YouTube URL or search query.');
+                return;
+            }
+
+            // UI Reset
+            convertArea.style.display = 'none';
+            resultArea.classList.remove('active');
+            progressArea.classList.add('active');
+            progressBar.style.width = '0%';
+            progressPercent.innerText = '0%';
+            
+            let qualityText = '';
+            if(currentType === 'mp3') {
+                const br = document.getElementById('audioBitrate').value;
+                qualityText = br + 'kbps';
+            } else {
+                const res = document.getElementById('videoRes').value;
+                qualityText = (res === '4k') ? '4K' : res + 'p';
+            }
+
+            const steps = [
+                { p: 10, msg: "Parsing YouTube link..." },
+                { p: 35, msg: "Extracting stream info..." },
+                { p: 60, msg: "Downloading media..." },
+                { p: 85, msg: `Applying ${currentType.toUpperCase()} settings (${qualityText})...` },
+                { p: 100, msg: "Ready!" }
+            ];
+
+            let stepIdx = 0;
+            
+            const interval = setInterval(() => {
+                if(stepIdx < steps.length) {
+                    const step = steps[stepIdx];
+                    progressBar.style.width = step.p + '%';
+                    progressPercent.innerText = step.p + '%';
+                    statusMessage.innerText = step.msg;
+                    stepIdx++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressArea.classList.remove('active');
+                        convertArea.style.display = 'block';
+                        resultArea.classList.add('active');
+                        
+                        // Fake data filling
+                        document.getElementById('resTitle').innerText = input.includes('http') ? 'Extracted Video Title - ' + qualityText : input + ' - ' + qualityText;
+                        
+                    }, 500);
+                }
+            }, 800);
+        });
+
+        dlBtn.addEventListener('click', () => {
+            alert('Simulation: Download started! (No actual backend connected)');
+        });
+    </script>
+</body>
+</html>

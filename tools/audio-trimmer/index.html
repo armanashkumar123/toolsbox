@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Trimmer & Cutter - Crop MP3 Online Free | ToolsHub</title>
+    <meta name="description" content="Free online audio trimmer and cutter. Crop, trim, and apply fade effects to your MP3, WAV, OGG, and AAC files directly in your browser. Secure, client-side processing.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #070714;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary-accent: #00F2FE;
+            --secondary-accent: #7C3AED;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b8;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --glass-blur: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 3rem;
+            background: rgba(7, 7, 20, 0.7);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-link:hover {
+            opacity: 0.8;
+        }
+
+        .brand-link svg {
+            color: var(--primary-accent);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 3rem 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Glass Panel Reusable Class */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(0, 242, 254, 0.3);
+            border-radius: 16px;
+            padding: 4rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(0, 242, 254, 0.02);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary-accent);
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .drop-zone-icon {
+            margin-bottom: 1rem;
+            color: var(--primary-accent);
+        }
+
+        .drop-zone-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .drop-zone-subtext {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Editor Section */
+        #editor-section {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Waveform */
+        .waveform-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        canvas#waveform {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Region Overlay */
+        .region-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .region-unselected {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: rgba(7, 7, 20, 0.7);
+            pointer-events: none;
+        }
+
+        #region-left-mask { left: 0; width: 0%; }
+        #region-right-mask { right: 0; width: 0%; }
+
+        .region-selected {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-top: 2px solid var(--primary-accent);
+            border-bottom: 2px solid var(--primary-accent);
+            background: rgba(0, 242, 254, 0.1);
+            pointer-events: none;
+        }
+
+        .region-handle {
+            position: absolute;
+            top: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--primary-accent);
+            cursor: ew-resize;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .region-handle::after {
+            content: '';
+            width: 2px;
+            height: 20px;
+            background: var(--bg-color);
+            border-radius: 2px;
+        }
+
+        #handle-start { left: 0%; transform: translateX(-50%); }
+        #handle-end { left: 100%; transform: translateX(-50%); }
+
+        .playhead {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ff3366;
+            left: 0%;
+            pointer-events: none;
+            display: none;
+            box-shadow: 0 0 8px #ff3366;
+            z-index: 11;
+        }
+
+        /* Controls */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .time-input {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            color: var(--primary-accent);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .time-input:focus {
+            border-color: var(--primary-accent);
+        }
+
+        select.styled-select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-play {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+        
+        .btn-play:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
+        
+        .file-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: -0.5rem;
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(7, 7, 20, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #loading-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 242, 254, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 1rem 1.5rem; }
+            main { padding: 2rem 1rem; }
+            h1 { font-size: 2rem; }
+            .btn-row { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../../index.html" class="brand-link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ToolsHub
+        </a>
+    </header>
+
+    <main>
+        <div>
+            <h1>Audio Trimmer & Cutter</h1>
+            <p class="subtitle">100% Secure & Client-Side. Your files never leave your device.</p>
+        </div>
+
+        <div id="upload-section" class="glass-panel drop-zone">
+            <svg class="drop-zone-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <div class="drop-zone-text">Drag & Drop Audio File Here</div>
+            <div class="drop-zone-subtext">Supports MP3, WAV, OGG, AAC</div>
+            <input type="file" id="file-input" accept="audio/mpeg, audio/wav, audio/ogg, audio/aac, .mp3, .wav, .ogg, .aac">
+        </div>
+
+        <div id="editor-section" class="glass-panel">
+            <div class="file-info" id="file-name-display">filename.mp3 (00:00)</div>
+            
+            <div class="waveform-container" id="waveform-container">
+                <canvas id="waveform"></canvas>
+                <div class="region-overlay" id="region-overlay">
+                    <div class="region-unselected" id="region-left-mask"></div>
+                    <div class="region-selected" id="region-selected"></div>
+                    <div class="region-unselected" id="region-right-mask"></div>
+                    
+                    <div class="region-handle" id="handle-start"></div>
+                    <div class="region-handle" id="handle-end"></div>
+                    
+                    <div class="playhead" id="playhead"></div>
+                </div>
+            </div>
+
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label>Start Time</label>
+                    <input type="text" class="time-input" id="time-start" value="00:00.000">
+                </div>
+                <div class="control-group">
+                    <label>End Time</label>
+                    <input type="text" class="time-input" id="time-end" value="00:00.000">
+                </div>
+                <div class="control-group">
+                    <label>Fade In</label>
+                    <select class="styled-select" id="fade-in">
+                        <option value="0">None</option>
+                        <option value="1">1 second</option>
+                        <option value="2">2 seconds</option>
+                        <option value="3">3 seconds</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Fade Out</label>
+                    <select class="styled-select" id="fade-out">
+                        <option value="0">None</option>
+                        <option value="1">1 second</option>
+                        <option value="2">2 seconds</option>
+                        <option value="3">3 seconds</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-play" id="btn-play">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="play-icon">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span id="play-text">Preview Cut</span>
+                </button>
+                <button class="btn btn-primary" id="btn-export-mp3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download MP3
+                </button>
+                <button class="btn btn-primary" id="btn-export-wav">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download WAV
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div id="loading-text">Processing Audio...</div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const dropZone = document.getElementById('upload-section');
+        const fileInput = document.getElementById('file-input');
+        const editorSection = document.getElementById('editor-section');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const canvas = document.getElementById('waveform');
+        const container = document.getElementById('waveform-container');
+        
+        const handleStart = document.getElementById('handle-start');
+        const handleEnd = document.getElementById('handle-end');
+        const maskLeft = document.getElementById('region-left-mask');
+        const maskRight = document.getElementById('region-right-mask');
+        const regionSelected = document.getElementById('region-selected');
+        
+        const timeStartInput = document.getElementById('time-start');
+        const timeEndInput = document.getElementById('time-end');
+        const playhead = document.getElementById('playhead');
+        
+        const btnPlay = document.getElementById('btn-play');
+        const playIcon = document.getElementById('play-icon');
+        const playText = document.getElementById('play-text');
+        const btnExportMp3 = document.getElementById('btn-export-mp3');
+        const btnExportWav = document.getElementById('btn-export-wav');
+        
+        const fadeInSelect = document.getElementById('fade-in');
+        const fadeOutSelect = document.getElementById('fade-out');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingText = document.getElementById('loading-text');
+
+        // State
+        let audioContext;
+        let originalBuffer = null;
+        let originalFileName = "";
+        
+        let startRatio = 0;
+        let endRatio = 1;
+        let isDraggingStart = false;
+        let isDraggingEnd = false;
+        
+        let sourceNode = null;
+        let isPlaying = false;
+        let playStartTime = 0;
+        let animationFrameId;
+
+        // Init AudioContext lazily
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Setup File Upload
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function showLoading(text) {
+            loadingText.textContent = text;
+            loadingOverlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.remove('active');
+        }
+
+        async function handleFile(file) {
+            if (!file.type.startsWith('audio/')) {
+                alert('Please upload a valid audio file.');
+                return;
+            }
+
+            showLoading("Decoding Audio...");
+            initAudioContext();
+            originalFileName = file.name;
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                originalBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                
+                dropZone.style.display = 'none';
+                editorSection.style.display = 'flex';
+                
+                fileNameDisplay.textContent = `${originalFileName} (${formatTime(originalBuffer.duration)})`;
+                
+                startRatio = 0;
+                endRatio = Math.min(30 / originalBuffer.duration, 1); // Default select up to 30s
+                
+                updateRegionUI();
+                drawWaveform();
+                
+            } catch (err) {
+                alert('Error decoding audio. File might be corrupted or unsupported.');
+                console.error(err);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function drawWaveform() {
+            const ctx = canvas.getContext('2d');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const rawData = originalBuffer.getChannelData(0); // Use channel 0 for visual
+            const samples = width; 
+            const blockSize = Math.floor(rawData.length / samples);
+
+            ctx.fillStyle = '#00F2FE';
+            
+            for (let i = 0; i < samples; i++) {
+                let min = 1.0;
+                let max = -1.0;
+                for (let j = 0; j < blockSize; j++) {
+                    const datum = rawData[i * blockSize + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+                const h = Math.max(1, (max - min) * (height / 2) * 0.8);
+                const y = (height / 2) - (h / 2);
+                ctx.fillRect(i, y, 1, h);
+            }
+        }
+
+        // Region Drag Logic
+        container.addEventListener('mousedown', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const ratio = x / rect.width;
+
+            // Check if clicking near handles
+            if (Math.abs(ratio - startRatio) < 0.05) {
+                isDraggingStart = true;
+            } else if (Math.abs(ratio - endRatio) < 0.05) {
+                isDraggingEnd = true;
+            } else {
+                // Click inside region to update both? Or do nothing.
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDraggingStart && !isDraggingEnd) return;
+            
+            const rect = container.getBoundingClientRect();
+            let ratio = (e.clientX - rect.left) / rect.width;
+            ratio = Math.max(0, Math.min(1, ratio));
+
+            if (isDraggingStart) {
+                startRatio = Math.min(ratio, endRatio - 0.01);
+            } else if (isDraggingEnd) {
+                endRatio = Math.max(ratio, startRatio + 0.01);
+            }
+            updateRegionUI();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDraggingStart = false;
+            isDraggingEnd = false;
+        });
+
+        // Time Input Logic
+        function parseTimeInput(val, defaultRatio) {
+            // simple MM:SS.mmm parser
+            const parts = val.split(':');
+            if (parts.length === 2) {
+                const min = parseFloat(parts[0]);
+                const sec = parseFloat(parts[1]);
+                if (!isNaN(min) && !isNaN(sec)) {
+                    let totalSec = min * 60 + sec;
+                    totalSec = Math.max(0, Math.min(totalSec, originalBuffer.duration));
+                    return totalSec / originalBuffer.duration;
+                }
+            }
+            return defaultRatio;
+        }
+
+        timeStartInput.addEventListener('change', (e) => {
+            startRatio = parseTimeInput(e.target.value, startRatio);
+            if (startRatio >= endRatio) startRatio = endRatio - 0.01;
+            updateRegionUI();
+        });
+
+        timeEndInput.addEventListener('change', (e) => {
+            endRatio = parseTimeInput(e.target.value, endRatio);
+            if (endRatio <= startRatio) endRatio = startRatio + 0.01;
+            updateRegionUI();
+        });
+
+        function updateRegionUI() {
+            const startPct = startRatio * 100;
+            const endPct = endRatio * 100;
+
+            handleStart.style.left = `${startPct}%`;
+            handleEnd.style.left = `${endPct}%`;
+            
+            maskLeft.style.width = `${startPct}%`;
+            maskRight.style.width = `${100 - endPct}%`;
+            
+            regionSelected.style.left = `${startPct}%`;
+            regionSelected.style.width = `${endPct - startPct}%`;
+
+            if(originalBuffer) {
+                const startSec = startRatio * originalBuffer.duration;
+                const endSec = endRatio * originalBuffer.duration;
+                timeStartInput.value = formatTime(startSec);
+                timeEndInput.value = formatTime(endSec);
+            }
+        }
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = (seconds % 60).toFixed(3);
+            return `${min.toString().padStart(2, '0')}:${sec.padStart(6, '0')}`;
+        }
+
+        // Playback Logic
+        btnPlay.addEventListener('click', () => {
+            if (isPlaying) stopPlayback();
+            else startPlayback();
+        });
+
+        function startPlayback() {
+            if (!originalBuffer) return;
+            initAudioContext();
+            
+            const startSec = startRatio * originalBuffer.duration;
+            const endSec = endRatio * originalBuffer.duration;
+            const duration = endSec - startSec;
+            
+            const fadeIn = parseFloat(fadeInSelect.value);
+            const fadeOut = parseFloat(fadeOutSelect.value);
+
+            sourceNode = audioContext.createBufferSource();
+            sourceNode.buffer = originalBuffer;
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(fadeIn > 0 ? 0 : 1, audioContext.currentTime);
+            
+            if (fadeIn > 0) {
+                gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + fadeIn);
+            }
+            if (fadeOut > 0) {
+                gainNode.gain.setValueAtTime(1, audioContext.currentTime + duration - fadeOut);
+                gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + duration);
+            }
+
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            sourceNode.start(0, startSec, duration);
+            isPlaying = true;
+            playStartTime = audioContext.currentTime;
+            
+            playIcon.innerHTML = `<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>`;
+            playText.textContent = "Pause";
+            playhead.style.display = 'block';
+
+            sourceNode.onended = () => {
+                if(isPlaying) stopPlayback();
+            };
+
+            updatePlayhead();
+        }
+
+        function stopPlayback() {
+            if (sourceNode) {
+                sourceNode.onended = null;
+                try { sourceNode.stop(); } catch(e){}
+            }
+            isPlaying = false;
+            playIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"></polygon>`;
+            playText.textContent = "Preview Cut";
+            playhead.style.display = 'none';
+            cancelAnimationFrame(animationFrameId);
+        }
+
+        function updatePlayhead() {
+            if (!isPlaying) return;
+            const elapsed = audioContext.currentTime - playStartTime;
+            const startSec = startRatio * originalBuffer.duration;
+            const endSec = endRatio * originalBuffer.duration;
+            const duration = endSec - startSec;
+
+            if (elapsed >= duration) {
+                stopPlayback();
+                return;
+            }
+
+            const currentSec = startSec + elapsed;
+            const posRatio = currentSec / originalBuffer.duration;
+            playhead.style.left = `${posRatio * 100}%`;
+            
+            animationFrameId = requestAnimationFrame(updatePlayhead);
+        }
+
+        // Export Logic
+        async function getProcessedBuffer() {
+            const startSec = startRatio * originalBuffer.duration;
+            const endSec = endRatio * originalBuffer.duration;
+            const fadeIn = parseFloat(fadeInSelect.value);
+            const fadeOut = parseFloat(fadeOutSelect.value);
+
+            const rate = originalBuffer.sampleRate;
+            const startOffset = Math.floor(rate * startSec);
+            const endOffset = Math.floor(rate * endSec);
+            const frameCount = endOffset - startOffset;
+
+            // Use OfflineAudioContext for perfect precision and fade rendering
+            const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(
+                originalBuffer.numberOfChannels,
+                frameCount,
+                rate
+            );
+
+            const source = offlineCtx.createBufferSource();
+            // Create a sub-buffer to avoid memory limits if original is huge, or just slice
+            const subBuffer = audioContext.createBuffer(originalBuffer.numberOfChannels, frameCount, rate);
+            for (let i = 0; i < originalBuffer.numberOfChannels; i++) {
+                subBuffer.copyToChannel(originalBuffer.getChannelData(i).subarray(startOffset, endOffset), i);
+            }
+            source.buffer = subBuffer;
+
+            const gain = offlineCtx.createGain();
+            gain.gain.setValueAtTime(fadeIn > 0 ? 0 : 1, 0);
+            if (fadeIn > 0) gain.gain.linearRampToValueAtTime(1, fadeIn);
+            if (fadeOut > 0) {
+                gain.gain.setValueAtTime(1, (frameCount/rate) - fadeOut);
+                gain.gain.linearRampToValueAtTime(0, frameCount/rate);
+            }
+
+            source.connect(gain);
+            gain.connect(offlineCtx.destination);
+            source.start(0);
+
+            return await offlineCtx.startRendering();
+        }
+
+        function bufferToWav(buffer) {
+            const numChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const format = 1; // PCM
+            const bitDepth = 16;
+            
+            const result = new Int16Array(buffer.length * numChannels);
+            
+            // Interleave channels
+            for (let channel = 0; channel < numChannels; channel++) {
+                const channelData = buffer.getChannelData(channel);
+                for (let i = 0; i < buffer.length; i++) {
+                    // Clamp and convert to 16-bit PCM
+                    let sample = Math.max(-1, Math.min(1, channelData[i]));
+                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    result[i * numChannels + channel] = sample;
+                }
+            }
+
+            const dataLength = result.length * 2;
+            const bufferArray = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(bufferArray);
+
+            const writeString = (view, offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + dataLength, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, format, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * 2, true);
+            view.setUint16(32, numChannels * 2, true);
+            view.setUint16(34, bitDepth, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataLength, true);
+
+            const dataView = new Int16Array(bufferArray, 44);
+            dataView.set(result);
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function bufferToMp3(buffer) {
+            if (!window.lamejs) throw new Error("lamejs not loaded");
+            
+            const numChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            
+            const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, 128); // 128kbps
+            const mp3Data = [];
+
+            // Get channel data and convert to 16bit PCM
+            const left = buffer.getChannelData(0);
+            const right = numChannels > 1 ? buffer.getChannelData(1) : left;
+            
+            const sampleBlockSize = 1152;
+            const leftData = new Int16Array(left.length);
+            const rightData = new Int16Array(right.length);
+
+            for (let i = 0; i < left.length; i++) {
+                leftData[i] = left[i] < 0 ? left[i] * 0x8000 : left[i] * 0x7FFF;
+                if(numChannels > 1) rightData[i] = right[i] < 0 ? right[i] * 0x8000 : right[i] * 0x7FFF;
+            }
+
+            for (let i = 0; i < left.length; i += sampleBlockSize) {
+                const leftChunk = leftData.subarray(i, i + sampleBlockSize);
+                const rightChunk = numChannels > 1 ? rightData.subarray(i, i + sampleBlockSize) : leftChunk;
+                
+                const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+                if (mp3buf.length > 0) mp3Data.push(new Int8Array(mp3buf));
+            }
+            
+            const mp3buf = mp3encoder.flush();
+            if (mp3buf.length > 0) mp3Data.push(new Int8Array(mp3buf));
+
+            return new Blob(mp3Data, { type: 'audio/mpeg' });
+        }
+
+        function downloadBlob(blob, ext) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            const baseName = originalFileName.replace(/\.[^/.]+$/, "");
+            a.download = `${baseName}_trimmed.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        btnExportWav.addEventListener('click', async () => {
+            if (!originalBuffer) return;
+            stopPlayback();
+            showLoading("Exporting WAV...");
+            
+            setTimeout(async () => {
+                try {
+                    const processedBuf = await getProcessedBuffer();
+                    const blob = bufferToWav(processedBuf);
+                    downloadBlob(blob, 'wav');
+                } catch (e) {
+                    console.error(e);
+                    alert("Error exporting WAV");
+                } finally {
+                    hideLoading();
+                }
+            }, 50); // allow UI to paint
+        });
+
+        btnExportMp3.addEventListener('click', async () => {
+            if (!originalBuffer) return;
+            if (!window.lamejs) {
+                alert("MP3 encoding library is still loading or blocked by adblocker. Try WAV instead.");
+                return;
+            }
+            stopPlayback();
+            showLoading("Encoding MP3... This may take a moment.");
+            
+            setTimeout(async () => {
+                try {
+                    const processedBuf = await getProcessedBuffer();
+                    const blob = bufferToMp3(processedBuf);
+                    downloadBlob(blob, 'mp3');
+                } catch (e) {
+                    console.error(e);
+                    alert("Error exporting MP3");
+                } finally {
+                    hideLoading();
+                }
+            }, 50);
+        });
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            if (originalBuffer) {
+                drawWaveform();
+            }
+        });
+
+    </script>
+</body>
+</html>

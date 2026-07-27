@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon & App Icon Generator - Free PNG & ICO Package | ToolsHub</title>
+    <meta name="description" content="Free client-side tool to generate favicons and app icons for all platforms. Create favicon.ico, Apple touch icons, and Android Chrome icons with shape masks and custom backgrounds.">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #070714;
+            --primary: #7C3AED;
+            --accent: #00F2FE;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #FFFFFF;
+            --text-secondary: #A0A0B0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.15), transparent 25%);
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            background: rgba(7, 7, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        header a span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .upload-area:hover, .upload-area.drag-over {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .shape-selector {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .shape-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .shape-btn.active, .shape-btn:hover {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            background: none;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 8px;
+        }
+
+        .select-type {
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .preview-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+        
+        .preview-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .preview-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .mockup-browser {
+            background: #e2e8f0;
+            border-radius: 8px 8px 0 0;
+            width: 100%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 10px;
+            position: relative;
+        }
+        .mockup-browser-dots {
+            display: flex;
+            gap: 4px;
+        }
+        .mockup-browser-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+        .mockup-tab {
+            background: white;
+            border-radius: 6px 6px 0 0;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            height: calc(100% - 6px);
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s, transform 0.1s;
+            margin-top: 2rem;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .manifest-code {
+            background: rgba(0,0,0,0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #a5b4fc;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../../index.html">← Back to <span>ToolsHub</span></a>
+    </header>
+
+    <main>
+        <div class="panel">
+            <h2>1. Settings & Upload</h2>
+            
+            <div class="upload-area" id="drop-zone">
+                <div class="upload-icon">📁</div>
+                <h3>Drag & Drop Image Here</h3>
+                <p>or click to browse (PNG, JPG, SVG, WebP)</p>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="control-group">
+                <label>Shape Mask</label>
+                <div class="shape-selector">
+                    <button class="shape-btn active" data-shape="none">None</button>
+                    <button class="shape-btn" data-shape="circle">Circle</button>
+                    <button class="shape-btn" data-shape="rounded">Rounded</button>
+                    <button class="shape-btn" data-shape="squircle">Squircle</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Background</label>
+                <div class="color-picker">
+                    <select class="select-type" id="bg-type">
+                        <option value="transparent">Transparent</option>
+                        <option value="solid">Solid Color</option>
+                    </select>
+                    <input type="color" id="bg-color" value="#ffffff" disabled>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Padding: <span id="pad-val">10</span>%</label>
+                <input type="range" id="padding-range" min="0" max="40" value="10">
+            </div>
+            
+            <div class="control-group">
+                <label>Image Scale: <span id="scale-val">100</span>%</label>
+                <input type="range" id="scale-range" min="10" max="200" value="100">
+            </div>
+
+            <button class="btn-primary" id="download-btn">Generate & Download ZIP</button>
+        </div>
+
+        <div class="panel">
+            <h2>2. Live Previews</h2>
+            
+            <div class="control-group" style="margin-bottom: 2rem;">
+                <label>Browser Tab (16x16)</label>
+                <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff;">
+                    <div class="mockup-browser">
+                        <div class="mockup-browser-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="mockup-tab">
+                            <canvas id="prev-16" width="16" height="16"></canvas> My Website
+                        </div>
+                    </div>
+                    <div style="height: 50px; background: white;"></div>
+                </div>
+            </div>
+
+            <div class="preview-grid">
+                <div class="preview-item">
+                    <div class="preview-box" style="width: 100px; height: 100px;">
+                        <canvas id="prev-32" width="32" height="32" style="width: 32px; height: 32px;"></canvas>
+                    </div>
+                    <div class="preview-title">Favicon (32x32)</div>
+                </div>
+                
+                <div class="preview-item">
+                    <div class="preview-box" style="width: 100px; height: 100px;">
+                        <canvas id="prev-180" width="180" height="180" style="width: 60px; height: 60px;"></canvas>
+                    </div>
+                    <div class="preview-title">iOS Touch (180x180)</div>
+                </div>
+
+                <div class="preview-item">
+                    <div class="preview-box" style="width: 100px; height: 100px; background: #fff;">
+                        <canvas id="prev-192" width="192" height="192" style="width: 64px; height: 64px;"></canvas>
+                    </div>
+                    <div class="preview-title">Android (192x192)</div>
+                </div>
+                
+                <div class="preview-item">
+                    <div class="preview-box" style="width: 100px; height: 100px; background: #0078D7;">
+                        <canvas id="prev-tile" width="144" height="144" style="width: 48px; height: 48px;"></canvas>
+                    </div>
+                    <div class="preview-title">Win Tile (144x144)</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <label>Generated site.webmanifest</label>
+                <div class="manifest-code" id="manifest-code">{
+    "name": "My Website",
+    "short_name": "Website",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const paddingRange = document.getElementById('padding-range');
+        const scaleRange = document.getElementById('scale-range');
+        const bgType = document.getElementById('bg-type');
+        const bgColor = document.getElementById('bg-color');
+        const shapeBtns = document.querySelectorAll('.shape-btn');
+        
+        let currentImage = null;
+        let settings = {
+            shape: 'none',
+            bgType: 'transparent',
+            bgColor: '#ffffff',
+            padding: 10,
+            scale: 100
+        };
+
+        const canvases = {
+            16: document.getElementById('prev-16'),
+            32: document.getElementById('prev-32'),
+            180: document.getElementById('prev-180'),
+            192: document.getElementById('prev-192'),
+            144: document.getElementById('prev-tile')
+        };
+        
+        // Initial draw
+        drawPreviews();
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFile(e.target.files[0]);
+        });
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    drawPreviews();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        shapeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                shapeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                settings.shape = btn.dataset.shape;
+                drawPreviews();
+            });
+        });
+
+        paddingRange.addEventListener('input', (e) => {
+            settings.padding = parseInt(e.target.value);
+            document.getElementById('pad-val').textContent = settings.padding;
+            drawPreviews();
+        });
+        
+        scaleRange.addEventListener('input', (e) => {
+            settings.scale = parseInt(e.target.value);
+            document.getElementById('scale-val').textContent = settings.scale;
+            drawPreviews();
+        });
+
+        bgType.addEventListener('change', (e) => {
+            settings.bgType = e.target.value;
+            bgColor.disabled = settings.bgType === 'transparent';
+            updateManifest();
+            drawPreviews();
+        });
+
+        bgColor.addEventListener('input', (e) => {
+            settings.bgColor = e.target.value;
+            updateManifest();
+            drawPreviews();
+        });
+
+        function drawIcon(ctx, size) {
+            ctx.clearRect(0, 0, size, size);
+            
+            // Draw background and shape
+            ctx.save();
+            ctx.beginPath();
+            
+            if (settings.shape === 'none') {
+                ctx.rect(0, 0, size, size);
+            } else if (settings.shape === 'circle') {
+                ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+            } else if (settings.shape === 'rounded') {
+                const r = size * 0.225; // standard iOS proportion
+                ctx.moveTo(r, 0);
+                ctx.lineTo(size-r, 0);
+                ctx.quadraticCurveTo(size, 0, size, r);
+                ctx.lineTo(size, size-r);
+                ctx.quadraticCurveTo(size, size, size-r, size);
+                ctx.lineTo(r, size);
+                ctx.quadraticCurveTo(0, size, 0, size-r);
+                ctx.lineTo(0, r);
+                ctx.quadraticCurveTo(0, 0, r, 0);
+            } else if (settings.shape === 'squircle') {
+                // approximate squircle
+                for (let i = 0; i < 360; i++) {
+                    const angle = i * Math.PI / 180;
+                    const r = size/2;
+                    const x = Math.pow(Math.abs(Math.cos(angle)), 0.5) * r * Math.sign(Math.cos(angle)) + r;
+                    const y = Math.pow(Math.abs(Math.sin(angle)), 0.5) * r * Math.sign(Math.sin(angle)) + r;
+                    if (i===0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.closePath();
+            ctx.clip();
+            
+            if (settings.bgType === 'solid') {
+                ctx.fillStyle = settings.bgColor;
+                ctx.fill();
+            }
+            
+            if (currentImage) {
+                // Calculate drawing dimensions
+                const pad = (size * settings.padding) / 100;
+                const availSize = size - (pad * 2);
+                
+                const ratio = Math.min(availSize / currentImage.width, availSize / currentImage.height);
+                const w = currentImage.width * ratio * (settings.scale / 100);
+                const h = currentImage.height * ratio * (settings.scale / 100);
+                const x = (size - w) / 2;
+                const y = (size - h) / 2;
+                
+                ctx.drawImage(currentImage, x, y, w, h);
+            }
+            
+            ctx.restore();
+        }
+
+        function drawPreviews() {
+            for (const size in canvases) {
+                const canvas = canvases[size];
+                const ctx = canvas.getContext('2d');
+                drawIcon(ctx, parseInt(size));
+            }
+        }
+        
+        function updateManifest() {
+            const manifest = {
+                "name": "My Website",
+                "short_name": "Website",
+                "icons": [
+                    {
+                        "src": "/android-chrome-192x192.png",
+                        "sizes": "192x192",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "/android-chrome-512x512.png",
+                        "sizes": "512x512",
+                        "type": "image/png"
+                    }
+                ],
+                "theme_color": settings.bgType === 'solid' ? settings.bgColor : "#ffffff",
+                "background_color": settings.bgType === 'solid' ? settings.bgColor : "#ffffff",
+                "display": "standalone"
+            };
+            document.getElementById('manifest-code').textContent = JSON.stringify(manifest, null, 4);
+        }
+
+        // Generate an off-screen canvas and get dataUrl
+        function getCanvasDataURL(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            drawIcon(ctx, size);
+            return canvas.toDataURL('image/png').split(',')[1];
+        }
+
+        document.getElementById('download-btn').addEventListener('click', async () => {
+            if (!currentImage) {
+                alert('Please upload an image first!');
+                return;
+            }
+
+            const btn = document.getElementById('download-btn');
+            btn.textContent = "Generating...";
+            
+            try {
+                const zip = new JSZip();
+                
+                // Add icons
+                zip.file("favicon-16x16.png", getCanvasDataURL(16), {base64: true});
+                zip.file("favicon-32x32.png", getCanvasDataURL(32), {base64: true});
+                zip.file("apple-touch-icon.png", getCanvasDataURL(180), {base64: true});
+                zip.file("android-chrome-192x192.png", getCanvasDataURL(192), {base64: true});
+                zip.file("android-chrome-512x512.png", getCanvasDataURL(512), {base64: true});
+                
+                // Basic favicon.ico fallback (just copying 32x32 png, browsers support this in .ico rename mostly, or we just provide 32x32 png)
+                // True ICO generation in JS is complex, appending PNG data usually works for modern favicons disguised as .ico
+                zip.file("favicon.ico", getCanvasDataURL(32), {base64: true});
+                
+                zip.file("site.webmanifest", document.getElementById('manifest-code').textContent);
+
+                const content = await zip.generateAsync({type: "blob"});
+                
+                const url = window.URL.createObjectURL(content);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "favicon_package.zip";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                alert("Error generating zip: " + err);
+            }
+            
+            btn.textContent = "Generate & Download ZIP";
+        });
+    </script>
+</body>
+</html>

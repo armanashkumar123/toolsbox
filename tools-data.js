@@ -1,5 +1,98 @@
 window.ALL_TOOLS = [
   {
+    "name": "EasyConv - YouTube to MP3 & MP4 Converter",
+    "desc": "Convert YouTube videos to 320kbps MP3 audio or 4K MP4 video. Built-in audio trimmer, quality selection, 100% free.",
+    "icon": "🎵",
+    "bg": "linear-gradient(135deg, #FF007F, #7C3AED)",
+    "tag": "media",
+    "url": "tools/easyconv/index.html",
+    "isNative": true,
+    "keywords": [
+      "youtube",
+      "mp3",
+      "mp4",
+      "easyconv",
+      "converter",
+      "downloader",
+      "trimmer",
+      "320kbps",
+      "4k"
+    ]
+  },
+  {
+    "name": "Audio Trimmer & Cutter",
+    "desc": "Crop and trim MP3, WAV, OGG audio files with live waveform visualizer & fade effects.",
+    "icon": "✂️",
+    "bg": "linear-gradient(135deg, #00F2FE, #7C3AED)",
+    "tag": "media",
+    "url": "tools/audio-trimmer/index.html",
+    "isNative": true,
+    "keywords": [
+      "audio",
+      "trimmer",
+      "cutter",
+      "mp3",
+      "crop",
+      "fade",
+      "waveform"
+    ]
+  },
+  {
+    "name": "Favicon & App Icon Generator",
+    "desc": "Generate complete ICO & PNG favicon packages for iOS, Android, and Web with manifest file generator.",
+    "icon": "🎨",
+    "bg": "linear-gradient(135deg, #EC4899, #8B5CF6)",
+    "tag": "design",
+    "url": "tools/icon-generator/index.html",
+    "isNative": true,
+    "keywords": [
+      "favicon",
+      "ico",
+      "icon",
+      "generator",
+      "app icon",
+      "apple touch",
+      "android",
+      "manifest"
+    ]
+  },
+  {
+    "name": "Indian SIP & Mutual Fund Calculator",
+    "desc": "Calculate mutual fund SIP & Lumpsum returns with inflation adjustments, step-up SIP & wealth growth charts.",
+    "icon": "📈",
+    "bg": "linear-gradient(135deg, #10B981, #059669)",
+    "tag": "finance",
+    "url": "tools/sip-calculator/index.html",
+    "isNative": true,
+    "keywords": [
+      "sip",
+      "mutual fund",
+      "calculator",
+      "india",
+      "wealth",
+      "investment",
+      "returns",
+      "lumpsum"
+    ]
+  },
+  {
+    "name": "PDF to Image Converter & Text Extractor",
+    "desc": "Render PDF pages as high-res PNG/JPEG images or extract raw text 100% locally in browser.",
+    "icon": "📑",
+    "bg": "linear-gradient(135deg, #3B82F6, #1D4ED8)",
+    "tag": "productivity",
+    "url": "tools/pdf-to-image/index.html",
+    "isNative": true,
+    "keywords": [
+      "pdf",
+      "pdf to image",
+      "png",
+      "text extractor",
+      "ocr",
+      "convert"
+    ]
+  },
+  {
     "name": "YouTube to MP3 & MP4 Downloader",
     "desc": "Convert & download YouTube, Twitter, TikTok, Instagram videos to MP3/MP4.",
     "icon": "🎬",
