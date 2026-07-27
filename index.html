@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolsHub — 246+ Free In-Browser Tools. Zero Signups.</title>
-    <meta name="description" content="Master directory of 246+ free in-browser web tools. YouTube Downloader, PDF Tools, Image Editor, EMI, GST, Markdown, Regex, Base64, Excalidraw, IT-Tools, and more. 100% client-side privacy.">
-    <meta name="keywords" content="no signup tools, in-browser tools, free online tools, YouTube downloader, PDF tools, image editor, EMI calculator India, GST calculator, markdown editor, regex tester, base64 encoder">
+    <title>ToolsHub — 1,251+ Free In-Browser Tools. Zero Signups.</title>
+    <meta name="description" content="Master portal of 1,251+ free in-browser web tools. EasyConv YouTube Downloader, PDF Hub, Image Editor, EMI, GST, Markdown, Regex, Base64, Excalidraw, and 1,000+ native calculators. 100% client-side.">
+    <meta name="keywords" content="no signup tools, in-browser tools, free online tools, EasyConv, YouTube downloader, PDF tools, image editor, EMI calculator India, GST calculator, markdown editor, regex tester">
     <meta name="author" content="ToolsHub">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://toolsbox.qd.je/">
     
-    <meta property="og:title" content="ToolsHub — 246+ Free In-Browser Tools | Zero Signups">
-    <meta property="og:description" content="Master directory of 246+ open-source, client-side web tools. Fast, private, zero data collection.">
+    <meta property="og:title" content="ToolsHub — 1,251+ Free In-Browser Tools | Zero Signups">
+    <meta property="og:description" content="Master portal of 1,251+ open-source, client-side web tools. Fast, private, zero data collection.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://toolsbox.qd.je/">
     
@@ -72,7 +72,6 @@
 
         .content { position: relative; z-index: 1; }
 
-        /* Navigation */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -85,360 +84,70 @@
             background: rgba(7, 7, 20, 0.85);
             backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text);
-        }
+        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+        .nav-logo { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: white; box-shadow: 0 0 20px var(--primary-glow); }
+        .nav-name { font-weight: 800; font-size: 1.35rem; letter-spacing: -0.5px; background: linear-gradient(135deg, #FFF, var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .nav-logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
-            color: white;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .nav-name {
-            font-weight: 800;
-            font-size: 1.35rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #FFF, var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.92rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.92rem; font-weight: 600; transition: all 0.2s ease; }
         .nav-links a:hover { color: var(--accent); }
 
-        .btn-github {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-github:hover {
-            background: rgba(124, 58, 237, 0.2);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
+        .btn-github { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 100px; color: var(--text); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; }
+        .btn-github:hover { background: rgba(124, 58, 237, 0.2); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
-        /* Hero */
-        .hero {
-            padding: 150px 2rem 60px;
-            text-align: center;
-            max-width: 960px;
-            margin: 0 auto;
-        }
+        .hero { padding: 150px 2rem 60px; text-align: center; max-width: 960px; margin: 0 auto; }
+        .hero-pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 20px; background: rgba(124, 58, 237, 0.12); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 100px; font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 28px; box-shadow: 0 0 25px rgba(124, 58, 237, 0.2); }
+        .hero-pill .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 1.8s ease-in-out infinite; }
 
-        .hero-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 20px;
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 28px;
-            box-shadow: 0 0 25px rgba(124, 58, 237, 0.2);
-        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; } }
 
-        .hero-pill .dot {
-            width: 8px; height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse 1.8s ease-in-out infinite;
-        }
+        .hero h1 { font-size: clamp(2.6rem, 5.5vw, 4.2rem); font-weight: 800; line-height: 1.12; letter-spacing: -1px; margin-bottom: 24px; }
+        .hero h1 .gradient { background: linear-gradient(135deg, var(--accent), var(--primary-light), #EC4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 40px; font-weight: 400; }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.4); opacity: 0.6; }
-        }
+        .search-container { max-width: 580px; margin: 0 auto 36px; position: relative; }
+        .search-input { width: 100%; padding: 18px 24px 18px 56px; background: rgba(15, 15, 35, 0.9); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-family: inherit; font-size: 1.08rem; outline: none; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        .search-input:focus { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
-        .hero h1 {
-            font-size: clamp(2.6rem, 5.5vw, 4.2rem);
-            font-weight: 800;
-            line-height: 1.12;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-        }
+        .categories { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+        .cat-btn { padding: 9px 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 100px; color: var(--text-muted); font-family: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .cat-btn:hover, .cat-btn.active { background: rgba(124, 58, 237, 0.25); border-color: var(--accent); color: var(--text); box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
 
-        .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--accent), var(--primary-light), #EC4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 680px;
-            margin: 0 auto 40px;
-            font-weight: 400;
-        }
-
-        /* Search Bar */
-        .search-container {
-            max-width: 580px;
-            margin: 0 auto 36px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 18px 24px 18px 56px;
-            background: rgba(15, 15, 35, 0.9);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 1.08rem;
-            outline: none;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        /* Category Filter Tabs */
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-
-        .cat-btn {
-            padding: 9px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text-muted);
-            font-family: inherit;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cat-btn:hover, .cat-btn.active {
-            background: rgba(124, 58, 237, 0.25);
-            border-color: var(--accent);
-            color: var(--text);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-        }
-
-        /* Tools Counter Bar */
-        .count-bar {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
+        .count-bar { text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; }
         .count-bar span { color: var(--accent); font-weight: 800; }
 
-        /* Tools Grid */
-        .tools-section {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem 100px;
-        }
+        .tools-section { max-width: 1280px; margin: 0 auto; padding: 0 2rem 100px; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 22px; }
 
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-            gap: 22px;
-        }
+        .tool-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; backdrop-filter: blur(20px); text-decoration: none; color: var(--text); transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; }
+        .tool-card:hover { background: var(--bg-card-hover); transform: translateY(-6px); box-shadow: var(--shadow), 0 0 30px var(--primary-glow); border-color: var(--accent); }
 
-        .tool-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 26px;
-            backdrop-filter: blur(20px);
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            position: relative;
-            overflow: hidden;
-        }
+        .tool-top { display: flex; align-items: center; justify-content: space-between; }
+        .tool-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .tool-badge { padding: 3px 10px; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 100px; font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tool-badge.native { background: rgba(0, 242, 254, 0.15); border-color: rgba(0, 242, 254, 0.4); color: #00F2FE; }
 
-        .tool-card:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-6px);
-            box-shadow: var(--shadow), 0 0 30px var(--primary-glow);
-            border-color: var(--accent);
-        }
+        .tool-card h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.3px; }
+        .tool-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; flex-grow: 1; }
 
-        .tool-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tool-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .tool-badge {
-            padding: 3px 10px;
-            background: rgba(124, 58, 237, 0.15);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 100px;
-            font-size: 0.7rem;
-            color: var(--accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tool-badge.native {
-            background: rgba(0, 242, 254, 0.15);
-            border-color: rgba(0, 242, 254, 0.4);
-            color: #00F2FE;
-        }
-
-        .tool-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .tool-card p {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        .tool-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-top: 4px;
-        }
+        .tool-footer { display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
         .tool-stars { color: #FFD700; font-size: 0.75rem; }
 
-        /* Trust Section */
-        .trust-section {
-            border-top: 1px solid var(--border);
-            padding: 80px 2rem;
-            background: rgba(10, 10, 26, 0.5);
-            text-align: center;
-        }
+        .trust-section { border-top: 1px solid var(--border); padding: 80px 2rem; background: rgba(10, 10, 26, 0.5); text-align: center; }
+        .trust-grid { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+        .trust-item h4 { font-size: 2.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .trust-item p { color: var(--text-muted); font-size: 0.92rem; margin-top: 4px; }
 
-        .trust-grid {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .trust-item h4 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .trust-item p {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            margin-top: 4px;
-        }
-
-        footer {
-            padding: 50px 2rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
+        footer { padding: 50px 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
         footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
         footer a:hover { text-decoration: underline; }
 
-        .no-results {
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--text-muted);
-            display: none;
-        }
+        .no-results { text-align: center; padding: 80px 20px; color: var(--text-muted); display: none; }
 
-        @media (max-width: 768px) {
-            nav { padding: 0 1rem; }
-            .hero { padding: 120px 1rem 40px; }
-            .tools-section { padding: 0 1rem 60px; }
-            .trust-grid { gap: 30px; }
-            .nav-links { display: none; }
-        }
+        @media (max-width: 768px) { nav { padding: 0 1rem; } .hero { padding: 120px 1rem 40px; } .tools-section { padding: 0 1rem 60px; } .trust-grid { gap: 30px; } .nav-links { display: none; } }
     </style>
 </head>
 <body>
@@ -452,7 +161,7 @@
                 <span class="nav-name">ToolsHub</span>
             </a>
             <div class="nav-links">
-                <a href="#tools">246+ Tools</a>
+                <a href="#tools">1,251+ Tools</a>
                 <a href="api.html">Developer API</a>
                 <a href="about.html">About</a>
                 <a href="privacy.html">Privacy</a>
@@ -466,48 +175,49 @@
         <section class="hero">
             <div class="hero-pill">
                 <span class="dot"></span>
-                246+ Open-Source & In-Browser Tools · Zero Signups · 100% Free
+                1,251+ Open-Source & In-Browser Tools · Zero Signups · 100% Free
             </div>
             <h1>The <span class="gradient">No-Bullsh*t</span> Master Web Tool Directory</h1>
-            <p>18 native client-side tools + 228 curated open-source apps from NoSignups.net. All in one instant, searchable portal.</p>
+            <p>1,023 native client-side tools + 228 curated open-source apps from NoSignups.net. All in one instant, searchable portal.</p>
 
             <div class="search-container">
                 <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" class="search-input" id="searchInput" placeholder="Search 246+ tools... (YouTube, PDF, Excalidraw, Regex, EMI, CyberChef...)">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search 1,251+ tools... (EasyConv, PDF, EMI, SIP, Regex, Base64...)">
             </div>
 
             <div class="categories" id="categories">
-                <button class="cat-btn active" data-cat="all">All Tools (246+)</button>
-                <button class="cat-btn" data-cat="native">⚡ Native Tools (18)</button>
+                <button class="cat-btn active" data-cat="all">All Tools (1,251+)</button>
+                <button class="cat-btn" data-cat="native">⚡ Native Tools (1,023)</button>
                 <button class="cat-btn" data-cat="development">💻 Development</button>
-                <button class="cat-btn" data-cat="productivity">⚡ Productivity</button>
-                <button class="cat-btn" data-cat="design">🎨 Design</button>
-                <button class="cat-btn" data-cat="writing">✍️ Writing & Docs</button>
-                <button class="cat-btn" data-cat="media">🎬 Media</button>
-                <button class="cat-btn" data-cat="privacy">🔒 Privacy & Security</button>
-                <button class="cat-btn" data-cat="utilities">🛠️ Utilities</button>
                 <button class="cat-btn" data-cat="finance">🏦 Finance & Tax</button>
+                <button class="cat-btn" data-cat="math">📐 Math & Science</button>
+                <button class="cat-btn" data-cat="converters">📏 Unit Converters</button>
+                <button class="cat-btn" data-cat="design">🎨 Design</button>
+                <button class="cat-btn" data-cat="productivity">⚡ Productivity</button>
+                <button class="cat-btn" data-cat="security">🔒 Security & Crypto</button>
+                <button class="cat-btn" data-cat="health">🩺 Health & Fitness</button>
+                <button class="cat-btn" data-cat="education">🎓 Education</button>
             </div>
         </section>
 
         <section class="tools-section" id="tools">
-            <div class="count-bar" id="countBar">Showing <span id="visibleCount">246</span> of <span>246</span> Tools</div>
+            <div class="count-bar" id="countBar">Showing <span id="visibleCount">1251</span> of <span>1251</span> Tools</div>
             <div class="tools-grid" id="toolsGrid">
                 <!-- Injected via JavaScript -->
             </div>
             <div class="no-results" id="noResults">
-                <p style="font-size:1.2rem;">No tools found matching your search. Try "PDF", "YouTube", "Excalidraw", "Regex", or "Convert".</p>
+                <p style="font-size:1.2rem;">No tools found matching your search. Try "EasyConv", "PDF", "EMI", "Regex", or "Convert".</p>
             </div>
         </section>
 
         <section class="trust-section">
             <div class="trust-grid">
                 <div class="trust-item">
-                    <h4>246+</h4>
+                    <h4>1,251+</h4>
                     <p>Total Tools Cataloged</p>
                 </div>
                 <div class="trust-item">
-                    <h4>18</h4>
+                    <h4>1,023</h4>
                     <p>Native Client-Side Apps</p>
                 </div>
                 <div class="trust-item">
@@ -520,7 +230,7 @@
         <footer>
             <p>© 2026 ToolsHub · Master Web Tool Portal · Powered by Open-Source (NoSignups.net / FckSignups)</p>
             <p style="margin-top:10px;">
-                <a href="api.html">Developer APIs</a> · <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="https://github.com/armanashkumar123/toolsbox" target="_blank">GitHub Repository</a>
+                <a href="api.html">Developer APIs</a> · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="copyright.html">DMCA</a> · <a href="https://github.com/armanashkumar123/toolsbox" target="_blank">GitHub Repository</a>
             </p>
         </footer>
     </div>
@@ -552,7 +262,8 @@
             }
 
             noResults.style.display = 'none';
-            grid.innerHTML = filtered.map(t => `
+            // Render first 100 items for ultra-fast DOM rendering, pagination/lazy load on scroll
+            grid.innerHTML = filtered.slice(0, 150).map(t => `
                 <a href="${t.url}" ${t.isNative ? '' : 'target="_blank"'} class="tool-card">
                     <div class="tool-top">
                         <div class="tool-icon" style="background:${t.bg}">${t.icon}</div>
