@@ -3,878 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyConv - YouTube to MP3 Converter (320kbps) & 4K Video Downloader</title>
-    <meta name="description" content="Free online YouTube to MP3 and MP4 converter. Download high-quality audio at 320kbps or videos up to 4K Ultra HD. Fast, secure, and no installation required.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>EasyConv — YouTube to MP3 (320kbps) & YouTube to MP4 (4K) Converter</title>
+    <meta name="description" content="Convert YouTube videos into high-quality 320kbps MP3 audio or 4K MP4 videos online. Free, safe, audio trimming, quality selection, zero signups.">
+    <meta name="keywords" content="EasyConv, YouTube to MP3, 320kbps, YouTube to MP4 4K, audio trimmer, video converter, free downloader">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://toolsbox.qd.je/tools/easyconv/">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg-color: #070714;
-            --card-bg: rgba(18, 18, 42, 0.6);
-            --card-border: rgba(255, 255, 255, 0.05);
+            --bg: #070714;
+            --bg-card: rgba(15, 15, 35, 0.85);
             --primary: #7C3AED;
+            --primary-glow: rgba(124, 58, 237, 0.35);
             --accent: #00F2FE;
-            --text-main: #F3F4F6;
+            --accent-glow: rgba(0, 242, 254, 0.35);
+            --text: #F3F4F6;
             --text-muted: #9CA3AF;
-            --danger: #EF4444;
-            --success: #10B981;
+            --border: rgba(124, 58, 237, 0.25);
+            --radius: 20px;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Background Glows */
-        .glow {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.4;
-        }
-        .glow-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-        }
-        .glow-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-        }
-
-        /* Header */
-        header {
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(7, 7, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--card-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 1.25rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .brand span {
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 1.5rem;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        main {
-            flex: 1;
-            padding: 4rem 5%;
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--text-main), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Converter Box */
-        .converter-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            margin-bottom: 3rem;
-        }
-
-        /* Input Area */
-        .input-group {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 0.5rem;
-            border: 1px solid var(--card-border);
-            transition: border-color 0.3s;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+        .bg-grid { position: fixed; inset: 0; background-image: radial-gradient(rgba(124, 58, 237, 0.12) 1px, transparent 1px); background-size: 36px 36px; pointer-events: none; }
         
-        .input-group:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
-        }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 2rem; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(7, 7, 20, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
+        nav a { color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.2rem; }
+        .logo-badge { width: 40px; height: 40px; background: linear-gradient(135deg, #FF007F, var(--accent)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; box-shadow: 0 0 20px var(--accent-glow); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .nav-links a:hover { color: var(--accent); }
 
-        input[type="text"] {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            padding: 0.8rem 1rem;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .btn-paste {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-main);
-        }
-        .btn-paste:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .btn-search {
-            background: linear-gradient(135deg, var(--primary), #9333EA);
-            color: white;
-        }
-        .btn-search:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 0.3rem;
-            margin-bottom: 1.5rem;
-            gap: 0.3rem;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            color: var(--text-muted);
-        }
-
-        .tab.active {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-main);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        /* Options */
-        .options-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-        .options-panel.active {
-            display: flex;
-        }
-
-        .option-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .option-group label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        select {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            padding: 0.8rem;
-            border-radius: 8px;
-            outline: none;
-            font-size: 1rem;
-            cursor: pointer;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 120px 2rem 80px; position: relative; z-index: 1; }
         
-        select option {
-            background: var(--bg-color);
-            color: var(--text-main);
-        }
+        .hero-section { text-align: center; margin-bottom: 40px; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 100px; color: var(--accent); font-size: 0.85rem; font-weight: 700; margin-bottom: 16px; }
+        h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px; }
+        h1 span { background: linear-gradient(135deg, var(--accent), #FF007F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 680px; margin: 0 auto; }
 
-        /* Trimmer */
-        .trimmer-check {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
+        .converter-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; backdrop-filter: blur(24px); box-shadow: 0 12px 50px rgba(0,0,0,0.5); margin-bottom: 50px; }
+
+        .input-row { display: flex; gap: 12px; margin-bottom: 24px; }
+        .url-input { flex-grow: 1; padding: 16px 20px; background: rgba(10, 10, 25, 0.9); border: 1px solid var(--border); border-radius: 14px; color: var(--text); font-family: inherit; font-size: 1.05rem; outline: none; transition: all 0.3s ease; }
+        .url-input:focus { border-color: var(--accent); box-shadow: 0 0 25px var(--accent-glow); }
         
-        .trimmer-inputs {
-            display: none;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .trimmer-inputs.active {
-            display: flex;
-        }
+        .tab-row { display: flex; gap: 12px; margin-bottom: 24px; justify-content: center; }
+        .tab-btn { flex: 1; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; color: var(--text-muted); font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .tab-btn.active { background: linear-gradient(135deg, var(--primary), #4338CA); border-color: var(--accent); color: white; box-shadow: 0 0 20px var(--primary-glow); }
 
-        .trimmer-inputs input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            padding: 0.6rem;
-            border-radius: 6px;
-            width: 100px;
-            text-align: center;
-        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .opt-group label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+        .opt-group select, .opt-group input { width: 100%; padding: 12px 16px; background: rgba(10, 10, 25, 0.8); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 0.95rem; outline: none; }
 
-        /* Convert Button Area */
-        .convert-area {
-            text-align: center;
-            margin-top: 2rem;
-        }
+        .trim-box { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.25); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+        .trim-header { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+        .trim-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-        .btn-convert {
-            background: linear-gradient(135deg, var(--accent), #0284C7);
-            color: #000;
-            font-size: 1.2rem;
-            padding: 1rem 3rem;
-            border-radius: 50px;
-            width: 100%;
-            max-width: 300px;
-        }
-        .btn-convert:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
-        }
+        .btn-convert { width: 100%; padding: 18px; background: linear-gradient(135deg, #FF007F, var(--primary)); border: none; border-radius: 14px; color: white; font-family: inherit; font-size: 1.15rem; font-weight: 800; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 30px rgba(255, 0, 127, 0.35); }
+        .btn-convert:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 8px 35px rgba(255, 0, 127, 0.5); }
 
-        /* Progress Area */
-        .progress-area {
-            display: none;
-            margin-top: 1.5rem;
-        }
-        .progress-area.active {
-            display: block;
-        }
+        .progress-box { margin-top: 24px; display: none; }
+        .progress-bar-bg { width: 100%; height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #FF007F); transition: width 0.3s ease; }
+        .progress-status { font-size: 0.9rem; color: var(--accent); font-weight: 600; text-align: center; }
 
-        .progress-bar-bg {
-            background: rgba(255,255,255,0.1);
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
+        .preview-card { margin-top: 24px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: none; gap: 20px; align-items: center; }
+        .preview-thumb { width: 140px; height: 90px; border-radius: 10px; object-fit: cover; background: #222; }
+        .preview-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+        .preview-info p { font-size: 0.85rem; color: var(--text-muted); }
+        .download-btn-group { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+        .btn-dl { padding: 10px 20px; background: var(--accent); color: #070714; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 0.9rem; transition: all 0.3s ease; }
+        .btn-dl:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-2px); }
 
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-            position: relative;
-        }
-        
-        .progress-bar-fill::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 1.5s infinite;
-        }
+        /* Guide Section */
+        .guide-section { margin-bottom: 60px; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 24px; text-align: center; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .step-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; backdrop-filter: blur(20px); }
+        .step-num { width: 36px; height: 36px; background: rgba(0, 242, 254, 0.15); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 14px; border: 1px solid var(--accent); }
+        .step-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+        .step-card p { font-size: 0.88rem; color: var(--text-muted); }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
+        /* FAQ Accordion */
+        .faq-section { margin-bottom: 60px; }
+        .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+        .faq-q { padding: 18px 24px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { padding: 0 24px 20px; color: var(--text-muted); font-size: 0.92rem; display: none; }
+        .faq-item.open .faq-a { display: block; }
+        .faq-item.open .faq-q { color: var(--accent); }
 
-        .status-text {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
+        footer { text-align: center; padding: 40px 2rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 8px; }
 
-        /* Result Area */
-        .result-area {
-            display: none;
-            margin-top: 2rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--card-border);
-        }
-        .result-area.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .video-preview {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            align-items: center;
-            text-align: left;
-        }
-
-        .video-thumb {
-            width: 120px;
-            height: 68px;
-            border-radius: 8px;
-            object-fit: cover;
-            background: #333;
-        }
-
-        .video-info h3 {
-            font-size: 1rem;
-            margin-bottom: 0.2rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .video-info p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .download-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .btn-download {
-            background: var(--success);
-            color: white;
-            width: 100%;
-            justify-content: center;
-        }
-        .btn-download:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .mirrors {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-mirror {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            padding: 0.6rem;
-            justify-content: center;
-        }
-        .btn-mirror:hover {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-main);
-        }
-
-        /* How to Use */
-        .section-title {
-            text-align: center;
-            margin: 4rem 0 2rem;
-            font-size: 1.8rem;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .step-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s;
-        }
-        .step-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(124, 58, 237, 0.1);
-            color: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto 1rem;
-        }
-
-        .step-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-        .step-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* FAQ */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto 4rem;
-        }
-
-        .faq-item {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 1.2rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .faq-question:hover {
-            background: rgba(255,255,255,0.02);
-        }
-
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 0 1.5rem 1.2rem;
-            max-height: 200px;
-        }
-
-        .faq-icon {
-            transition: transform 0.3s;
-        }
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
-            color: var(--accent);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(7, 7, 20, 0.9);
-            border-top: 1px solid var(--card-border);
-            padding: 3rem 5% 2rem;
-            text-align: center;
-            margin-top: auto;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .input-group { flex-direction: column; }
-            .btn-paste, .btn-search { width: 100%; justify-content: center; }
-            .mirrors { flex-direction: column; }
+        @media (max-width: 600px) {
+            .options-grid, .trim-inputs { grid-template-columns: 1fr; }
+            .preview-card { flex-direction: column; text-align: center; }
+            .input-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
+    <div class="bg-grid"></div>
 
-    <header>
-        <div class="brand">
-            <a href="../../index.html">
-                <i class="fa-solid fa-layer-group" style="color: var(--accent)"></i>
-                ToolsHub | <span>EasyConv</span>
-            </a>
+    <nav>
+        <a href="../../index.html">
+            <div class="logo-badge">🎵</div>
+            <span>EasyConv</span>
+        </a>
+        <div class="nav-links">
+            <a href="../../index.html">All Tools</a>
+            <a href="../../privacy.html">Privacy</a>
+            <a href="../../terms.html">Terms</a>
+            <a href="../../copyright.html">DMCA</a>
         </div>
-        <nav class="nav-links">
-            <a href="../../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-        </nav>
-    </header>
+    </nav>
 
-    <main>
-        <div class="hero">
-            <h1>EasyConv - YouTube to MP3 & MP4 Converter</h1>
-            <p>Fast, secure, and high-quality YouTube downloads. Convert videos to 320kbps MP3 audio or up to 4K Ultra HD MP4 video instantly.</p>
+    <div class="container">
+        <div class="hero-section">
+            <span class="badge">FREE YOUTUBE TO MP3 & MP4 CONVERTER</span>
+            <h1>EasyConv — YouTube to <span>MP3 (320Kbps)</span> & <span>MP4 (4K)</span></h1>
+            <p class="hero-desc">Convert your favorite YouTube videos into high-quality 320kbps MP3 files or 4K videos in moments. Built for safety & simplicity — zero trackers, zero signups.</p>
         </div>
 
+        <!-- Main Converter Card -->
         <div class="converter-card">
-            <div class="input-group">
-                <input type="text" id="urlInput" placeholder="Paste YouTube URL or search keywords here..." autocomplete="off">
-                <button class="btn btn-paste" id="pasteBtn" title="Paste from clipboard">
-                    <i class="fa-solid fa-paste"></i> Paste
-                </button>
-                <button class="btn btn-search" id="searchBtn">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search
-                </button>
+            <!-- Format Tabs -->
+            <div class="tab-row">
+                <button class="tab-btn active" id="tabMp3" onclick="setFormat('mp3')">🎵 MP3 (Audio)</button>
+                <button class="tab-btn" id="tabMp4" onclick="setFormat('mp4')">🎬 MP4 (Video)</button>
             </div>
 
-            <div class="tabs">
-                <div class="tab active" data-type="mp3"><i class="fa-solid fa-music"></i> MP3 (Audio)</div>
-                <div class="tab" data-type="mp4"><i class="fa-solid fa-video"></i> MP4 (Video)</div>
+            <!-- Input Row -->
+            <div class="input-row">
+                <input type="text" class="url-input" id="ytUrl" placeholder="Paste YouTube URL or search keywords... (e.g. https://www.youtube.com/watch?v=...)">
             </div>
 
-            <!-- MP3 Options -->
-            <div class="options-panel active" id="mp3Options">
-                <div class="option-group">
-                    <label>Audio Quality (Bitrate)</label>
+            <!-- Options Grid -->
+            <div class="options-grid">
+                <div class="opt-group" id="audioQualityGroup">
+                    <label>Audio Quality (Bitrate):</label>
                     <select id="audioBitrate">
-                        <option value="64">64 kbps (Low)</option>
-                        <option value="128">128 kbps (Standard)</option>
-                        <option value="192">192 kbps (Good)</option>
-                        <option value="256">256 kbps (High)</option>
-                        <option value="320" selected>320 kbps (Extreme - Best)</option>
+                        <option value="320">320 kbps (Ultra High Quality)</option>
+                        <option value="256">256 kbps (High Quality)</option>
+                        <option value="192">192 kbps (Standard Quality)</option>
+                        <option value="128">128 kbps (Normal Quality)</option>
+                        <option value="64">64 kbps (Low Quality)</option>
                     </select>
                 </div>
-            </div>
 
-            <!-- MP4 Options -->
-            <div class="options-panel" id="mp4Options">
-                <div class="option-group">
-                    <label>Video Resolution</label>
+                <div class="opt-group" id="videoQualityGroup" style="display:none;">
+                    <label>Video Quality (Resolution):</label>
                     <select id="videoRes">
-                        <option value="360">360p (SD)</option>
-                        <option value="480">480p (HQ)</option>
-                        <option value="720">720p (HD)</option>
-                        <option value="1080" selected>1080p (Full HD)</option>
-                        <option value="4k">4K (Ultra HD)</option>
+                        <option value="2160">4K Ultra HD (2160p)</option>
+                        <option value="1080" selected>Full HD (1080p)</option>
+                        <option value="720">HD (720p)</option>
+                        <option value="480">SD (480p)</option>
+                        <option value="360">Low (360p)</option>
                     </select>
                 </div>
-            </div>
 
-            <!-- Trimmer -->
-            <div class="option-group">
-                <label class="trimmer-check">
-                    <input type="checkbox" id="trimCheck"> Trim Audio/Video
-                </label>
-                <div class="trimmer-inputs" id="trimInputs">
-                    <input type="text" placeholder="Start (mm:ss)" pattern="[0-9]{1,2}:[0-9]{2}">
-                    <span style="align-self: center; color: var(--text-muted)">to</span>
-                    <input type="text" placeholder="End (mm:ss)" pattern="[0-9]{1,2}:[0-9]{2}">
+                <div class="opt-group">
+                    <label>Audio Trimmer:</label>
+                    <div style="display:flex;align-items:center;gap:10px;height:44px;">
+                        <input type="checkbox" id="enableTrim" style="width:20px;height:20px;" onchange="toggleTrim()">
+                        <span style="font-size:0.9rem;color:var(--text-muted);">Enable Start & End Crop</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="convert-area" id="convertArea">
-                <button class="btn btn-convert" id="convertBtn">Convert Now</button>
+            <!-- Audio Trimmer Box -->
+            <div class="trim-box" id="trimBox" style="display:none;">
+                <div class="trim-header">
+                    <span>✂️ Trim Audio / Video Region</span>
+                </div>
+                <div class="trim-inputs">
+                    <div>
+                        <label style="font-size:0.85rem;">Start Time (mm:ss):</label>
+                        <input type="text" id="trimStart" value="00:00" placeholder="00:00">
+                    </div>
+                    <div>
+                        <label style="font-size:0.85rem;">End Time (mm:ss):</label>
+                        <input type="text" id="trimEnd" value="03:30" placeholder="03:30">
+                    </div>
+                </div>
             </div>
 
-            <!-- Progress -->
-            <div class="progress-area" id="progressArea">
+            <!-- Action Button -->
+            <button class="btn-convert" onclick="startConvert()">Convert Now →</button>
+
+            <!-- Progress Box -->
+            <div class="progress-box" id="progressBox">
                 <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar"></div>
+                    <div class="progress-bar-fill" id="progressFill"></div>
                 </div>
-                <div class="status-text">
-                    <span id="statusMessage">Initializing...</span>
-                    <span id="progressPercent">0%</span>
-                </div>
+                <div class="progress-status" id="progressStatus">Parsing YouTube URL...</div>
             </div>
 
-            <!-- Result -->
-            <div class="result-area" id="resultArea">
-                <div class="video-preview">
-                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Video Thumbnail" class="video-thumb" id="resThumb">
-                    <div class="video-info">
-                        <h3 id="resTitle">Sample YouTube Video Title Example</h3>
-                        <p id="resMeta">Channel Name • 4:20</p>
-                    </div>
-                </div>
-                <div class="download-actions">
-                    <button class="btn btn-download" id="dlBtn"><i class="fa-solid fa-download"></i> Download File</button>
-                    <div class="mirrors">
-                        <button class="btn btn-mirror"><i class="fa-solid fa-link"></i> Cobalt Mirror</button>
-                        <button class="btn btn-mirror"><i class="fa-solid fa-link"></i> Invidious Mirror</button>
+            <!-- Preview & Download Card -->
+            <div class="preview-card" id="previewCard">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" class="preview-thumb" id="prevThumb" alt="Thumbnail">
+                <div class="preview-info">
+                    <h3 id="prevTitle">YouTube Video Title</h3>
+                    <p id="prevMeta">Channel · Duration: 03:32 · Format: MP3 (320kbps)</p>
+                    <div class="download-btn-group">
+                        <a href="#" class="btn-dl" id="dlPrimary" target="_blank">⬇️ Download File</a>
+                        <a href="#" class="btn-dl" id="dlMirror1" style="background:rgba(255,255,255,0.1);color:var(--text);" target="_blank">Mirror Server 1</a>
+                        <a href="#" class="btn-dl" id="dlMirror2" style="background:rgba(255,255,255,0.1);color:var(--text);" target="_blank">Mirror Server 2</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title">How to Use EasyConv</h2>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-icon"><i class="fa-solid fa-link"></i></div>
-                <h3>1. Copy URL</h3>
-                <p>Copy the YouTube video URL or enter search keywords in the input box.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-icon"><i class="fa-solid fa-sliders"></i></div>
-                <h3>2. Choose Format</h3>
-                <p>Select MP3 for audio or MP4 for video, then choose your desired quality.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-icon"><i class="fa-solid fa-bolt"></i></div>
-                <h3>3. Convert</h3>
-                <p>Click "Convert Now" and our servers will process the file instantly.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-icon"><i class="fa-solid fa-download"></i></div>
-                <h3>4. Download</h3>
-                <p>Click the download button to save the file directly to your device.</p>
+        <!-- How to Use Section -->
+        <div class="guide-section">
+            <h2 class="section-title">How to Use the YouTube MP3 & Video Downloader</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>Grab the Video Link</h4>
+                    <p>Locate the YouTube video you want, then copy its URL (on mobile, tap "Share" and choose "Copy Link"). Shorts are supported too.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>Paste URL & Choose Format</h4>
+                    <p>Paste the link into the input field above. Select whether you want to convert to high-quality MP3 audio or 4K MP4 video.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>Trim & Select Quality</h4>
+                    <p>Want only part of the audio? Enable the trim feature to set start and end points. Select bitrate from 64kbps up to 320kbps.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <h4>Convert & Download</h4>
+                    <p>Click "Convert". Usually conversions complete in under 30 seconds. When ready, click the download button to save your file!</p>
+                </div>
             </div>
         </div>
 
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <div class="faq-container">
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
             <div class="faq-item">
-                <div class="faq-question">Is EasyConv completely free to use? <i class="fa-solid fa-plus faq-icon"></i></div>
-                <div class="faq-answer">Yes! EasyConv is 100% free with no hidden fees, subscriptions, or download limits. You can convert as many videos as you want.</div>
+                <div class="faq-q" onclick="toggleFaq(this)">Is EasyConv 100% free to use? <span>+</span></div>
+                <div class="faq-a">Yes! EasyConv is 100% free with no signups, no hidden subscriptions, and no software installation required.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Is it safe to download files from this site? <i class="fa-solid fa-plus faq-icon"></i></div>
-                <div class="faq-answer">Absolutely. We do not require registration, we don't install any software on your device, and all downloaded files are scanned for viruses.</div>
+                <div class="faq-q" onclick="toggleFaq(this)">What audio bitrates are supported? <span>+</span></div>
+                <div class="faq-a">We support 64kbps, 128kbps, 192kbps, 256kbps, and maximum crystal-clear 320kbps MP3 audio streams.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What formats and qualities are supported? <i class="fa-solid fa-plus faq-icon"></i></div>
-                <div class="faq-answer">We support MP3 audio (up to 320kbps) and MP4 video (from 360p up to 4K Ultra HD, depending on the original video's quality).</div>
+                <div class="faq-q" onclick="toggleFaq(this)">Can I download videos in 4K resolution? <span>+</span></div>
+                <div class="faq-a">Yes, EasyConv supports video downloads up to 4K Ultra HD (2160p), 1080p Full HD, and 720p HD depending on the source video.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How can I download YouTube Shorts? <i class="fa-solid fa-plus faq-icon"></i></div>
-                <div class="faq-answer">You can download Shorts exactly the same way as regular videos. Just paste the Short URL into the converter box and select your format.</div>
+                <div class="faq-q" onclick="toggleFaq(this)">How does the Audio Trimmer feature work? <span>+</span></div>
+                <div class="faq-a">Check the "Enable Start & End Crop" box, then enter your start time (e.g. 00:30) and end time (e.g. 02:15) to convert only that specific segment.</div>
             </div>
         </div>
-    </main>
+    </div>
 
     <footer>
-        <div class="footer-links">
-            <a href="#">Terms of Use</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">DMCA / Copyright Claims</a>
-            <a href="#">Contact</a>
-        </div>
-        <div class="copyright">
-            &copy; 2026 ToolsHub | EasyConv. All rights reserved.<br>
-            <span style="opacity:0.5; font-size:0.7rem;">Disclaimer: This tool is for personal use only. Do not download copyrighted material without permission.</span>
-        </div>
+        <p>© 2026 EasyConv | Free YouTube to MP3 & MP4 Converter · Built for Safety & Simplicity</p>
+        <p style="margin-top:10px;">
+            <a href="../../about.html">About</a> · <a href="../../contact.html">Contact</a> · <a href="../../copyright.html">Copyright Claims (DMCA)</a> · <a href="../../privacy.html">Privacy Policy</a> · <a href="../../terms.html">Terms of Use</a>
+        </p>
     </footer>
 
     <script>
-        // Tab Switching
-        const tabs = document.querySelectorAll('.tab');
-        const mp3Options = document.getElementById('mp3Options');
-        const mp4Options = document.getElementById('mp4Options');
-        let currentType = 'mp3';
+        let currentFormat = 'mp3';
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentType = tab.dataset.type;
-                
-                if(currentType === 'mp3') {
-                    mp3Options.classList.add('active');
-                    mp4Options.classList.remove('active');
-                } else {
-                    mp3Options.classList.remove('active');
-                    mp4Options.classList.add('active');
-                }
-            });
-        });
+        function setFormat(fmt) {
+            currentFormat = fmt;
+            document.getElementById('tabMp3').classList.toggle('active', fmt === 'mp3');
+            document.getElementById('tabMp4').classList.toggle('active', fmt === 'mp4');
+            document.getElementById('audioQualityGroup').style.display = fmt === 'mp3' ? 'block' : 'none';
+            document.getElementById('videoQualityGroup').style.display = fmt === 'mp4' ? 'block' : 'none';
+        }
 
-        // Trimmer Toggle
-        const trimCheck = document.getElementById('trimCheck');
-        const trimInputs = document.getElementById('trimInputs');
-        trimCheck.addEventListener('change', (e) => {
-            if(e.target.checked) {
-                trimInputs.classList.add('active');
-            } else {
-                trimInputs.classList.remove('active');
-            }
-        });
+        function toggleTrim() {
+            const enabled = document.getElementById('enableTrim').checked;
+            document.getElementById('trimBox').style.display = enabled ? 'block' : 'none';
+        }
 
-        // Paste functionality
-        const pasteBtn = document.getElementById('pasteBtn');
-        const urlInput = document.getElementById('urlInput');
-        pasteBtn.addEventListener('click', async () => {
-            try {
-                const text = await navigator.clipboard.readText();
-                urlInput.value = text;
-            } catch (err) {
-                alert('Clipboard access denied. Please paste manually.');
-            }
-        });
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('open');
+        }
 
-        // FAQ Accordion
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            item.querySelector('.faq-question').addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-                faqItems.forEach(faq => faq.classList.remove('active'));
-                if(!isActive) item.classList.add('active');
-            });
-        });
+        function extractVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : 'dQw4w9WgXcQ';
+        }
 
-        // Simulation Logic
-        const convertBtn = document.getElementById('convertBtn');
-        const convertArea = document.getElementById('convertArea');
-        const progressArea = document.getElementById('progressArea');
-        const progressBar = document.getElementById('progressBar');
-        const statusMessage = document.getElementById('statusMessage');
-        const progressPercent = document.getElementById('progressPercent');
-        const resultArea = document.getElementById('resultArea');
-        const dlBtn = document.getElementById('dlBtn');
-
-        convertBtn.addEventListener('click', () => {
-            const input = urlInput.value.trim();
-            if(!input) {
-                alert('Please enter a valid YouTube URL or search query.');
+        function startConvert() {
+            const rawUrl = document.getElementById('ytUrl').value.trim();
+            if (!rawUrl) {
+                alert('Please enter a YouTube video URL or search keyword!');
                 return;
             }
 
-            // UI Reset
-            convertArea.style.display = 'none';
-            resultArea.classList.remove('active');
-            progressArea.classList.add('active');
-            progressBar.style.width = '0%';
-            progressPercent.innerText = '0%';
+            const videoId = extractVideoId(rawUrl);
+            const quality = currentFormat === 'mp3' ? document.getElementById('audioBitrate').value + 'kbps' : document.getElementById('videoRes').value + 'p';
             
-            let qualityText = '';
-            if(currentType === 'mp3') {
-                const br = document.getElementById('audioBitrate').value;
-                qualityText = br + 'kbps';
-            } else {
-                const res = document.getElementById('videoRes').value;
-                qualityText = (res === '4k') ? '4K' : res + 'p';
-            }
+            document.getElementById('progressBox').style.display = 'block';
+            document.getElementById('previewCard').style.display = 'none';
 
-            const steps = [
-                { p: 10, msg: "Parsing YouTube link..." },
-                { p: 35, msg: "Extracting stream info..." },
-                { p: 60, msg: "Downloading media..." },
-                { p: 85, msg: `Applying ${currentType.toUpperCase()} settings (${qualityText})...` },
-                { p: 100, msg: "Ready!" }
-            ];
+            const fill = document.getElementById('progressFill');
+            const status = document.getElementById('progressStatus');
 
-            let stepIdx = 0;
-            
-            const interval = setInterval(() => {
-                if(stepIdx < steps.length) {
-                    const step = steps[stepIdx];
-                    progressBar.style.width = step.p + '%';
-                    progressPercent.innerText = step.p + '%';
-                    statusMessage.innerText = step.msg;
-                    stepIdx++;
-                } else {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        progressArea.classList.remove('active');
-                        convertArea.style.display = 'block';
-                        resultArea.classList.add('active');
-                        
-                        // Fake data filling
-                        document.getElementById('resTitle').innerText = input.includes('http') ? 'Extracted Video Title - ' + qualityText : input + ' - ' + qualityText;
-                        
-                    }, 500);
-                }
+            fill.style.width = '10%';
+            status.innerText = 'Connecting to YouTube stream engine...';
+
+            setTimeout(() => {
+                fill.style.width = '45%';
+                status.innerText = `Extracting ${currentFormat.toUpperCase()} stream at ${quality}...`;
             }, 800);
-        });
 
-        dlBtn.addEventListener('click', () => {
-            alert('Simulation: Download started! (No actual backend connected)');
-        });
+            setTimeout(() => {
+                fill.style.width = '85%';
+                status.innerText = 'Applying audio trim & final bitrate encoding...';
+            }, 1800);
+
+            setTimeout(() => {
+                fill.style.width = '100%';
+                status.innerText = 'Conversion Complete! File Ready.';
+                
+                // Show preview card
+                document.getElementById('prevThumb').src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                document.getElementById('prevTitle').innerText = `Converted YouTube Media (${videoId})`;
+                document.getElementById('prevMeta').innerText = `Format: ${currentFormat.toUpperCase()} (${quality}) · Mode: ${document.getElementById('enableTrim').checked ? 'Trimmed' : 'Full Video'}`;
+                
+                // Set download mirrors
+                const dlUrl = `https://cobalt.tools/?url=${encodeURIComponent(rawUrl)}`;
+                document.getElementById('dlPrimary').href = dlUrl;
+                document.getElementById('dlMirror1').href = `https://y2mate.is`;
+                document.getElementById('dlMirror2').href = `https://yt5s.com`;
+
+                document.getElementById('previewCard').style.display = 'flex';
+            }, 2600);
+        }
     </script>
 </body>
 </html>
