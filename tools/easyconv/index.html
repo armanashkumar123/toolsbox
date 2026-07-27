@@ -309,44 +309,34 @@
             }
 
             const videoId = extractVideoId(rawUrl);
-            const quality = currentFormat === 'mp3' ? document.getElementById('audioBitrate').value + 'kbps' : document.getElementById('videoRes').value + 'p';
             
-            document.getElementById('progressBox').style.display = 'block';
-            document.getElementById('previewCard').style.display = 'none';
+            // Map our formats to loader.to format strings
+            // loader.to supports: mp3 (highest quality), and various video resolutions like '1080', '4k'
+            let apiFormat = 'mp3';
+            if (currentFormat === 'mp4') {
+                const res = document.getElementById('videoRes').value;
+                if (res === '2160') apiFormat = '4k';
+                else if (res === '1080') apiFormat = '1080';
+                else if (res === '720') apiFormat = '720';
+                else if (res === '480') apiFormat = '480';
+                else apiFormat = '360';
+            }
 
-            const fill = document.getElementById('progressFill');
-            const status = document.getElementById('progressStatus');
-
-            fill.style.width = '10%';
-            status.innerText = 'Connecting to YouTube stream engine...';
-
-            setTimeout(() => {
-                fill.style.width = '45%';
-                status.innerText = `Extracting ${currentFormat.toUpperCase()} stream at ${quality}...`;
-            }, 800);
-
-            setTimeout(() => {
-                fill.style.width = '85%';
-                status.innerText = 'Applying audio trim & final bitrate encoding...';
-            }, 1800);
-
-            setTimeout(() => {
-                fill.style.width = '100%';
-                status.innerText = 'Conversion Complete! File Ready.';
-                
-                // Show preview card
-                document.getElementById('prevThumb').src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                document.getElementById('prevTitle').innerText = `Converted YouTube Media (${videoId})`;
-                document.getElementById('prevMeta').innerText = `Format: ${currentFormat.toUpperCase()} (${quality}) · Mode: ${document.getElementById('enableTrim').checked ? 'Trimmed' : 'Full Video'}`;
-                
-                // Set download mirrors
-                const dlUrl = `https://cobalt.tools/?url=${encodeURIComponent(rawUrl)}`;
-                document.getElementById('dlPrimary').href = dlUrl;
-                document.getElementById('dlMirror1').href = `https://y2mate.is`;
-                document.getElementById('dlMirror2').href = `https://yt5s.com`;
-
-                document.getElementById('previewCard').style.display = 'flex';
-            }, 2600);
+            document.getElementById('progressBox').style.display = 'none';
+            document.getElementById('previewCard').style.display = 'flex';
+            
+            // Setup thumbnail and metadata
+            document.getElementById('prevThumb').src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            document.getElementById('prevTitle').innerText = `YouTube Media (${videoId})`;
+            
+            const qualityStr = currentFormat === 'mp3' ? 'High Quality MP3' : (apiFormat.toUpperCase() + ' Video');
+            document.getElementById('prevMeta').innerText = `Format: ${qualityStr}`;
+            
+            // Generate iframe for real conversion and download
+            const iframeSrc = `https://loader.to/api/button/?url=${encodeURIComponent(rawUrl)}&f=${apiFormat}&color=7C3AED`;
+            
+            const btnGroup = document.querySelector('.download-btn-group');
+            btnGroup.innerHTML = `<iframe style="width:100%;height:60px;border:0;overflow:hidden;border-radius:10px;" scrolling="no" src="${iframeSrc}"></iframe>`;
         }
     </script>
 </body>
