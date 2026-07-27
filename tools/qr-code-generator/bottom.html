@@ -1,0 +1,161 @@
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            let currentTab = 'url';
+            
+            // UI Elements
+            const qrcodeContainer = document.getElementById('qrcode');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            // Settings
+            const colorDark = document.getElementById('color-dark');
+            const colorLight = document.getElementById('color-light');
+            const colorDarkHex = document.getElementById('color-dark-hex');
+            const colorLightHex = document.getElementById('color-light-hex');
+            const qrSize = document.getElementById('qr-size');
+            const sizeVal = document.getElementById('size-val');
+            const qrError = document.getElementById('qr-error');
+            
+            // Inputs
+            const inputs = {
+                url: document.getElementById('url-input'),
+                text: document.getElementById('text-input'),
+                wifi: {
+                    ssid: document.getElementById('wifi-ssid'),
+                    password: document.getElementById('wifi-password'),
+                    encryption: document.getElementById('wifi-encryption'),
+                    hidden: document.getElementById('wifi-hidden')
+                },
+                email: {
+                    to: document.getElementById('email-to'),
+                    subject: document.getElementById('email-subject'),
+                    body: document.getElementById('email-body')
+                },
+                phone: document.getElementById('phone-input')
+            };
+
+            let qrCode = null;
+
+            function updateColorLabels() {
+                colorDarkHex.textContent = colorDark.value.toUpperCase();
+                colorLightHex.textContent = colorLight.value.toUpperCase();
+            }
+
+            function getQRData() {
+                switch(currentTab) {
+                    case 'url':
+                        return inputs.url.value || 'https://example.com';
+                    case 'text':
+                        return inputs.text.value || 'Hello, World!';
+                    case 'wifi':
+                        const ssid = inputs.wifi.ssid.value;
+                        const pwd = inputs.wifi.password.value;
+                        const enc = inputs.wifi.encryption.value;
+                        const hidden = inputs.wifi.hidden.checked ? 'true' : 'false';
+                        
+                        if (!ssid) return 'WIFI:S:;T:nopass;P:;H:false;;';
+                        
+                        let wifiStr = `WIFI:S:${ssid};T:${enc};`;
+                        if (enc !== 'nopass') {
+                            wifiStr += `P:${pwd};`;
+                        }
+                        wifiStr += `H:${hidden};;`;
+                        return wifiStr;
+                    case 'email':
+                        const to = inputs.email.to.value;
+                        const sub = inputs.email.subject.value;
+                        const body = inputs.email.body.value;
+                        
+                        if (!to) return 'mailto:';
+                        
+                        return `mailto:${to}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+                    case 'phone':
+                        const phone = inputs.phone.value;
+                        return phone ? `tel:${phone}` : 'tel:';
+                    default:
+                        return '';
+                }
+            }
+
+            function generateQR() {
+                const data = getQRData();
+                const size = parseInt(qrSize.value);
+                const errorCorrectionLevel = QRCode.CorrectLevel[qrError.value];
+                
+                qrcodeContainer.innerHTML = '';
+                
+                qrCode = new QRCode(qrcodeContainer, {
+                    text: data,
+                    width: size,
+                    height: size,
+                    colorDark : colorDark.value,
+                    colorLight : colorLight.value,
+                    correctLevel : errorCorrectionLevel
+                });
+            }
+
+            // Tab Switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    currentTab = tab.dataset.tab;
+                    document.getElementById(`tab-${currentTab}`).classList.add('active');
+                    
+                    generateQR();
+                });
+            });
+
+            // Event Listeners for inputs
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            allInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.id === 'color-dark' || input.id === 'color-light') {
+                        updateColorLabels();
+                    }
+                    if (input.id === 'qr-size') {
+                        sizeVal.textContent = input.value;
+                    }
+                    
+                    // Add slight debounce for textareas and text inputs
+                    clearTimeout(input.dataset.timeout);
+                    input.dataset.timeout = setTimeout(() => {
+                        generateQR();
+                    }, 150);
+                });
+            });
+
+            // Download functionality
+            downloadBtn.addEventListener('click', () => {
+                const canvas = qrcodeContainer.querySelector('canvas');
+                const img = qrcodeContainer.querySelector('img');
+                
+                let dataUrl = '';
+                if (canvas) {
+                    dataUrl = canvas.toDataURL("image/png");
+                } else if (img && img.src) {
+                    dataUrl = img.src;
+                }
+                
+                if (dataUrl) {
+                    const link = document.createElement('a');
+                    link.download = `qrcode-${currentTab}-${Date.now()}.png`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+
+            // Initial setup
+            updateColorLabels();
+            generateQR();
+        });
+    </script>
+</body>
+</html>

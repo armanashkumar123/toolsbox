@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolsHub — Free Online Tools | Calculators, Converters & Generators</title>
+    <meta name="description" content="Free online tools for everyone. EMI Calculator, GST Calculator, Password Generator, Text Converter, QR Code Generator and more. Fast, free, no signup required.">
+    <meta name="keywords" content="online tools, EMI calculator, GST calculator India, password generator, text converter, free tools, QR code generator">
+    <meta name="author" content="ToolsHub">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://toolshub.us.kg/">
+    <meta property="og:title" content="ToolsHub — Free Online Tools">
+    <meta property="og:description" content="Free online tools for everyone. Calculators, converters, generators — all client-side, fast, and free.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a1a;
+            --bg-card: rgba(18, 18, 42, 0.8);
+            --bg-card-hover: rgba(28, 28, 60, 0.9);
+            --primary: #6C63FF;
+            --primary-glow: rgba(108, 99, 255, 0.3);
+            --accent: #00D4AA;
+            --accent-glow: rgba(0, 212, 170, 0.3);
+            --text: #e8e8f0;
+            --text-muted: #8888aa;
+            --border: rgba(108, 99, 255, 0.15);
+            --border-hover: rgba(108, 99, 255, 0.4);
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(108, 99, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 170, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(108, 99, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-dots {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(108, 99, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -100px; right: -100px; animation-delay: 0s; }
+        .orb-2 { width: 200px; height: 200px; background: var(--accent); bottom: -50px; left: -50px; animation-delay: -7s; }
+        .orb-3 { width: 150px; height: 150px; background: #ff6b9d; top: 50%; left: 50%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(15px, 30px) scale(1.05); }
+        }
+
+        /* Content wrapper */
+        .content { position: relative; z-index: 1; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
+        }
+
+        .nav-name {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 2rem 80px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search */
+        .search-wrap {
+            max-width: 500px;
+            margin: 0 auto 20px;
+            position: relative;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            backdrop-filter: blur(20px);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Category Filters */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        .cat-btn {
+            padding: 8px 18px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cat-btn:hover, .cat-btn.active {
+            background: rgba(108, 99, 255, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Tools Grid */
+        .tools-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 80px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .tool-card:hover::before { transform: scaleX(1); }
+
+        .tool-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.15);
+        }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .tool-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .tool-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .tool-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(108, 99, 255, 0.1);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-weight: 500;
+            align-self: flex-start;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+            padding: 60px 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .no-results svg { margin-bottom: 16px; opacity: 0.5; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 0 1rem; }
+            .hero { padding: 120px 1rem 60px; }
+            .tools-section { padding: 0 1rem 60px; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .stats { gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-dots"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="content">
+        <nav id="navbar">
+            <a href="/" class="nav-brand">
+                <div class="nav-logo">T</div>
+                <span class="nav-name">ToolsHub</span>
+            </a>
+            <div class="nav-links">
+                <a href="#tools">Tools</a>
+                <a href="api.html">API</a>
+                <a href="#about">About</a>
+                <a href="privacy.html">Privacy</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                100% Free — No Signup Required
+            </div>
+            <h1>Free <span class="gradient">Online Tools</span> for Everyone</h1>
+            <p>Fast, private, and powerful. Every tool runs in your browser — nothing is uploaded. Built for India and the world.</p>
+
+            <div class="search-wrap">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search tools... (EMI, GST, Password...)">
+            </div>
+
+            <div class="categories" id="categories">
+                <button class="cat-btn active" data-cat="all">All</button>
+                <button class="cat-btn" data-cat="finance">Finance</button>
+                <button class="cat-btn" data-cat="text">Text</button>
+                <button class="cat-btn" data-cat="developer">Developer</button>
+                <button class="cat-btn" data-cat="utility">Utility</button>
+                <button class="cat-btn" data-cat="design">Design</button>
+            </div>
+        </section>
+
+        <section class="tools-section" id="tools">
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools injected by JS -->
+            </div>
+            <div class="no-results" id="noResults">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <p>No tools found. Try a different search.</p>
+            </div>
+        </section>
+
+        <section class="stats" id="about">
+            <div class="stat">
+                <div class="stat-num">10+</div>
+                <div class="stat-label">Free Tools</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Data Uploaded</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">Uses — No Limits</div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 ToolsHub — Built with ❤️ | All tools run 100% in your browser</p>
+            <p style="margin-top:8px;">
+                <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Tool data
+        const tools = [
+            {
+                name: 'EMI Calculator',
+                desc: 'Calculate monthly EMI for home, car, or personal loans. With amortization schedule.',
+                icon: '🏦',
+                iconBg: 'linear-gradient(135deg, #6C63FF, #4834d4)',
+                tag: 'finance',
+                url: 'tools/emi-calculator/',
+                keywords: ['emi', 'loan', 'home loan', 'car loan', 'personal loan', 'monthly', 'installment']
+            },
+            {
+                name: 'GST Calculator',
+                desc: 'Calculate GST for any amount. Supports all Indian GST slabs — 5%, 12%, 18%, 28%.',
+                icon: '🧾',
+                iconBg: 'linear-gradient(135deg, #00D4AA, #00a388)',
+                tag: 'finance',
+                url: 'tools/gst-calculator/',
+                keywords: ['gst', 'tax', 'cgst', 'sgst', 'igst', 'goods', 'services', 'india']
+            },
+            {
+                name: 'Age Calculator',
+                desc: 'Find your exact age in years, months, days. Zodiac sign & birthday countdown.',
+                icon: '🎂',
+                iconBg: 'linear-gradient(135deg, #ff6b9d, #ee5a24)',
+                tag: 'utility',
+                url: 'tools/age-calculator/',
+                keywords: ['age', 'birthday', 'born', 'date', 'zodiac', 'years']
+            },
+            {
+                name: 'Password Generator',
+                desc: 'Generate strong, secure passwords. Customizable length & character types.',
+                icon: '🔐',
+                iconBg: 'linear-gradient(135deg, #ffa502, #e17055)',
+                tag: 'utility',
+                url: 'tools/password-generator/',
+                keywords: ['password', 'security', 'generate', 'strong', 'random', 'secure']
+            },
+            {
+                name: 'Text Case Converter',
+                desc: 'Convert text to UPPER, lower, Title, camelCase, snake_case & more.',
+                icon: '🔤',
+                iconBg: 'linear-gradient(135deg, #a29bfe, #6c5ce7)',
+                tag: 'text',
+                url: 'tools/text-case-converter/',
+                keywords: ['text', 'case', 'upper', 'lower', 'title', 'camel', 'snake', 'convert']
+            },
+            {
+                name: 'JSON Formatter',
+                desc: 'Format, validate, and beautify JSON data. Minify & tree view included.',
+                icon: '{ }',
+                iconBg: 'linear-gradient(135deg, #00cec9, #0984e3)',
+                tag: 'developer',
+                url: 'tools/json-formatter/',
+                keywords: ['json', 'format', 'validate', 'beautify', 'minify', 'developer', 'api']
+            },
+            {
+                name: 'Color Palette Generator',
+                desc: 'Generate beautiful color palettes. Copy HEX, RGB, HSL values instantly.',
+                icon: '🎨',
+                iconBg: 'linear-gradient(135deg, #fd79a8, #e84393)',
+                tag: 'design',
+                url: 'tools/color-palette/',
+                keywords: ['color', 'palette', 'hex', 'rgb', 'hsl', 'design', 'generate']
+            },
+            {
+                name: 'QR Code Generator',
+                desc: 'Generate QR codes for URLs, text, WiFi, and more. Download as PNG.',
+                icon: '📱',
+                iconBg: 'linear-gradient(135deg, #55efc4, #00b894)',
+                tag: 'utility',
+                url: 'tools/qr-code-generator/',
+                keywords: ['qr', 'code', 'barcode', 'url', 'link', 'wifi', 'scan']
+            },
+            {
+                name: 'Image Compressor',
+                desc: 'Compress images in your browser. No upload to server. Supports JPEG, PNG, WebP.',
+                icon: '🖼️',
+                iconBg: 'linear-gradient(135deg, #dfe6e9, #636e72)',
+                tag: 'utility',
+                url: 'tools/image-compressor/',
+                keywords: ['image', 'compress', 'resize', 'jpeg', 'png', 'webp', 'photo']
+            },
+            {
+                name: 'Unit Converter',
+                desc: 'Convert length, weight, temperature, speed, data & more. All units supported.',
+                icon: '📏',
+                iconBg: 'linear-gradient(135deg, #fab1a0, #e17055)',
+                tag: 'utility',
+                url: 'tools/unit-converter/',
+                keywords: ['unit', 'convert', 'length', 'weight', 'temperature', 'speed', 'meter', 'kg']
+            }
+        ];
+
+        // Render tools
+        const grid = document.getElementById('toolsGrid');
+        const noResults = document.getElementById('noResults');
+
+        function renderTools(filter = 'all', search = '') {
+            const filtered = tools.filter(t => {
+                const catMatch = filter === 'all' || t.tag === filter;
+                const searchMatch = !search ||
+                    t.name.toLowerCase().includes(search) ||
+                    t.desc.toLowerCase().includes(search) ||
+                    t.keywords.some(k => k.includes(search));
+                return catMatch && searchMatch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            grid.innerHTML = filtered.map((t, i) => `
+                <a href="${t.url}" class="tool-card" style="animation: fadeInUp 0.5s ease ${i * 0.05}s both">
+                    <div class="tool-icon" style="background: ${t.iconBg}">${t.icon}</div>
+                    <h3>${t.name}</h3>
+                    <p>${t.desc}</p>
+                    <span class="tool-tag">${t.tag}</span>
+                </a>
+            `).join('');
+        }
+
+        renderTools();
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const search = e.target.value.toLowerCase().trim();
+            const activeCat = document.querySelector('.cat-btn.active').dataset.cat;
+            renderTools(activeCat, search);
+        });
+
+        // Category filter
+        document.getElementById('categories').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('cat-btn')) return;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderTools(e.target.dataset.cat, search);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+</body>
+</html>

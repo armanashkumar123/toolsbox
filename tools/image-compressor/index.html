@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor - Compress Images Online Free | ToolsHub</title>
+    <meta name="description" content="Free client-side image compressor. Compress JPEG, PNG, and WebP images online without losing quality. Features batch compression, quality control slider, custom dimension resizing, before/after visual comparison, and instant ZIP download. 100% private - files never leave your browser.">
+    <meta name="keywords" content="image compressor, compress jpeg, compress png, compress webp, image resizer, client side image compression, online image optimizer, batch image compressor, toolshub">
+    <meta name="author" content="ToolsHub">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://toolshub.example.com/tools/image-compressor/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Image Compressor - Compress Images Online Free | ToolsHub">
+    <meta property="og:description" content="Compress JPEG, PNG, and WebP images fast & free. Quality slider, batch mode, resize options, before/after comparison. 100% private in-browser compression.">
+    <meta property="og:type" content="website">
+
+    <!-- Structured Data JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Image Compressor",
+      "url": "https://toolshub.example.com/tools/image-compressor",
+      "description": "Compress JPEG, PNG, and WebP images client-side with quality sliders, custom resizing, batch mode, and instant download.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- JSZip for Batch Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0a0a1a;
+            --card-bg: rgba(18, 18, 42, 0.8);
+            --card-hover: rgba(28, 28, 60, 0.9);
+            --card-border: rgba(108, 99, 255, 0.2);
+            --card-border-active: rgba(108, 99, 255, 0.6);
+            --primary: #6C63FF;
+            --primary-hover: #5b54d6;
+            --primary-glow: rgba(108, 99, 255, 0.35);
+            --accent: #00D4AA;
+            --accent-hover: #00b894;
+            --accent-glow: rgba(0, 212, 170, 0.35);
+            --text-main: #ffffff;
+            --text-muted: #a0a0c0;
+            --text-dark: #666688;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #00D4AA;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Backgrounds */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(0, 212, 170, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            padding: 1.2rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--card-border);
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .back-link {
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        .back-link i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .privacy-badge {
+            background: rgba(0, 212, 170, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .privacy-badge i {
+            font-size: 0.75rem;
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            transition: var(--transition);
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            border: 2px dashed rgba(108, 99, 255, 0.4);
+            border-radius: var(--radius-lg);
+            padding: 3.5rem 2rem;
+            text-align: center;
+            background: rgba(18, 18, 42, 0.4);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--accent);
+            background: rgba(0, 212, 170, 0.05);
+            box-shadow: 0 0 30px rgba(0, 212, 170, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .drop-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.2rem auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(0, 212, 170, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            transition: var(--transition);
+        }
+
+        .drop-zone:hover .drop-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.25), rgba(108, 99, 255, 0.25));
+        }
+
+        .drop-icon-wrapper i {
+            font-size: 2.2rem;
+            color: var(--accent);
+        }
+
+        .drop-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .drop-sub {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            z-index: 20;
+            position: relative;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.6rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #8b83ff 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #20edd0 100%);
+            color: #0a0a1a;
+            font-weight: 700;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-accent:hover {
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.25);
+            border-color: var(--danger);
+        }
+
+        .btn-sm {
+            padding: 0.45rem 0.9rem;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .format-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+        }
+
+        .fmt-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Controls Section Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .control-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .control-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-label i {
+            color: var(--primary);
+        }
+
+        .val-badge {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.25);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+        }
+
+        /* Quality Range Slider */
+        .range-slider-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: var(--transition);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #ffffff;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+        }
+
+        .preset-btn {
+            flex: 1;
+            padding: 0.35rem;
+            font-size: 0.78rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .preset-btn:hover, .preset-btn.active {
+            background: rgba(108, 99, 255, 0.25);
+            border-color: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Select Input & Text Inputs */
+        .select-input, .text-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(10, 10, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .select-input:focus, .text-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .select-input option {
+            background: #12122a;
+            color: #ffffff;
+        }
+
+        /* Resize Grid */
+        .resize-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .input-with-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .input-with-label label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+            margin-top: 0.4rem;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Batch Summary Bar */
+        .batch-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            padding: 1.2rem 1.8rem;
+            background: rgba(108, 99, 255, 0.08);
+            border: 1px solid rgba(108, 99, 255, 0.25);
+            border-radius: var(--radius-lg);
+        }
+
+        .summary-stats {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+        }
+
+        .stat-value.accent {
+            color: var(--accent);
+        }
+
+        .stat-value.saving {
+            color: #00e676;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        /* Image List Table / Cards */
+        .image-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .image-card {
+            display: grid;
+            grid-template-columns: 80px 1.5fr 1fr 1fr 140px;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem 1.2rem;
+            background: rgba(18, 18, 42, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .image-card:hover {
+            border-color: var(--card-border-active);
+            background: rgba(28, 28, 60, 0.8);
+        }
+
+        .image-card.active-compare {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 170, 0.25);
+        }
+
+        .thumb-preview {
+            width: 70px;
+            height: 70px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            overflow: hidden;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .size-comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            font-family: var(--font-mono);
+        }
+
+        .orig-size {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .comp-size {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .ratio-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            width: fit-content;
+        }
+
+        .ratio-badge.saved {
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+        }
+
+        .ratio-badge.increased {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* Comparison Section / Split View */
+        .comparison-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .comp-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .comp-title i {
+            color: var(--accent);
+        }
+
+        .view-mode-tabs {
+            display: flex;
+            background: rgba(10, 10, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            gap: 4px;
+        }
+
+        .tab-btn {
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Interactive Split Image Slider Container */
+        .split-slider-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #000000;
+            border: 1px solid var(--card-border);
+            user-select: none;
+        }
+
+        .split-slider-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .img-compressed-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            overflow: hidden;
+            z-index: 2;
+            border-right: 2px solid var(--accent);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .img-compressed-layer img {
+            width: 100%;
+            max-width: none;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--accent);
+            z-index: 10;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--accent-glow);
+            font-size: 1rem;
+        }
+
+        .split-label {
+            position: absolute;
+            top: 1rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            z-index: 5;
+            backdrop-filter: blur(10px);
+        }
+
+        .split-label.orig {
+            right: 1rem;
+            background: rgba(10, 10, 26, 0.85);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .split-label.comp {
+            left: 1rem;
+            background: rgba(0, 212, 170, 0.85);
+            color: #0a0a1a;
+            border: 1px solid var(--accent);
+            z-index: 12;
+        }
+
+        /* Side-by-Side Grid View */
+        .side-by-side-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .preview-box {
+            background: rgba(10, 10, 26, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preview-img-wrapper {
+            height: 320px;
+            width: 100%;
+            background: #000;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-box-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Features Grid & FAQ */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(18, 18, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .info-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .info-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .faq-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item {
+            background: rgba(18, 18, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.2rem 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: none;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 2.5rem 5%;
+            background: rgba(10, 10, 26, 0.9);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(18, 18, 42, 0.95);
+            border: 1px solid var(--accent);
+            color: #ffffff;
+            padding: 0.9rem 1.4rem;
+            border-radius: var(--radius-md);
+            font-size: 0.92rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .image-card {
+                grid-template-columns: 70px 1fr 1fr;
+                grid-template-rows: auto auto;
+            }
+            .card-actions {
+                grid-column: span 3;
+                justify-content: flex-start;
+                margin-top: 0.5rem;
+            }
+            .side-by-side-grid {
+                grid-template-columns: 1fr;
+            }
+            .split-slider-container {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+            header {
+                padding: 1rem;
+            }
+            .image-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .thumb-preview {
+                margin: 0 auto;
+            }
+            .card-actions {
+                grid-column: span 1;
+                justify-content: center;
+            }
+            .summary-stats {
+                gap: 1rem;
+            }
+            .split-slider-container {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <a href="../../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> ToolsHub
+            </a>
+        </div>
+        <div class="privacy-badge">
+            <i class="fas fa-shield-alt"></i> 100% Client-Side Processing
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Title -->
+        <section class="hero">
+            <h1>Image <span>Compressor</span></h1>
+            <p>Compress, resize, and convert JPEG, PNG & WebP images right inside your browser. No files are uploaded to any server.</p>
+        </section>
+
+        <!-- Drop Zone Card -->
+        <section class="glass-card">
+            <div class="drop-zone" id="dropZone">
+                <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp,image/gif,image/bmp">
+                <div class="drop-icon-wrapper">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="drop-title">Drag & Drop images here</div>
+                <div class="drop-sub">or click anywhere to browse from your computer</div>
+                
+                <div class="drop-actions">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-folder-open"></i> Select Images
+                    </button>
+                    <button class="btn btn-secondary" id="btnDemoImage">
+                        <i class="fas fa-magic"></i> Try Demo Image
+                    </button>
+                </div>
+
+                <div class="format-badges">
+                    <span class="fmt-badge">JPEG</span>
+                    <span class="fmt-badge">PNG</span>
+                    <span class="fmt-badge">WEBP</span>
+                    <span class="fmt-badge">GIF</span>
+                    <span class="fmt-badge">BMP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compression Settings Controls -->
+        <section class="glass-card">
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fas fa-sliders-h" style="color: var(--primary);"></i> Compression Settings
+            </h2>
+
+            <div class="controls-grid">
+                <!-- Quality Slider -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label class="control-label" for="qualityRange">
+                            <i class="fas fa-compress-alt"></i> Image Quality
+                        </label>
+                        <span class="val-badge" id="qualityValue">80%</span>
+                    </div>
+                    <div class="range-slider-wrapper">
+                        <input type="range" id="qualityRange" min="1" max="100" value="80">
+                    </div>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-quality="95">Ultra (95%)</button>
+                        <button class="preset-btn active" data-quality="80">High (80%)</button>
+                        <button class="preset-btn" data-quality="60">Medium (60%)</button>
+                        <button class="preset-btn" data-quality="40">Low (40%)</button>
+                    </div>
+                </div>
+
+                <!-- Output Format -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label class="control-label" for="formatSelect">
+                            <i class="fas fa-file-export"></i> Output Format
+                        </label>
+                    </div>
+                    <select id="formatSelect" class="select-input">
+                        <option value="original">Same as Original Format</option>
+                        <option value="image/webp" selected>WebP (Recommended - Best Compression)</option>
+                        <option value="image/jpeg">JPEG (Universal)</option>
+                        <option value="image/png">PNG (Lossless / Transparent)</option>
+                    </select>
+                    <span style="font-size: 0.78rem; color: var(--text-muted);">
+                        WebP typically delivers 30-50% smaller files than JPEG with high visual fidelity.
+                    </span>
+                </div>
+
+                <!-- Resize Controls -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label class="control-label" for="resizeModeSelect">
+                            <i class="fas fa-expand-arrows-alt"></i> Resize Image
+                        </label>
+                    </div>
+                    <select id="resizeModeSelect" class="select-input">
+                        <option value="none">Original Dimensions (No Resize)</option>
+                        <option value="percentage">Scale by Percentage (%)</option>
+                        <option value="custom">Custom Max Width / Height (px)</option>
+                    </select>
+
+                    <div id="resizePercentageBox" style="display: none; margin-top: 0.5rem;">
+                        <div class="control-header">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Scale Ratio:</span>
+                            <span class="val-badge" id="scalePercentVal">75%</span>
+                        </div>
+                        <input type="range" id="scalePercentRange" min="10" max="100" value="75">
+                    </div>
+
+                    <div id="resizeCustomBox" style="display: none; margin-top: 0.5rem;" class="resize-inputs">
+                        <div class="input-with-label">
+                            <label for="maxWidthInput">Max Width (px)</label>
+                            <input type="number" id="maxWidthInput" class="text-input" placeholder="1920" min="10">
+                        </div>
+                        <div class="input-with-label">
+                            <label for="maxHeightInput">Max Height (px)</label>
+                            <input type="number" id="maxHeightInput" class="text-input" placeholder="1080" min="10">
+                        </div>
+                    </div>
+
+                    <label class="checkbox-label" id="aspectRatioLabel" style="display: none;">
+                        <input type="checkbox" id="keepAspectRatio" checked> Maintain Aspect Ratio
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Batch Summary Bar & Action Queue -->
+        <section class="batch-summary" id="batchSummary" style="display: none;">
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Queue Total</span>
+                    <span class="stat-value" id="statCount">0 files</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Original Total</span>
+                    <span class="stat-value" id="statOrigSize">0 MB</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Compressed Total</span>
+                    <span class="stat-value accent" id="statCompSize">0 MB</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Saved</span>
+                    <span class="stat-value saving" id="statSavedRatio">0%</span>
+                </div>
+            </div>
+
+            <div class="summary-actions">
+                <button class="btn btn-accent" id="btnDownloadAllZip">
+                    <i class="fas fa-file-archive"></i> Download All (ZIP)
+                </button>
+                <button class="btn btn-danger btn-sm" id="btnClearAll">
+                    <i class="fas fa-trash-alt"></i> Clear Queue
+                </button>
+            </div>
+        </section>
+
+        <!-- Queue Cards List -->
+        <section class="image-list" id="imageListQueue">
+            <!-- Dynamically populated card items -->
+        </section>
+
+        <!-- Before / After Visual Comparison Section -->
+        <section class="glass-card comparison-section" id="comparisonSection" style="display: none;">
+            <div class="comparison-header">
+                <div class="comp-title">
+                    <i class="fas fa-eye"></i> Before / After Visual Inspector
+                </div>
+                <div class="view-mode-tabs">
+                    <button class="tab-btn active" id="tabSplit">Split Slider</button>
+                    <button class="tab-btn" id="tabSideBySide">Side by Side</button>
+                </div>
+            </div>
+
+            <!-- Split Slider View -->
+            <div id="splitViewContainer">
+                <div class="split-slider-container" id="splitSlider">
+                    <span class="split-label orig" id="splitOrigTag">Original: 0 KB</span>
+                    <span class="split-label comp" id="splitCompTag">Compressed: 0 KB</span>
+                    
+                    <img id="imgOriginalSplit" src="" alt="Original Image">
+                    
+                    <div class="img-compressed-layer" id="compressedLayer">
+                        <img id="imgCompressedSplit" src="" alt="Compressed Image">
+                    </div>
+
+                    <div class="slider-handle" id="sliderHandle">
+                        <div class="slider-handle-button">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side by Side View -->
+            <div id="sideBySideContainer" class="side-by-side-grid" style="display: none;">
+                <div class="preview-box">
+                    <div class="preview-box-title">
+                        Original Image
+                        <span class="fmt-badge" id="sbsOrigFmt">PNG</span>
+                    </div>
+                    <div class="preview-img-wrapper">
+                        <img id="imgOriginalSbs" src="" alt="Original Image">
+                    </div>
+                    <div class="preview-meta-list">
+                        <div>Dimensions: <strong id="sbsOrigDim" style="color:#fff;">-</strong></div>
+                        <div>File Size: <strong id="sbsOrigSize" style="color:#fff;">-</strong></div>
+                    </div>
+                </div>
+
+                <div class="preview-box" style="border-color: rgba(0, 212, 170, 0.3);">
+                    <div class="preview-box-title">
+                        Compressed Image
+                        <span class="fmt-badge" id="sbsCompFmt" style="color:var(--accent); border-color:var(--accent);">WEBP</span>
+                    </div>
+                    <div class="preview-img-wrapper">
+                        <img id="imgCompressedSbs" src="" alt="Compressed Image">
+                    </div>
+                    <div class="preview-meta-list">
+                        <div>Dimensions: <strong id="sbsCompDim" style="color:#fff;">-</strong></div>
+                        <div>File Size: <strong id="sbsCompSize" style="color:var(--accent);">-</strong></div>
+                        <div>Savings: <strong id="sbsCompRatio" style="color:#00e676;">-</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                <a id="btnDownloadSingle" class="btn btn-accent" download="compressed.webp">
+                    <i class="fas fa-download"></i> Download This Image
+                </a>
+            </div>
+        </section>
+
+        <!-- Info / Features Section -->
+        <section class="info-grid">
+            <div class="info-card">
+                <div class="info-card-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Lightning Fast Canvas API</h3>
+                <p>Compression happens instantly inside your browser thread using native HTML5 Canvas hardware acceleration.</p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon"><i class="fas fa-user-shield"></i></div>
+                <h3>100% Privacy & Security</h3>
+                <p>Your photos never touch an external server or backend. Zero data logging, completely secure.</p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon"><i class="fas fa-images"></i></div>
+                <h3>Batch Compression & ZIP</h3>
+                <p>Process multiple JPEG, PNG, and WebP images at once and download all optimized results in one clean ZIP archive.</p>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is my data and images safe?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, absolutely! All image compression, resizing, and format conversions are performed 100% locally on your device using JavaScript and the HTML5 Canvas API. No images leave your device.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Why convert images to WebP format?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    WebP is a modern image format that provides superior lossy and lossless compression for web images. WebP images are typically 30% to 50% smaller than JPEGs at similar quality levels, leading to faster website load times.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does the Quality slider work?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    The quality slider adjusts the compression level applied to lossy formats like WebP and JPEG. Higher percentages retain more detail and fidelity, while lower values reduce file size more aggressively.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I resize image dimensions at the same time?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes! You can scale images down by a percentage (e.g. 75%, 50%) or specify custom maximum width and height in pixels while maintaining the aspect ratio automatically.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <a href="../../index.html">ToolsHub</a>. Built for ultra-fast, client-side web productivity.</p>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle" style="color: var(--accent);"></i>
+        <span id="toastMsg">Action completed</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        let imageQueue = [];
+        let activeCompareId = null;
+        let isCompressingAll = false;
+
+        // DOM Elements
+        const DOM = {
+            dropZone: document.getElementById('dropZone'),
+            fileInput: document.getElementById('fileInput'),
+            btnDemoImage: document.getElementById('btnDemoImage'),
+            qualityRange: document.getElementById('qualityRange'),
+            qualityValue: document.getElementById('qualityValue'),
+            presetBtns: document.querySelectorAll('.preset-btn'),
+            formatSelect: document.getElementById('formatSelect'),
+            resizeModeSelect: document.getElementById('resizeModeSelect'),
+            resizePercentageBox: document.getElementById('resizePercentageBox'),
+            scalePercentRange: document.getElementById('scalePercentRange'),
+            scalePercentVal: document.getElementById('scalePercentVal'),
+            resizeCustomBox: document.getElementById('resizeCustomBox'),
+            maxWidthInput: document.getElementById('maxWidthInput'),
+            maxHeightInput: document.getElementById('maxHeightInput'),
+            keepAspectRatio: document.getElementById('keepAspectRatio'),
+            aspectRatioLabel: document.getElementById('aspectRatioLabel'),
+            batchSummary: document.getElementById('batchSummary'),
+            statCount: document.getElementById('statCount'),
+            statOrigSize: document.getElementById('statOrigSize'),
+            statCompSize: document.getElementById('statCompSize'),
+            statSavedRatio: document.getElementById('statSavedRatio'),
+            btnDownloadAllZip: document.getElementById('btnDownloadAllZip'),
+            btnClearAll: document.getElementById('btnClearAll'),
+            imageListQueue: document.getElementById('imageListQueue'),
+            comparisonSection: document.getElementById('comparisonSection'),
+            tabSplit: document.getElementById('tabSplit'),
+            tabSideBySide: document.getElementById('tabSideBySide'),
+            splitViewContainer: document.getElementById('splitViewContainer'),
+            sideBySideContainer: document.getElementById('sideBySideContainer'),
+            splitSlider: document.getElementById('splitSlider'),
+            compressedLayer: document.getElementById('compressedLayer'),
+            sliderHandle: document.getElementById('sliderHandle'),
+            imgOriginalSplit: document.getElementById('imgOriginalSplit'),
+            imgCompressedSplit: document.getElementById('imgCompressedSplit'),
+            splitOrigTag: document.getElementById('splitOrigTag'),
+            splitCompTag: document.getElementById('splitCompTag'),
+            imgOriginalSbs: document.getElementById('imgOriginalSbs'),
+            imgCompressedSbs: document.getElementById('imgCompressedSbs'),
+            sbsOrigFmt: document.getElementById('sbsOrigFmt'),
+            sbsCompFmt: document.getElementById('sbsCompFmt'),
+            sbsOrigDim: document.getElementById('sbsOrigDim'),
+            sbsCompDim: document.getElementById('sbsCompDim'),
+            sbsOrigSize: document.getElementById('sbsOrigSize'),
+            sbsCompSize: document.getElementById('sbsCompSize'),
+            sbsCompRatio: document.getElementById('sbsCompRatio'),
+            btnDownloadSingle: document.getElementById('btnDownloadSingle'),
+            toast: document.getElementById('toast'),
+            toastMsg: document.getElementById('toastMsg')
+        };
+
+        // Helper Functions
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function showToast(message) {
+            DOM.toastMsg.textContent = message;
+            DOM.toast.classList.add('show');
+            setTimeout(() => DOM.toast.classList.remove('show'), 3000);
+        }
+
+        function getMimeExtension(mime) {
+            switch(mime) {
+                case 'image/webp': return 'webp';
+                case 'image/jpeg': return 'jpg';
+                case 'image/png': return 'png';
+                case 'image/gif': return 'gif';
+                case 'image/bmp': return 'bmp';
+                default: return 'img';
+            }
+        }
+
+        // Initialize Controls Events
+        function initEvents() {
+            // Drop Zone Drag & Drop
+            ['dragenter', 'dragover'].forEach(eventName => {
+                DOM.dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    DOM.dropZone.classList.add('dragover');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                DOM.dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    DOM.dropZone.classList.remove('dragover');
+                }, false);
+            });
+
+            DOM.dropZone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    handleFiles(files);
+                }
+            });
+
+            DOM.fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleFiles(e.target.files);
+                    DOM.fileInput.value = '';
+                }
+            });
+
+            // Demo Image Button
+            DOM.btnDemoImage.addEventListener('click', (e) => {
+                e.stopPropagation();
+                generateDemoImage();
+            });
+
+            // Quality Slider
+            DOM.qualityRange.addEventListener('input', (e) => {
+                const val = e.target.value;
+                DOM.qualityValue.textContent = val + '%';
+                updateActivePresetBtn(val);
+                triggerRecompressAll();
+            });
+
+            DOM.presetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const q = btn.getAttribute('data-quality');
+                    DOM.qualityRange.value = q;
+                    DOM.qualityValue.textContent = q + '%';
+                    updateActivePresetBtn(q);
+                    triggerRecompressAll();
+                });
+            });
+
+            // Output Format Select
+            DOM.formatSelect.addEventListener('change', triggerRecompressAll);
+
+            // Resize Mode Select
+            DOM.resizeModeSelect.addEventListener('change', () => {
+                const mode = DOM.resizeModeSelect.value;
+                DOM.resizePercentageBox.style.display = mode === 'percentage' ? 'block' : 'none';
+                DOM.resizeCustomBox.style.display = mode === 'custom' ? 'grid' : 'none';
+                DOM.aspectRatioLabel.style.display = mode === 'custom' ? 'flex' : 'none';
+                triggerRecompressAll();
+            });
+
+            DOM.scalePercentRange.addEventListener('input', (e) => {
+                DOM.scalePercentVal.textContent = e.target.value + '%';
+                triggerRecompressAll();
+            });
+
+            DOM.maxWidthInput.addEventListener('input', triggerRecompressAll);
+            DOM.maxHeightInput.addEventListener('input', triggerRecompressAll);
+            DOM.keepAspectRatio.addEventListener('change', triggerRecompressAll);
+
+            // Batch Actions
+            DOM.btnClearAll.addEventListener('click', clearAllQueue);
+            DOM.btnDownloadAllZip.addEventListener('click', downloadAllAsZip);
+
+            // View Mode Tabs
+            DOM.tabSplit.addEventListener('click', () => {
+                DOM.tabSplit.classList.add('active');
+                DOM.tabSideBySide.classList.remove('active');
+                DOM.splitViewContainer.style.display = 'block';
+                DOM.sideBySideContainer.style.display = 'none';
+                alignSplitImagePosition();
+            });
+
+            DOM.tabSideBySide.addEventListener('click', () => {
+                DOM.tabSideBySide.classList.add('active');
+                DOM.tabSplit.classList.remove('active');
+                DOM.sideBySideContainer.style.display = 'grid';
+                DOM.splitViewContainer.style.display = 'none';
+            });
+
+            // Split Slider Interactive Dragging
+            initSplitSliderDrag();
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.addEventListener('click', () => {
+                    const item = q.parentElement;
+                    item.classList.toggle('active');
+                });
+            });
+        }
+
+        function updateActivePresetBtn(val) {
+            DOM.presetBtns.forEach(btn => {
+                if (btn.getAttribute('data-quality') === String(val)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Split Slider Drag Logic
+        function initSplitSliderDrag() {
+            let isDragging = false;
+
+            const onMove = (clientX) => {
+                if (!isDragging) return;
+                const rect = DOM.splitSlider.getBoundingClientRect();
+                let x = clientX - rect.left;
+                if (x < 0) x = 0;
+                if (x > rect.width) x = rect.width;
+                const percentage = (x / rect.width) * 100;
+                
+                DOM.compressedLayer.style.width = percentage + '%';
+                DOM.sliderHandle.style.left = percentage + '%';
+            };
+
+            DOM.splitSlider.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                onMove(e.clientX);
+            });
+
+            window.addEventListener('mousemove', (e) => onMove(e.clientX));
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            DOM.splitSlider.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                if (e.touches.length > 0) onMove(e.touches[0].clientX);
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) onMove(e.touches[0].clientX);
+            });
+            window.addEventListener('touchend', () => { isDragging = false; });
+        }
+
+        function alignSplitImagePosition() {
+            // Keep compressed split image size synced with container width
+            const containerWidth = DOM.splitSlider.clientWidth;
+            const imgComp = DOM.imgCompressedSplit;
+            imgComp.style.width = containerWidth + 'px';
+        }
+
+        window.addEventListener('resize', alignSplitImagePosition);
+
+        // Generate Demo Image
+        function generateDemoImage() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1920;
+            canvas.height = 1080;
+            const ctx = canvas.getContext('2d');
+
+            // Draw rich high-detail gradient background
+            const grad = ctx.createLinearGradient(0, 0, 1920, 1080);
+            grad.addColorStop(0, '#0a0a1a');
+            grad.addColorStop(0.5, '#6C63FF');
+            grad.addColorStop(1, '#00D4AA');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 1920, 1080);
+
+            // Draw decorative circles and graphics
+            for (let i = 0; i < 40; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * 1920,
+                    Math.random() * 1080,
+                    Math.random() * 120 + 20,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*255)}, 255, ${Math.random()*0.3})`;
+                ctx.fill();
+            }
+
+            // Draw text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 90px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('ToolsHub Image Compressor', 960, 500);
+
+            ctx.font = '40px Inter, sans-serif';
+            ctx.fillStyle = '#00D4AA';
+            ctx.fillText('Client-Side Ultra Fast Demo Photo (1920 x 1080)', 960, 580);
+
+            canvas.toBlob((blob) => {
+                const demoFile = new File([blob], 'demo_sample_photo.png', { type: 'image/png' });
+                handleFiles([demoFile]);
+                showToast('Loaded demo sample image!');
+            }, 'image/png');
+        }
+
+        // File Handler
+        function handleFiles(files) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp'];
+            Array.from(files).forEach(file => {
+                if (!validTypes.includes(file.type) && !file.type.startsWith('image/')) {
+                    showToast(`Skipped unsupported file: ${file.name}`);
+                    return;
+                }
+
+                const id = 'img_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+                const originalUrl = URL.createObjectURL(file);
+
+                const item = {
+                    id: id,
+                    file: file,
+                    name: file.name,
+                    originalSize: file.size,
+                    originalType: file.type,
+                    originalUrl: originalUrl,
+                    originalWidth: 0,
+                    originalHeight: 0,
+                    compressedBlob: null,
+                    compressedUrl: null,
+                    compressedSize: 0,
+                    compressedWidth: 0,
+                    compressedHeight: 0,
+                    outputFormat: '',
+                    ratio: 0,
+                    status: 'pending'
+                };
+
+                imageQueue.push(item);
+            });
+
+            updateUI();
+            processQueue();
+        }
+
+        function getSettings() {
+            return {
+                quality: parseInt(DOM.qualityRange.value),
+                outputFormat: DOM.formatSelect.value,
+                resizeMode: DOM.resizeModeSelect.value,
+                scalePercent: parseInt(DOM.scalePercentRange.value),
+                maxWidth: parseInt(DOM.maxWidthInput.value) || 0,
+                maxHeight: parseInt(DOM.maxHeightInput.value) || 0,
+                keepAspect: DOM.keepAspectRatio.checked
+            };
+        }
+
+        // Process Compression Queue
+        async function processQueue() {
+            if (isCompressingAll) return;
+            isCompressingAll = true;
+
+            const settings = getSettings();
+
+            for (let i = 0; i < imageQueue.length; i++) {
+                const item = imageQueue[i];
+                if (item.status === 'done' && !item.needsUpdate) continue;
+
+                item.status = 'processing';
+                renderQueueCard(item);
+
+                try {
+                    const result = await compressImage(item, settings);
+                    item.compressedBlob = result.blob;
+                    if (item.compressedUrl) URL.revokeObjectURL(item.compressedUrl);
+                    item.compressedUrl = result.url;
+                    item.compressedSize = result.blob.size;
+                    item.compressedWidth = result.width;
+                    item.compressedHeight = result.height;
+                    item.originalWidth = result.origWidth;
+                    item.originalHeight = result.origHeight;
+                    item.outputFormat = result.mime;
+                    item.ratio = ((1 - (result.blob.size / item.originalSize)) * 100).toFixed(1);
+                    item.status = 'done';
+                    item.needsUpdate = false;
+                } catch (err) {
+                    console.error('Compression failed for', item.name, err);
+                    item.status = 'error';
+                }
+
+                renderQueueCard(item);
+                updateSummaryStats();
+            }
+
+            isCompressingAll = false;
+
+            // Auto select first image for visual comparison if none selected
+            if (imageQueue.length > 0 && (!activeCompareId || !imageQueue.find(x => x.id === activeCompareId))) {
+                selectForComparison(imageQueue[0].id);
+            }
+        }
+
+        // Canvas Compression Engine
+        function compressImage(item, settings) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const origWidth = img.naturalWidth || img.width;
+                    const origHeight = img.naturalHeight || img.height;
+
+                    let targetWidth = origWidth;
+                    let targetHeight = origHeight;
+
+                    if (settings.resizeMode === 'percentage') {
+                        const scale = Math.max(1, Math.min(100, settings.scalePercent)) / 100;
+                        targetWidth = Math.round(origWidth * scale);
+                        targetHeight = Math.round(origHeight * scale);
+                    } else if (settings.resizeMode === 'custom') {
+                        const maxW = settings.maxWidth > 0 ? settings.maxWidth : origWidth;
+                        const maxH = settings.maxHeight > 0 ? settings.maxHeight : origHeight;
+
+                        if (settings.keepAspect) {
+                            const ratio = Math.min(maxW / origWidth, maxH / origHeight);
+                            targetWidth = Math.round(origWidth * ratio);
+                            targetHeight = Math.round(origHeight * ratio);
+                        } else {
+                            targetWidth = maxW;
+                            targetHeight = maxH;
+                        }
+                    }
+
+                    targetWidth = Math.max(1, targetWidth);
+                    targetHeight = Math.max(1, targetHeight);
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    const ctx = canvas.getContext('2d');
+
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+
+                    let outputMime = settings.outputFormat;
+                    if (outputMime === 'original') {
+                        outputMime = item.originalType;
+                    }
+
+                    // Fill white background for JPEG exports to handle transparent PNGs nicely
+                    if (outputMime === 'image/jpeg') {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(0, 0, targetWidth, targetHeight);
+                    }
+
+                    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+                    const qualityVal = settings.quality / 100;
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            reject(new Error('Canvas blob generation failed'));
+                            return;
+                        }
+                        const url = URL.createObjectURL(blob);
+                        resolve({
+                            blob: blob,
+                            url: url,
+                            width: targetWidth,
+                            height: targetHeight,
+                            origWidth: origWidth,
+                            origHeight: origHeight,
+                            mime: outputMime
+                        });
+                    }, outputMime, qualityVal);
+                };
+                img.onerror = (err) => reject(err);
+                img.src = item.originalUrl;
+            });
+        }
+
+        function triggerRecompressAll() {
+            imageQueue.forEach(item => { item.needsUpdate = true; });
+            processQueue();
+        }
+
+        // Render Queue Cards & UI Updates
+        function updateUI() {
+            if (imageQueue.length > 0) {
+                DOM.batchSummary.style.display = 'flex';
+                DOM.comparisonSection.style.display = 'flex';
+            } else {
+                DOM.batchSummary.style.display = 'none';
+                DOM.comparisonSection.style.display = 'none';
+                DOM.imageListQueue.innerHTML = '';
+            }
+            updateSummaryStats();
+        }
+
+        function updateSummaryStats() {
+            const totalCount = imageQueue.length;
+            let totalOrigBytes = 0;
+            let totalCompBytes = 0;
+
+            imageQueue.forEach(item => {
+                totalOrigBytes += item.originalSize;
+                totalCompBytes += (item.compressedSize || item.originalSize);
+            });
+
+            DOM.statCount.textContent = totalCount + (totalCount === 1 ? ' file' : ' files');
+            DOM.statOrigSize.textContent = formatBytes(totalOrigBytes);
+            DOM.statCompSize.textContent = formatBytes(totalCompBytes);
+
+            if (totalOrigBytes > 0) {
+                const ratio = ((1 - (totalCompBytes / totalOrigBytes)) * 100).toFixed(1);
+                DOM.statSavedRatio.textContent = (ratio >= 0 ? '-' : '+') + Math.abs(ratio) + '%';
+                DOM.statSavedRatio.className = 'stat-value ' + (ratio >= 0 ? 'saving' : '');
+            }
+        }
+
+        function renderQueueCard(item) {
+            let card = document.getElementById(item.id);
+            if (!card) {
+                card = document.createElement('div');
+                card.id = item.id;
+                card.className = 'image-card';
+                DOM.imageListQueue.appendChild(card);
+            }
+
+            if (activeCompareId === item.id) {
+                card.classList.add('active-compare');
+            } else {
+                card.classList.remove('active-compare');
+            }
+
+            const isSaved = item.ratio >= 0;
+            const ratioClass = isSaved ? 'saved' : 'increased';
+            const ratioSign = isSaved ? '-' : '+';
+            const fmtName = getMimeExtension(item.outputFormat || item.originalType).toUpperCase();
+
+            card.innerHTML = `
+                <img src="${item.compressedUrl || item.originalUrl}" alt="${item.name}" class="thumb-preview">
+                
+                <div class="file-info">
+                    <div class="file-name" title="${item.name}">${item.name}</div>
+                    <div class="file-meta">${item.originalWidth ? item.originalWidth + 'x' + item.originalHeight : 'Original'} • ${item.originalType.replace('image/', '').toUpperCase()}</div>
+                </div>
+
+                <div class="size-comparison">
+                    <span class="orig-size">${formatBytes(item.originalSize)}</span>
+                    <span class="comp-size">${item.compressedSize ? formatBytes(item.compressedSize) : 'Processing...'}</span>
+                </div>
+
+                <div>
+                    ${item.status === 'done' ? `
+                        <div class="ratio-badge ${ratioClass}">
+                            <i class="fas ${isSaved ? 'fa-arrow-down' : 'fa-arrow-up'}"></i> ${ratioSign}${Math.abs(item.ratio)}%
+                        </div>
+                    ` : `<span style="font-size:0.85rem; color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Processing</span>`}
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm" onclick="selectForComparison('${item.id}')" title="Inspect Before / After">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    ${item.compressedUrl ? `
+                        <a href="${item.compressedUrl}" download="${getDownloadName(item)}" class="btn btn-accent btn-sm" title="Download">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    ` : ''}
+                    <button class="btn btn-danger btn-sm" onclick="removeItem('${item.id}')" title="Remove">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function getDownloadName(item) {
+            const ext = getMimeExtension(item.outputFormat || item.originalType);
+            const dotIdx = item.name.lastIndexOf('.');
+            const baseName = dotIdx !== -1 ? item.name.substring(0, dotIdx) : item.name;
+            return `${baseName}_compressed.${ext}`;
+        }
+
+        function removeItem(id) {
+            const idx = imageQueue.findIndex(x => x.id === id);
+            if (idx !== -1) {
+                const item = imageQueue[idx];
+                if (item.originalUrl) URL.revokeObjectURL(item.originalUrl);
+                if (item.compressedUrl) URL.revokeObjectURL(item.compressedUrl);
+                
+                const card = document.getElementById(id);
+                if (card) card.remove();
+                
+                imageQueue.splice(idx, 1);
+
+                if (activeCompareId === id) {
+                    activeCompareId = imageQueue.length > 0 ? imageQueue[0].id : null;
+                    if (activeCompareId) selectForComparison(activeCompareId);
+                }
+
+                updateUI();
+                showToast('Removed image from queue');
+            }
+        }
+
+        function clearAllQueue() {
+            imageQueue.forEach(item => {
+                if (item.originalUrl) URL.revokeObjectURL(item.originalUrl);
+                if (item.compressedUrl) URL.revokeObjectURL(item.compressedUrl);
+            });
+            imageQueue = [];
+            activeCompareId = null;
+            updateUI();
+            showToast('Cleared image queue');
+        }
+
+        // Selection & Comparison Inspector
+        function selectForComparison(id) {
+            const item = imageQueue.find(x => x.id === id);
+            if (!item || !item.compressedUrl) return;
+
+            activeCompareId = id;
+
+            // Highlight selected card in queue
+            imageQueue.forEach(x => {
+                const el = document.getElementById(x.id);
+                if (el) {
+                    if (x.id === id) el.classList.add('active-compare');
+                    else el.classList.remove('active-compare');
+                }
+            });
+
+            // Set Split Images
+            DOM.imgOriginalSplit.src = item.originalUrl;
+            DOM.imgCompressedSplit.src = item.compressedUrl;
+            DOM.splitOrigTag.textContent = `Original: ${formatBytes(item.originalSize)} (${item.originalWidth}x${item.originalHeight})`;
+            DOM.splitCompTag.textContent = `Compressed: ${formatBytes(item.compressedSize)} (${item.compressedWidth}x${item.compressedHeight})`;
+
+            // Set Side-by-Side Images & Info
+            DOM.imgOriginalSbs.src = item.originalUrl;
+            DOM.imgCompressedSbs.src = item.compressedUrl;
+            DOM.sbsOrigFmt.textContent = getMimeExtension(item.originalType).toUpperCase();
+            DOM.sbsCompFmt.textContent = getMimeExtension(item.outputFormat).toUpperCase();
+            DOM.sbsOrigDim.textContent = `${item.originalWidth} × ${item.originalHeight} px`;
+            DOM.sbsCompDim.textContent = `${item.compressedWidth} × ${item.compressedHeight} px`;
+            DOM.sbsOrigSize.textContent = formatBytes(item.originalSize);
+            DOM.sbsCompSize.textContent = formatBytes(item.compressedSize);
+            DOM.sbsCompRatio.textContent = (item.ratio >= 0 ? '-' : '+') + Math.abs(item.ratio) + '%';
+
+            // Download single button link
+            DOM.btnDownloadSingle.href = item.compressedUrl;
+            DOM.btnDownloadSingle.download = getDownloadName(item);
+
+            setTimeout(alignSplitImagePosition, 100);
+        }
+
+        // Batch Download as ZIP
+        async function downloadAllAsZip() {
+            if (imageQueue.length === 0) return;
+            if (typeof JSZip === 'undefined') {
+                showToast('JSZip library loading failed. Downloading first file instead.');
+                return;
+            }
+
+            const zip = new JSZip();
+            let count = 0;
+            const originalIcon = DOM.btnDownloadAllZip.innerHTML;
+            DOM.btnDownloadAllZip.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Zipping...';
+
+            imageQueue.forEach((item, index) => {
+                if (item.compressedBlob) {
+                    const fileName = getDownloadName(item);
+                    zip.file(fileName, item.compressedBlob);
+                    count++;
+                }
+            });
+
+            if (count === 0) {
+                DOM.btnDownloadAllZip.innerHTML = originalIcon;
+                showToast('No compressed images ready to download yet.');
+                return;
+            }
+
+            try {
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const zipUrl = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = zipUrl;
+                a.download = 'compressed_images_toolshub.zip';
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(zipUrl), 10000);
+                showToast(`Downloaded ${count} compressed images in ZIP archive!`);
+            } catch (err) {
+                console.error('ZIP generation error', err);
+                showToast('Error creating ZIP archive');
+            } finally {
+                DOM.btnDownloadAllZip.innerHTML = originalIcon;
+            }
+        }
+
+        // App Entry Point
+        document.addEventListener('DOMContentLoaded', () => {
+            initEvents();
+        });
+    </script>
+</body>
+</html>

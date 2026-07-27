@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter - Convert Any Unit Online Free | ToolsHub</title>
+    <meta name="description" content="Free online Unit Converter tool. Convert Length, Weight, Mass, Temperature, Speed, Area, Volume, Data Storage, Time, Pressure, and Energy instantly with formulas and complete conversion tables.">
+    <meta name="keywords" content="unit converter, metric converter, measurement converter, length converter, weight converter, temperature converter, celsius to fahrenheit, km to miles, kg to lbs, online unit converter">
+    <meta name="author" content="ToolsHub">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://toolshub.us.kg/tools/unit-converter/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Unit Converter - Convert Any Unit Online Free | ToolsHub">
+    <meta property="og:description" content="Instant real-time unit conversions for length, mass, temperature, speed, volume, data, time, pressure, energy & area. Includes formulas and full unit comparison tables.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Unit Converter",
+      "url": "https://toolshub.us.kg/tools/unit-converter/",
+      "description": "Convert units of length, weight, temperature, speed, area, volume, data, time, pressure, and energy online with instant calculations and reference tables.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #0a0a1a;
+            --bg-card: rgba(18, 18, 42, 0.8);
+            --bg-card-hover: rgba(28, 28, 60, 0.9);
+            --card-border: rgba(108, 99, 255, 0.2);
+            --card-border-glow: rgba(108, 99, 255, 0.5);
+            --primary: #6C63FF;
+            --primary-light: #8B85FF;
+            --primary-glow: rgba(108, 99, 255, 0.35);
+            --accent: #00D4AA;
+            --accent-light: #33E0BF;
+            --accent-glow: rgba(0, 212, 170, 0.35);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-subdued: #64748B;
+            --danger: #FF4757;
+            --warning: #FFA502;
+            --success: #00D4AA;
+            --glass-blur: blur(20px);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-sans);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(108, 99, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 65%, rgba(0, 212, 170, 0.10) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(108, 99, 255, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            line-height: 1.6;
+        }
+
+        /* Glassmorphism Common Utilities */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: var(--card-border-glow);
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(108, 99, 255, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+            background: rgba(108, 99, 255, 0.15);
+            border-color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* Hero Header */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            background: rgba(108, 99, 255, 0.12);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            color: var(--primary-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #FFFFFF 30%, var(--primary-light) 70%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Category Tabs Navigation */
+        .category-nav-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 0.6rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            background: rgba(10, 10, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+        .category-tabs::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .category-tabs::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(108, 99, 255, 0.1);
+            border-color: rgba(108, 99, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.25), rgba(0, 212, 170, 0.15));
+            border-color: var(--primary);
+            color: var(--text-main);
+            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.25);
+            font-weight: 600;
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+            color: var(--primary-light);
+            transition: var(--transition);
+        }
+
+        .tab-btn.active i {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* Converter Main Card */
+        .converter-card {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .unit-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .unit-box-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .unit-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .unit-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .unit-input.output-readonly {
+            background: rgba(108, 99, 255, 0.06);
+            border-color: rgba(108, 99, 255, 0.3);
+            color: var(--accent);
+        }
+
+        .clear-btn, .copy-btn {
+            position: absolute;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .clear-btn:hover, .copy-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.08);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .unit-select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 2.5rem 0.85rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .unit-select:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(108, 99, 255, 0.4);
+        }
+
+        .unit-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .unit-select option {
+            background: #0d0d26;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Swap Button */
+        .swap-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1.5rem;
+        }
+
+        .swap-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #5a52d6);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px var(--primary-glow);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .swap-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.6);
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+
+        .swap-btn:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
+        /* Toolbar Controls (Precision & Options) */
+        .toolbar-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 1rem;
+        }
+
+        .precision-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .precision-btn-group {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .precision-opt {
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .precision-opt:hover {
+            color: var(--text-main);
+        }
+
+        .precision-opt.active {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Formula Card & Quick Presets */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .formula-card, .presets-card {
+            padding: 1.5rem;
+        }
+
+        .card-header-sm {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .card-header-sm i {
+            color: var(--accent);
+        }
+
+        .formula-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-light);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .formula-explanation {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Preset Buttons */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .preset-btn:hover {
+            background: rgba(108, 99, 255, 0.15);
+            border-color: var(--primary);
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+
+        /* All Conversions Table Card */
+        .table-card {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-header-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .table-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .table-title i {
+            color: var(--primary-light);
+        }
+
+        .table-search {
+            position: relative;
+            min-width: 240px;
+        }
+
+        .table-search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 1rem 0.6rem 2.2rem;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .table-search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .table-search i {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Custom Table Styling */
+        .unit-table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .unit-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .unit-table th {
+            background: rgba(10, 10, 26, 0.8);
+            padding: 1rem 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .unit-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .unit-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .unit-table tbody tr:hover {
+            background: rgba(108, 99, 255, 0.08);
+        }
+
+        .unit-table tbody tr.row-active-from {
+            background: rgba(108, 99, 255, 0.15);
+        }
+
+        .unit-table tbody tr.row-active-to {
+            background: rgba(0, 212, 170, 0.12);
+        }
+
+        .unit-name-cell {
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .unit-symbol-badge {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.25rem 0.55rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--primary-light);
+        }
+
+        .unit-val-cell {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-main);
+            word-break: break-all;
+        }
+
+        .unit-val-cell.highlight {
+            color: var(--accent);
+        }
+
+        .table-copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .table-copy-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Educational Section / FAQ */
+        .faq-section {
+            margin-top: 3rem;
+        }
+
+        .faq-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .faq-card {
+            padding: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-light);
+
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-answer {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(108, 99, 255, 0.15);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .swap-wrapper {
+                padding-top: 0;
+                margin: -0.5rem 0;
+            }
+            .swap-btn {
+                transform: rotate(90deg);
+            }
+            .swap-btn:hover {
+                transform: rotate(270deg) scale(1.1);
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1.5rem 1rem;
+            }
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            .converter-card, .table-card {
+                padding: 1.25rem;
+            }
+            .toolbar-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .unit-input {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="../../index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <span>ToolsHub</span>
+            </a>
+            <a href="../../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Tools
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Hero Header -->
+        <section class="hero-section">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i> Real-time Multi-Unit Conversion
+            </div>
+            <h1 class="hero-title">Universal Unit Converter</h1>
+            <p class="hero-subtitle">Instantly convert Length, Mass, Temperature, Speed, Data, Area, Volume, Time, Pressure, and Energy with complete precision and formulas.</p>
+        </section>
+
+        <!-- Category Tabs -->
+        <div class="category-nav-wrapper">
+            <div class="category-tabs" id="categoryTabs">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- Main Converter Glass Card -->
+        <div class="glass-card converter-card">
+            <div class="converter-grid">
+                <!-- From Unit Box -->
+                <div class="unit-box">
+                    <div class="unit-box-label">
+                        <span>From</span>
+                        <span id="fromSymbolLabel"></span>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="fromInput" class="unit-input" value="1" placeholder="Enter value" step="any">
+                        <button class="clear-btn" id="clearBtn" title="Clear input">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="fromSelect" class="unit-select">
+                            <!-- Options populated via JS -->
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+
+                <!-- Swap Button -->
+                <div class="swap-wrapper">
+                    <button class="swap-btn" id="swapBtn" title="Swap From and To units">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+
+                <!-- To Unit Box -->
+                <div class="unit-box">
+                    <div class="unit-box-label">
+                        <span>To</span>
+                        <span id="toSymbolLabel"></span>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" id="toInput" class="unit-input output-readonly" readonly placeholder="Result">
+                        <button class="copy-btn" id="copyResultBtn" title="Copy result">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="toSelect" class="unit-select">
+                            <!-- Options populated via JS -->
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar Controls -->
+            <div class="toolbar-row">
+                <div class="precision-control">
+                    <span>Precision:</span>
+                    <div class="precision-btn-group" id="precisionGroup">
+                        <button class="precision-opt" data-prec="auto">Auto</button>
+                        <button class="precision-opt active" data-prec="4">4 Dec</button>
+                        <button class="precision-opt" data-prec="6">6 Dec</button>
+                        <button class="precision-opt" data-prec="8">8 Dec</button>
+                        <button class="precision-opt" data-prec="sci">Scientific</button>
+                    </div>
+                </div>
+                <div class="precision-control" id="dataModeToggleContainer" style="display: none;">
+                    <span>Data Standard:</span>
+                    <div class="precision-btn-group" id="dataModeGroup">
+                        <button class="precision-opt active" data-mode="binary">Binary (1024)</button>
+                        <button class="precision-opt" data-mode="decimal">Decimal (1000)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formula & Presets Info Grid -->
+        <div class="info-grid">
+            <!-- Formula Explanation Card -->
+            <div class="glass-card formula-card">
+                <div class="card-header-sm">
+                    <i class="fas fa-calculator"></i>
+                    <span>Conversion Formula</span>
+                </div>
+                <div class="formula-display" id="formulaDisplay">
+                    <span>1 km = 0.621371 mi</span>
+                    <button class="table-copy-btn" id="copyFormulaBtn" title="Copy formula"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="formula-explanation" id="formulaExplanation">
+                    Multiply the value in kilometers by 0.62137119 to get miles.
+                </div>
+            </div>
+
+            <!-- Quick Presets Card -->
+            <div class="glass-card presets-card">
+                <div class="card-header-sm">
+                    <i class="fas fa-star"></i>
+                    <span>Quick Conversions</span>
+                </div>
+                <div class="preset-grid" id="presetGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- All Conversions Comparison Table Card -->
+        <div class="glass-card table-card">
+            <div class="table-header-wrapper">
+                <div class="table-title">
+                    <i class="fas fa-list-ol"></i>
+                    <span id="tableCategoryTitle">All Length Conversions</span>
+                </div>
+                <div class="table-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="tableSearchInput" class="table-search-input" placeholder="Search units...">
+                </div>
+            </div>
+
+            <div class="unit-table-container">
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>Unit Name</th>
+                            <th>Symbol</th>
+                            <th>Converted Value</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unitTableBody">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Educational / FAQ Section -->
+        <section class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="glass-card faq-card">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i> How accurate are these unit conversions?
+                    </div>
+                    <div class="faq-answer">
+                        All mathematical factors conform to international standard definitions (ISO, NIST, BIPM). Our tool uses double-precision floating-point arithmetic with configurable precision up to 8 decimal places or scientific notation.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-card">
+                    <div class="faq-question">
+                        <i class="fas fa-hdd"></i> What is the difference between Binary and Decimal Data storage units?
+                    </div>
+                    <div class="faq-answer">
+                        Binary data units (traditional IEC standard) use powers of 2 (\(1\text{ KB} = 1024\text{ Bytes}\)), while Decimal data storage (SI standard used by hard drive makers) uses powers of 10 (\(1\text{ KB} = 1000\text{ Bytes}\)). You can toggle between both standards in the toolbar.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-card">
+                    <div class="faq-question">
+                        <i class="fas fa-thermometer-half"></i> Why does Temperature conversion require special formulas?
+                    </div>
+                    <div class="faq-answer">
+                        Unlike length or weight, temperature scales have different zero reference points. For instance, \(0^\circ\text{C} = 32^\circ\text{F} = 273.15\text{ K}\). Thus, temperature conversion requires offset calculations in addition to scaling factors.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <i class="fas fa-check-circle"></i> <span id="toastMsg">Copied to clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="header-container" style="justify-content: center; flex-direction: column; gap: 0.5rem;">
+            <p>&copy; 2026 <a href="../../index.html">ToolsHub</a>. All rights reserved. Free client-side web utilities.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // ==========================================
+        // UNIT DATA & DEFINITIONS
+        // ==========================================
+        
+        const CATEGORIES = {
+            length: {
+                name: 'Length',
+                icon: 'fas fa-ruler-horizontal',
+                baseUnit: 'm',
+                units: [
+                    { id: 'mm', name: 'Millimeter', symbol: 'mm', ratio: 0.001 },
+                    { id: 'cm', name: 'Centimeter', symbol: 'cm', ratio: 0.01 },
+                    { id: 'm', name: 'Meter', symbol: 'm', ratio: 1 },
+                    { id: 'km', name: 'Kilometer', symbol: 'km', ratio: 1000 },
+                    { id: 'inch', name: 'Inch', symbol: 'in', ratio: 0.0254 },
+                    { id: 'foot', name: 'Foot', symbol: 'ft', ratio: 0.3048 },
+                    { id: 'yard', name: 'Yard', symbol: 'yd', ratio: 0.9144 },
+                    { id: 'mile', name: 'Mile', symbol: 'mi', ratio: 1609.344 },
+                    { id: 'nmi', name: 'Nautical Mile', symbol: 'nmi', ratio: 1852 }
+                ],
+                presets: [
+                    { label: 'km ↔ miles', from: 'km', to: 'mile' },
+                    { label: 'm ↔ feet', from: 'm', to: 'foot' },
+                    { label: 'cm ↔ inches', from: 'cm', to: 'inch' },
+                    { label: 'yard ↔ m', from: 'yard', to: 'm' }
+                ]
+            },
+            weight: {
+                name: 'Weight / Mass',
+                icon: 'fas fa-weight-hanging',
+                baseUnit: 'g',
+                units: [
+                    { id: 'mg', name: 'Milligram', symbol: 'mg', ratio: 0.001 },
+                    { id: 'g', name: 'Gram', symbol: 'g', ratio: 1 },
+                    { id: 'kg', name: 'Kilogram', symbol: 'kg', ratio: 1000 },
+                    { id: 'ton', name: 'Metric Ton', symbol: 't', ratio: 1000000 },
+                    { id: 'oz', name: 'Ounce', symbol: 'oz', ratio: 28.349523125 },
+                    { id: 'lb', name: 'Pound', symbol: 'lb', ratio: 453.59237 },
+                    { id: 'stone', name: 'Stone', symbol: 'st', ratio: 6350.29318 }
+                ],
+                presets: [
+                    { label: 'kg ↔ lbs', from: 'kg', to: 'lb' },
+                    { label: 'g ↔ oz', from: 'g', to: 'oz' },
+                    { label: 'lb ↔ oz', from: 'lb', to: 'oz' },
+                    { label: 'kg ↔ metric tons', from: 'kg', to: 'ton' }
+                ]
+            },
+            temperature: {
+                name: 'Temperature',
+                icon: 'fas fa-thermometer-half',
+                isSpecial: true,
+                units: [
+                    { id: 'C', name: 'Celsius', symbol: '°C' },
+                    { id: 'F', name: 'Fahrenheit', symbol: '°F' },
+                    { id: 'K', name: 'Kelvin', symbol: 'K' }
+                ],
+                presets: [
+                    { label: '°C ↔ °F', from: 'C', to: 'F' },
+                    { label: '°C ↔ K', from: 'C', to: 'K' },
+                    { label: '°F ↔ K', from: 'F', to: 'K' }
+                ]
+            },
+            speed: {
+                name: 'Speed',
+                icon: 'fas fa-tachometer-alt',
+                baseUnit: 'm_s',
+                units: [
+                    { id: 'm_s', name: 'Meters per second', symbol: 'm/s', ratio: 1 },
+                    { id: 'km_h', name: 'Kilometers per hour', symbol: 'km/h', ratio: 0.2777777777777778 },
+                    { id: 'mph', name: 'Miles per hour', symbol: 'mph', ratio: 0.44704 },
+                    { id: 'knots', name: 'Knots', symbol: 'kn', ratio: 0.5144444444444445 }
+                ],
+                presets: [
+                    { label: 'km/h ↔ mph', from: 'km_h', to: 'mph' },
+                    { label: 'm/s ↔ km/h', from: 'm_s', to: 'km_h' },
+                    { label: 'knots ↔ mph', from: 'knots', to: 'mph' }
+                ]
+            },
+            area: {
+                name: 'Area',
+                icon: 'fas fa-vector-square',
+                baseUnit: 'm2',
+                units: [
+                    { id: 'mm2', name: 'Square Millimeter', symbol: 'mm²', ratio: 0.000001 },
+                    { id: 'cm2', name: 'Square Centimeter', symbol: 'cm²', ratio: 0.0001 },
+                    { id: 'm2', name: 'Square Meter', symbol: 'm²', ratio: 1 },
+                    { id: 'km2', name: 'Square Kilometer', symbol: 'km²', ratio: 1000000 },
+                    { id: 'inch2', name: 'Square Inch', symbol: 'in²', ratio: 0.00064516 },
+                    { id: 'foot2', name: 'Square Foot', symbol: 'ft²', ratio: 0.09290304 },
+                    { id: 'acre', name: 'Acre', symbol: 'ac', ratio: 4046.8564224 },
+                    { id: 'hectare', name: 'Hectare', symbol: 'ha', ratio: 10000 }
+                ],
+                presets: [
+                    { label: 'm² ↔ ft²', from: 'm2', to: 'foot2' },
+                    { label: 'acres ↔ hectares', from: 'acre', to: 'hectare' },
+                    { label: 'km² ↔ acres', from: 'km2', to: 'acre' }
+                ]
+            },
+            volume: {
+                name: 'Volume',
+                icon: 'fas fa-flask',
+                baseUnit: 'L',
+                units: [
+                    { id: 'mL', name: 'Milliliter', symbol: 'mL', ratio: 0.001 },
+                    { id: 'L', name: 'Liter', symbol: 'L', ratio: 1 },
+                    { id: 'm3', name: 'Cubic Meter', symbol: 'm³', ratio: 1000 },
+                    { id: 'gal_us', name: 'Gallon (US)', symbol: 'gal (US)', ratio: 3.785411784 },
+                    { id: 'gal_uk', name: 'Gallon (UK)', symbol: 'gal (UK)', ratio: 4.54609 },
+                    { id: 'cup', name: 'Cup (US)', symbol: 'cup', ratio: 0.2365882365 },
+                    { id: 'pt', name: 'Pint (US)', symbol: 'pt', ratio: 0.473176473 },
+                    { id: 'qt', name: 'Quart (US)', symbol: 'qt', ratio: 0.946352946 }
+                ],
+                presets: [
+                    { label: 'L ↔ Gallons (US)', from: 'L', to: 'gal_us' },
+                    { label: 'mL ↔ Cups', from: 'mL', to: 'cup' },
+                    { label: 'L ↔ m³', from: 'L', to: 'm3' }
+                ]
+            },
+            data: {
+                name: 'Data / Storage',
+                icon: 'fas fa-hdd',
+                isData: true,
+                unitsBinary: [
+                    { id: 'bit', name: 'Bit', symbol: 'b', ratio: 0.125 },
+                    { id: 'byte', name: 'Byte', symbol: 'B', ratio: 1 },
+                    { id: 'KB', name: 'Kilobyte', symbol: 'KB', ratio: 1024 },
+                    { id: 'MB', name: 'Megabyte', symbol: 'MB', ratio: 1048576 },
+                    { id: 'GB', name: 'Gigabyte', symbol: 'GB', ratio: 1073741824 },
+                    { id: 'TB', name: 'Terabyte', symbol: 'TB', ratio: 1099511627776 },
+                    { id: 'PB', name: 'Petabyte', symbol: 'PB', ratio: 1125899906842624 }
+                ],
+                unitsDecimal: [
+                    { id: 'bit', name: 'Bit', symbol: 'b', ratio: 0.125 },
+                    { id: 'byte', name: 'Byte', symbol: 'B', ratio: 1 },
+                    { id: 'KB', name: 'Kilobyte', symbol: 'KB', ratio: 1000 },
+                    { id: 'MB', name: 'Megabyte', symbol: 'MB', ratio: 1000000 },
+                    { id: 'GB', name: 'Gigabyte', symbol: 'GB', ratio: 1000000000 },
+                    { id: 'TB', name: 'Terabyte', symbol: 'TB', ratio: 1000000000000 },
+                    { id: 'PB', name: 'Petabyte', symbol: 'PB', ratio: 1000000000000000 }
+                ],
+                presets: [
+                    { label: 'GB ↔ MB', from: 'GB', to: 'MB' },
+                    { label: 'TB ↔ GB', from: 'TB', to: 'GB' },
+                    { label: 'MB ↔ KB', from: 'MB', to: 'KB' }
+                ]
+            },
+            time: {
+                name: 'Time',
+                icon: 'fas fa-clock',
+                baseUnit: 'sec',
+                units: [
+                    { id: 'ms', name: 'Millisecond', symbol: 'ms', ratio: 0.001 },
+                    { id: 'sec', name: 'Second', symbol: 's', ratio: 1 },
+                    { id: 'min', name: 'Minute', symbol: 'min', ratio: 60 },
+                    { id: 'hour', name: 'Hour', symbol: 'h', ratio: 3600 },
+                    { id: 'day', name: 'Day', symbol: 'd', ratio: 86400 },
+                    { id: 'week', name: 'Week', symbol: 'wk', ratio: 604800 },
+                    { id: 'month', name: 'Month (Avg)', symbol: 'mo', ratio: 2629746 },
+                    { id: 'year', name: 'Year (365.25d)', symbol: 'yr', ratio: 31557600 }
+                ],
+                presets: [
+                    { label: 'Hours ↔ Minutes', from: 'hour', to: 'min' },
+                    { label: 'Days ↔ Hours', from: 'day', to: 'hour' },
+                    { label: 'Years ↔ Days', from: 'year', to: 'day' }
+                ]
+            },
+            pressure: {
+                name: 'Pressure',
+                icon: 'fas fa-compress-arrows-alt',
+                baseUnit: 'Pa',
+                units: [
+                    { id: 'Pa', name: 'Pascal', symbol: 'Pa', ratio: 1 },
+                    { id: 'kPa', name: 'Kilopascal', symbol: 'kPa', ratio: 1000 },
+                    { id: 'bar', name: 'Bar', symbol: 'bar', ratio: 100000 },
+                    { id: 'psi', name: 'Pounds per sq inch', symbol: 'psi', ratio: 6894.757293168 },
+                    { id: 'atm', name: 'Atmosphere', symbol: 'atm', ratio: 101325 },
+                    { id: 'mmHg', name: 'Millimeter of Mercury', symbol: 'mmHg', ratio: 133.322387415 },
+                    { id: 'Torr', name: 'Torr', symbol: 'Torr', ratio: 133.322368421 }
+                ],
+                presets: [
+                    { label: 'bar ↔ psi', from: 'bar', to: 'psi' },
+                    { label: 'atm ↔ kPa', from: 'atm', to: 'kPa' },
+                    { label: 'mmHg ↔ atm', from: 'mmHg', to: 'atm' }
+                ]
+            },
+            energy: {
+                name: 'Energy',
+                icon: 'fas fa-bolt',
+                baseUnit: 'J',
+                units: [
+                    { id: 'J', name: 'Joule', symbol: 'J', ratio: 1 },
+                    { id: 'kJ', name: 'Kilojoule', symbol: 'kJ', ratio: 1000 },
+                    { id: 'cal', name: 'Calorie', symbol: 'cal', ratio: 4.184 },
+                    { id: 'kcal', name: 'Kilocalorie (Food cal)', symbol: 'kcal', ratio: 4184 },
+                    { id: 'Wh', name: 'Watt-hour', symbol: 'Wh', ratio: 3600 },
+                    { id: 'kWh', name: 'Kilowatt-hour', symbol: 'kWh', ratio: 3600000 },
+                    { id: 'eV', name: 'Electronvolt', symbol: 'eV', ratio: 1.602176634e-19 },
+                    { id: 'BTU', name: 'British Thermal Unit', symbol: 'BTU', ratio: 1055.05585 }
+                ],
+                presets: [
+                    { label: 'kWh ↔ Joules', from: 'kWh', to: 'J' },
+                    { label: 'kcal ↔ kJ', from: 'kcal', to: 'kJ' },
+                    { label: 'Wh ↔ kWh', from: 'Wh', to: 'kWh' }
+                ]
+            }
+        };
+
+        // ==========================================
+        // STATE MANAGEMENT
+        // ==========================================
+
+        let currentCatKey = 'length';
+        let precisionSetting = '4'; // 'auto', '4', '6', '8', 'sci'
+        let dataMode = 'binary'; // 'binary', 'decimal'
+
+        // DOM Element references
+        const DOM = {
+            categoryTabs: document.getElementById('categoryTabs'),
+            fromInput: document.getElementById('fromInput'),
+            toInput: document.getElementById('toInput'),
+            fromSelect: document.getElementById('fromSelect'),
+            toSelect: document.getElementById('toSelect'),
+            fromSymbolLabel: document.getElementById('fromSymbolLabel'),
+            toSymbolLabel: document.getElementById('toSymbolLabel'),
+            swapBtn: document.getElementById('swapBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            copyResultBtn: document.getElementById('copyResultBtn'),
+            precisionGroup: document.getElementById('precisionGroup'),
+            dataModeToggleContainer: document.getElementById('dataModeToggleContainer'),
+            dataModeGroup: document.getElementById('dataModeGroup'),
+            formulaDisplay: document.getElementById('formulaDisplay'),
+            formulaExplanation: document.getElementById('formulaExplanation'),
+            copyFormulaBtn: document.getElementById('copyFormulaBtn'),
+            presetGrid: document.getElementById('presetGrid'),
+            tableCategoryTitle: document.getElementById('tableCategoryTitle'),
+            tableSearchInput: document.getElementById('tableSearchInput'),
+            unitTableBody: document.getElementById('unitTableBody'),
+            toastNotification: document.getElementById('toastNotification'),
+            toastMsg: document.getElementById('toastMsg')
+        };
+
+        // ==========================================
+        // HELPER FUNCTIONS
+        // ==========================================
+
+        function getActiveUnitsList(catKey) {
+            const cat = CATEGORIES[catKey];
+            if (cat.isData) {
+                return dataMode === 'binary' ? cat.unitsBinary : cat.unitsDecimal;
+            }
+            return cat.units;
+        }
+
+        function formatValue(num) {
+            if (num === null || num === undefined || isNaN(num)) return '';
+            if (num === 0) return '0';
+
+            if (precisionSetting === 'sci') {
+                return num.toExponential(4);
+            }
+
+            const absNum = Math.abs(num);
+            if (precisionSetting === 'auto') {
+                if (absNum < 0.00001 || absNum >= 1e9) {
+                    return num.toExponential(5);
+                }
+                // Dynamic precision based on scale
+                let formatted = num.toLocaleString('en-US', { maximumFractionDigits: 6 });
+                return formatted;
+            }
+
+            const decimals = parseInt(precisionSetting, 10);
+            
+            // If number is extremely tiny, fall back to scientific to avoid showing 0.0000
+            if (absNum > 0 && absNum < Math.pow(10, -decimals)) {
+                return num.toExponential(4);
+            }
+
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: decimals
+            });
+        }
+
+        function rawFormat(num) {
+            if (num === null || num === undefined || isNaN(num)) return '';
+            if (precisionSetting === 'sci') return num.toExponential(6);
+            if (precisionSetting === 'auto') {
+                return num.toLocaleString('en-US', { maximumFractionDigits: 8 });
+            }
+            return num.toLocaleString('en-US', { maximumFractionDigits: parseInt(precisionSetting, 10) });
+        }
+
+        function showToast(msg) {
+            DOM.toastMsg.textContent = msg;
+            DOM.toastNotification.classList.add('show');
+            setTimeout(() => {
+                DOM.toastNotification.classList.remove('show');
+            }, 2200);
+        }
+
+        // ==========================================
+        // CONVERSION LOGIC
+        // ==========================================
+
+        function convertValue(val, fromId, toId, catKey) {
+            if (isNaN(val)) return null;
+            const cat = CATEGORIES[catKey];
+
+            if (cat.isSpecial && catKey === 'temperature') {
+                // Temperature conversion
+                let celsius;
+                if (fromId === 'C') celsius = val;
+                else if (fromId === 'F') celsius = (val - 32) * (5 / 9);
+                else if (fromId === 'K') celsius = val - 273.15;
+
+                if (toId === 'C') return celsius;
+                if (toId === 'F') return (celsius * (9 / 5)) + 32;
+                if (toId === 'K') return celsius + 273.15;
+            } else {
+                // Standard ratio conversion
+                const units = getActiveUnitsList(catKey);
+                const fromUnit = units.find(u => u.id === fromId);
+                const toUnit = units.find(u => u.id === toId);
+
+                if (!fromUnit || !toUnit) return null;
+
+                // Value in base unit
+                const baseVal = val * fromUnit.ratio;
+                // Value in target unit
+                const result = baseVal / toUnit.ratio;
+                return result;
+            }
+        }
+
+        // Generate Formula Text
+        function updateFormulaSection(val, fromUnit, toUnit, catKey) {
+            let formulaText = '';
+            let explanationText = '';
+
+            if (catKey === 'temperature') {
+                if (fromUnit.id === 'C' && toUnit.id === 'F') {
+                    formulaText = `°F = (°C × 9/5) + 32`;
+                    explanationText = `Multiply the temperature in Celsius by 9/5 (or 1.8) and add 32 to get Fahrenheit.`;
+                } else if (fromUnit.id === 'F' && toUnit.id === 'C') {
+                    formulaText = `°C = (°F - 32) × 5/9`;
+                    explanationText = `Subtract 32 from the Fahrenheit temperature, then multiply by 5/9 to get Celsius.`;
+                } else if (fromUnit.id === 'C' && toUnit.id === 'K') {
+                    formulaText = `K = °C + 273.15`;
+                    explanationText = `Add 273.15 to the temperature in Celsius to convert to Kelvin.`;
+                } else if (fromUnit.id === 'K' && toUnit.id === 'C') {
+                    formulaText = `°C = K - 273.15`;
+                    explanationText = `Subtract 273.15 from Kelvin to convert to Celsius.`;
+                } else if (fromUnit.id === 'F' && toUnit.id === 'K') {
+                    formulaText = `K = (°F - 32) × 5/9 + 273.15`;
+                    explanationText = `Convert Fahrenheit to Celsius, then add 273.15 to get Kelvin.`;
+                } else if (fromUnit.id === 'K' && toUnit.id === 'F') {
+                    formulaText = `°F = (K - 273.15) × 9/5 + 32`;
+                    explanationText = `Convert Kelvin to Celsius, then multiply by 1.8 and add 32 to get Fahrenheit.`;
+                } else {
+                    formulaText = `${fromUnit.symbol} = ${toUnit.symbol}`;
+                    explanationText = `Same temperature unit selected.`;
+                }
+            } else {
+                const ratio1 = convertValue(1, fromUnit.id, toUnit.id, catKey);
+                const formattedRatio = rawFormat(ratio1);
+                formulaText = `1 ${fromUnit.symbol} = ${formattedRatio} ${toUnit.symbol}`;
+                explanationText = `Multiply the value in ${fromUnit.name} (${fromUnit.symbol}) by ${formattedRatio} to convert to ${toUnit.name} (${toUnit.symbol}).`;
+            }
+
+            DOM.formulaDisplay.querySelector('span').textContent = formulaText;
+            DOM.formulaExplanation.textContent = explanationText;
+        }
+
+        // Update All-Conversions Table
+        function updateTable(val, activeFromId, activeToId, catKey) {
+            const units = getActiveUnitsList(catKey);
+            const searchQuery = DOM.tableSearchInput.value.toLowerCase().trim();
+            DOM.unitTableBody.innerHTML = '';
+
+            units.forEach(unit => {
+                if (searchQuery) {
+                    const matchesName = unit.name.toLowerCase().includes(searchQuery);
+                    const matchesSymbol = unit.symbol.toLowerCase().includes(searchQuery);
+                    if (!matchesName && !matchesSymbol) return;
+                }
+
+                const tr = document.createElement('tr');
+                if (unit.id === activeFromId) tr.classList.add('row-active-from');
+                else if (unit.id === activeToId) tr.classList.add('row-active-to');
+
+                const convertedVal = convertValue(val, activeFromId, unit.id, catKey);
+                const formattedVal = formatValue(convertedVal);
+
+                tr.innerHTML = `
+                    <td class="unit-name-cell">
+                        ${unit.name}
+                        ${unit.id === activeFromId ? '<span style="font-size:0.7rem; background:var(--primary); color:#fff; padding:2px 6px; border-radius:4px;">FROM</span>' : ''}
+                        ${unit.id === activeToId ? '<span style="font-size:0.7rem; background:var(--accent); color:#000; font-weight:700; padding:2px 6px; border-radius:4px;">TO</span>' : ''}
+                    </td>
+                    <td><span class="unit-symbol-badge">${unit.symbol}</span></td>
+                    <td class="unit-val-cell ${unit.id === activeToId ? 'highlight' : ''}">${formattedVal}</td>
+                    <td>
+                        <button class="table-copy-btn" onclick="copyTableVal('${formattedVal.replace(/'/g, "\\'")}', '${unit.symbol}')">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </td>
+                `;
+                DOM.unitTableBody.appendChild(tr);
+            });
+
+            if (DOM.unitTableBody.children.length === 0) {
+                DOM.unitTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:2rem;">No matching units found</td></tr>`;
+            }
+        }
+
+        window.copyTableVal = function(val, symbol) {
+            const cleanVal = val.replace(/,/g, '');
+            navigator.clipboard.writeText(`${cleanVal} ${symbol}`).then(() => {
+                showToast(`Copied ${cleanVal} ${symbol}`);
+            });
+        };
+
+        // Main Calculation Trigger
+        function calculate() {
+            const cat = CATEGORIES[currentCatKey];
+            const units = getActiveUnitsList(currentCatKey);
+
+            const fromId = DOM.fromSelect.value;
+            const toId = DOM.toSelect.value;
+
+            const fromUnit = units.find(u => u.id === fromId) || units[0];
+            const toUnit = units.find(u => u.id === toId) || units[1] || units[0];
+
+            DOM.fromSymbolLabel.textContent = `(${fromUnit.symbol})`;
+            DOM.toSymbolLabel.textContent = `(${toUnit.symbol})`;
+
+            const rawInput = parseFloat(DOM.fromInput.value);
+            if (isNaN(rawInput)) {
+                DOM.toInput.value = '';
+                updateFormulaSection(1, fromUnit, toUnit, currentCatKey);
+                updateTable(0, fromId, toId, currentCatKey);
+                return;
+            }
+
+            const result = convertValue(rawInput, fromId, toId, currentCatKey);
+            DOM.toInput.value = formatValue(result);
+
+            updateFormulaSection(rawInput, fromUnit, toUnit, currentCatKey);
+            updateTable(rawInput, fromId, toId, currentCatKey);
+        }
+
+        // ==========================================
+        // UI RENDERING & POPULATION
+        // ==========================================
+
+        function renderCategories() {
+            DOM.categoryTabs.innerHTML = '';
+            Object.keys(CATEGORIES).forEach(key => {
+                const cat = CATEGORIES[key];
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${key === currentCatKey ? 'active' : ''}`;
+                btn.innerHTML = `<i class="${cat.icon}"></i> ${cat.name}`;
+                btn.addEventListener('click', () => switchCategory(key));
+                DOM.categoryTabs.appendChild(btn);
+            });
+        }
+
+        function populateUnitSelects() {
+            const units = getActiveUnitsList(currentCatKey);
+
+            const prevFrom = DOM.fromSelect.value;
+            const prevTo = DOM.toSelect.value;
+
+            DOM.fromSelect.innerHTML = '';
+            DOM.toSelect.innerHTML = '';
+
+            units.forEach(u => {
+                const optFrom = document.createElement('option');
+                optFrom.value = u.id;
+                optFrom.textContent = `${u.name} (${u.symbol})`;
+                DOM.fromSelect.appendChild(optFrom);
+
+                const optTo = document.createElement('option');
+                optTo.value = u.id;
+                optTo.textContent = `${u.name} (${u.symbol})`;
+                DOM.toSelect.appendChild(optTo);
+            });
+
+            // Set sensible defaults
+            if (units.some(u => u.id === prevFrom)) {
+                DOM.fromSelect.value = prevFrom;
+            } else {
+                DOM.fromSelect.value = units[0].id;
+            }
+
+            if (units.some(u => u.id === prevTo) && prevTo !== DOM.fromSelect.value) {
+                DOM.toSelect.value = prevTo;
+            } else {
+                DOM.toSelect.value = units.length > 1 ? units[1].id : units[0].id;
+            }
+        }
+
+        function renderPresets() {
+            const cat = CATEGORIES[currentCatKey];
+            DOM.presetGrid.innerHTML = '';
+
+            if (!cat.presets || cat.presets.length === 0) {
+                DOM.presetGrid.innerHTML = `<span style="color:var(--text-muted); font-size:0.85rem;">No quick presets</span>`;
+                return;
+            }
+
+            cat.presets.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'preset-btn';
+                btn.innerHTML = `<i class="fas fa-bolt" style="font-size:0.75rem; color:var(--accent);"></i> ${p.label}`;
+                btn.addEventListener('click', () => {
+                    DOM.fromSelect.value = p.from;
+                    DOM.toSelect.value = p.to;
+                    calculate();
+                    showToast(`Switched to ${p.label}`);
+                });
+                DOM.presetGrid.appendChild(btn);
+            });
+        }
+
+        function switchCategory(key) {
+            currentCatKey = key;
+            const cat = CATEGORIES[key];
+
+            // Update Tab UI
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.trim() === cat.name || btn.innerText.includes(cat.name));
+            });
+
+            // Show/Hide Data Mode toggle
+            if (cat.isData) {
+                DOM.dataModeToggleContainer.style.display = 'flex';
+            } else {
+                DOM.dataModeToggleContainer.style.display = 'none';
+            }
+
+            DOM.tableCategoryTitle.textContent = `All ${cat.name} Conversions`;
+            DOM.tableSearchInput.value = '';
+
+            populateUnitSelects();
+            renderPresets();
+            calculate();
+        }
+
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+
+        // Inputs & Selects
+        DOM.fromInput.addEventListener('input', calculate);
+        DOM.fromSelect.addEventListener('change', calculate);
+        DOM.toSelect.addEventListener('change', calculate);
+
+        // Swap button
+        DOM.swapBtn.addEventListener('click', () => {
+            const temp = DOM.fromSelect.value;
+            DOM.fromSelect.value = DOM.toSelect.value;
+            DOM.toSelect.value = temp;
+
+            // Also swap values if toInput has valid number
+            calculate();
+            showToast('Units swapped!');
+        });
+
+        // Clear input button
+        DOM.clearBtn.addEventListener('click', () => {
+            DOM.fromInput.value = '';
+            DOM.toInput.value = '';
+            DOM.fromInput.focus();
+            calculate();
+        });
+
+        // Copy main result
+        DOM.copyResultBtn.addEventListener('click', () => {
+            if (!DOM.toInput.value) return;
+            const units = getActiveUnitsList(currentCatKey);
+            const toUnit = units.find(u => u.id === DOM.toSelect.value);
+            const textToCopy = `${DOM.toInput.value} ${toUnit ? toUnit.symbol : ''}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast(`Copied ${textToCopy}`);
+            });
+        });
+
+        // Copy Formula button
+        DOM.copyFormulaBtn.addEventListener('click', () => {
+            const formulaText = DOM.formulaDisplay.querySelector('span').textContent;
+            navigator.clipboard.writeText(formulaText).then(() => {
+                showToast('Formula copied to clipboard!');
+            });
+        });
+
+        // Precision Options
+        DOM.precisionGroup.querySelectorAll('.precision-opt').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                DOM.precisionGroup.querySelectorAll('.precision-opt').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                precisionSetting = e.target.getAttribute('data-prec');
+                calculate();
+            });
+        });
+
+        // Data Mode (Binary vs Decimal)
+        DOM.dataModeGroup.querySelectorAll('.precision-opt').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                DOM.dataModeGroup.querySelectorAll('.precision-opt').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                dataMode = e.target.getAttribute('data-mode');
+                populateUnitSelects();
+                calculate();
+            });
+        });
+
+        // Table Search Input
+        DOM.tableSearchInput.addEventListener('input', () => {
+            const rawInput = parseFloat(DOM.fromInput.value) || 0;
+            updateTable(rawInput, DOM.fromSelect.value, DOM.toSelect.value, currentCatKey);
+        });
+
+        // Initialize on DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            switchCategory('length');
+        });
+    </script>
+</body>
+</html>

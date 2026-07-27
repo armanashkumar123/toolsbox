@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate beautiful color schemes, test contrast, and export palettes with this premium Color Palette Generator.">
+    <title>Color Palette Generator - Create Beautiful Color Schemes | ToolsHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a1a;
+            --card-bg: rgba(18, 18, 42, 0.8);
+            --primary: #6C63FF;
+            --primary-hover: #5b54d6;
+            --accent: #00D4AA;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 15% 50%, rgba(108, 99, 255, 0.08), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 212, 170, 0.08), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        select, input[type="color"] {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        input[type="color"] {
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+        }
+
+        .palette-container {
+            display: flex;
+            height: 50vh;
+            min-height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+        }
+
+        .color-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: flex 0.3s ease;
+            position: relative;
+        }
+
+        .color-column:hover {
+            flex: 1.2;
+        }
+
+        .color-display {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .color-display:hover .copy-hint {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .copy-hint {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s;
+            pointer-events: none;
+        }
+
+        .color-info {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hex-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .hex-value:hover {
+            color: var(--accent);
+        }
+
+        .color-values {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .lock-btn, .expand-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .lock-btn:hover, .expand-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .lock-btn.locked {
+            color: var(--accent);
+        }
+
+        .tools-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .tool-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contrast-checker {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contrast-selectors {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .contrast-color-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contrast-preview {
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .contrast-results {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .contrast-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge.pass { background: rgba(0, 212, 170, 0.2); color: var(--accent); }
+        .badge.fail { background: rgba(255, 87, 87, 0.2); color: #ff5757; }
+
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .export-btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .export-textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            resize: none;
+            outline: none;
+        }
+
+        /* Full screen overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .fullscreen-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .fullscreen-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            opacity: 0;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .tools-section {
+                grid-template-columns: 1fr;
+            }
+            .palette-container {
+                flex-direction: column;
+                height: 80vh;
+            }
+            .color-column {
+                flex-direction: row;
+            }
+            .color-info {
+                width: 140px;
+                padding: 1rem 0.5rem;
+                justify-content: center;
+                border-top: none;
+                border-left: 1px solid rgba(255,255,255,0.05);
+            }
+            .color-values {
+                display: none;
+            }
+            .lock-btn, .expand-btn {
+                margin: 0;
+            }
+            .btn-actions {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../../index.html" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Back to ToolsHub
+        </a>
+        <h1>Color Palette Generator</h1>
+        <div style="width: 120px;"></div> <!-- Spacer for balance -->
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="control-group">
+                <label for="harmonyMode">Harmony:</label>
+                <select id="harmonyMode">
+                    <option value="random">Random</option>
+                    <option value="monochromatic">Monochromatic</option>
+                    <option value="analogous">Analogous</option>
+                    <option value="complementary">Complementary</option>
+                    <option value="split-complementary">Split-Complementary</option>
+                    <option value="triadic">Triadic</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="baseColor">Base Color:</label>
+                <input type="color" id="baseColor" value="#6C63FF">
+            </div>
+
+            <div class="control-group" style="margin-left: auto;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); margin-right: 0.5rem;">Press Spacebar to</span>
+                <button id="generateBtn" class="btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                    Generate
+                </button>
+            </div>
+        </div>
+
+        <div class="palette-container" id="palette">
+            <!-- Colors injected here -->
+        </div>
+
+        <div class="tools-section">
+            <div class="tool-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20"/></svg>
+                    Contrast Checker
+                </h3>
+                <div class="contrast-checker">
+                    <div class="contrast-selectors">
+                        <div class="contrast-color-wrap">
+                            <label>Text:</label>
+                            <select id="contrastFg"></select>
+                        </div>
+                        <div class="contrast-color-wrap">
+                            <label>Background:</label>
+                            <select id="contrastBg"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="contrast-preview" id="contrastPreview">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Lorem Ipsum</h2>
+                        <p style="font-size: 0.875rem;">The quick brown fox jumps over the lazy dog.</p>
+                    </div>
+                    
+                    <div class="contrast-results">
+                        <div class="contrast-badge">
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Ratio</span>
+                            <strong id="contrastRatio" style="font-size: 1.25rem;">21:1</strong>
+                        </div>
+                        <div class="contrast-badge">
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Normal Text</span>
+                            <span id="badgeNormal" class="badge pass">AA</span>
+                        </div>
+                        <div class="contrast-badge">
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Large Text</span>
+                            <span id="badgeLarge" class="badge pass">AAA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export Palette
+                </h3>
+                <div class="export-options">
+                    <div class="export-btns">
+                        <button class="btn btn-secondary" onclick="exportCode('css')">CSS Vars</button>
+                        <button class="btn btn-secondary" onclick="exportCode('tailwind')">Tailwind</button>
+                        <button class="btn btn-secondary" onclick="exportImage()">Download Image</button>
+                    </div>
+                    <textarea id="exportCode" class="export-textarea" readonly placeholder="Exported code will appear here..."></textarea>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <button class="fullscreen-close" onclick="closeFullscreen()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <!-- Fullscreen colors injected here -->
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Color Utils
+        function hslToHex(h, s, l) {
+            l /= 100;
+            const a = s * Math.min(l, 1 - l) / 100;
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+        }
+
+        function hexToHsl(hex) {
+            let r = parseInt(hex.slice(1, 3), 16) / 255;
+            let g = parseInt(hex.slice(3, 5), 16) / 255;
+            let b = parseInt(hex.slice(5, 7), 16) / 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0; 
+            } else {
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+        }
+
+        function hexToRgb(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `${r}, ${g}, ${b}`;
+        }
+
+        function getLuminance(hex) {
+            let rgb = [
+                parseInt(hex.slice(1,3), 16) / 255,
+                parseInt(hex.slice(3,5), 16) / 255,
+                parseInt(hex.slice(5,7), 16) / 255
+            ].map(v => {
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+        }
+
+        function getContrastRatio(hex1, hex2) {
+            let l1 = getLuminance(hex1);
+            let l2 = getLuminance(hex2);
+            let brightest = Math.max(l1, l2);
+            let darkest = Math.min(l1, l2);
+            return (brightest + 0.05) / (darkest + 0.05);
+        }
+
+        function randomHue() { return Math.floor(Math.random() * 360); }
+        function randomSaturation() { return Math.floor(Math.random() * 60) + 40; }
+        function randomLightness() { return Math.floor(Math.random() * 60) + 20; }
+
+        // State
+        let colors = Array(5).fill({ hex: '#000000', locked: false });
+        
+        // DOM Elements
+        const paletteEl = document.getElementById('palette');
+        const generateBtn = document.getElementById('generateBtn');
+        const harmonyMode = document.getElementById('harmonyMode');
+        const baseColorInput = document.getElementById('baseColor');
+        const toast = document.getElementById('toast');
+
+        // Initialization
+        function init() {
+            generatePalette();
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            generateBtn.addEventListener('click', generatePalette);
+            
+            document.addEventListener('keydown', e => {
+                if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    generatePalette();
+                }
+            });
+
+            harmonyMode.addEventListener('change', generatePalette);
+            baseColorInput.addEventListener('input', generatePalette);
+            
+            document.getElementById('contrastFg').addEventListener('change', updateContrast);
+            document.getElementById('contrastBg').addEventListener('change', updateContrast);
+        }
+
+        function generatePalette() {
+            const mode = harmonyMode.value;
+            const baseHex = baseColorInput.value;
+            let [baseH, baseS, baseL] = hexToHsl(baseHex);
+            
+            let newColors = [];
+
+            if (mode === 'random') {
+                for (let i = 0; i < 5; i++) {
+                    newColors.push(hslToHex(randomHue(), randomSaturation(), randomLightness()));
+                }
+            } else if (mode === 'monochromatic') {
+                for (let i = 0; i < 5; i++) {
+                    let l = 20 + (i * 15);
+                    newColors.push(hslToHex(baseH, baseS, l));
+                }
+            } else if (mode === 'analogous') {
+                for (let i = 0; i < 5; i++) {
+                    let h = (baseH + (i - 2) * 30 + 360) % 360;
+                    newColors.push(hslToHex(h, baseS, baseL));
+                }
+            } else if (mode === 'complementary') {
+                newColors = [
+                    hslToHex(baseH, baseS, baseL + 20),
+                    baseHex,
+                    hslToHex(baseH, baseS, baseL - 20),
+                    hslToHex((baseH + 180) % 360, baseS, baseL + 10),
+                    hslToHex((baseH + 180) % 360, baseS, baseL - 10)
+                ];
+            } else if (mode === 'split-complementary') {
+                newColors = [
+                    baseHex,
+                    hslToHex(baseH, baseS, baseL - 20),
+                    hslToHex((baseH + 150) % 360, baseS, baseL),
+                    hslToHex((baseH + 210) % 360, baseS, baseL),
+                    hslToHex((baseH + 180) % 360, baseS, baseL - 20)
+                ];
+            } else if (mode === 'triadic') {
+                newColors = [
+                    hslToHex(baseH, baseS, baseL + 15),
+                    baseHex,
+                    hslToHex((baseH + 120) % 360, baseS, baseL),
+                    hslToHex((baseH + 240) % 360, baseS, baseL),
+                    hslToHex((baseH + 120) % 360, baseS, baseL - 15)
+                ];
+            }
+
+            // Apply locks
+            colors = colors.map((c, i) => {
+                return c.locked ? c : { hex: newColors[i] || hslToHex(randomHue(), 70, 50), locked: false };
+            });
+
+            renderPalette();
+            updateContrastSelects();
+        }
+
+        function renderPalette() {
+            paletteEl.innerHTML = '';
+            
+            colors.forEach((color, index) => {
+                const col = document.createElement('div');
+                col.className = 'color-column';
+                
+                const hsl = hexToHsl(color.hex);
+                const textCol = hsl[2] > 60 ? '#000000' : '#ffffff';
+                
+                col.innerHTML = `
+                    <div class="color-display" style="background-color: ${color.hex}" onclick="copyHex('${color.hex}')">
+                        <div class="copy-hint" style="color: ${textCol}; border: 1px solid ${textCol}33">Click to copy</div>
+                    </div>
+                    <div class="color-info">
+                        <div class="hex-value" onclick="copyHex('${color.hex}')">${color.hex}</div>
+                        <div class="color-values">
+                            <span>RGB: ${hexToRgb(color.hex)}</span>
+                            <span>HSL: ${hsl[0]}°, ${hsl[1]}%, ${hsl[2]}%</span>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="lock-btn ${color.locked ? 'locked' : ''}" onclick="toggleLock(${index})" title="Lock color">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    ${color.locked ? 
+                                        '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>' : 
+                                        '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>'}
+                                </svg>
+                            </button>
+                            <button class="expand-btn" onclick="openFullscreen(${index})" title="View fullscreen">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                paletteEl.appendChild(col);
+            });
+        }
+
+        function toggleLock(index) {
+            colors[index].locked = !colors[index].locked;
+            renderPalette();
+        }
+
+        function copyHex(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                showToast(`Copied ${hex}!`);
+            });
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function updateContrastSelects() {
+            const fgSelect = document.getElementById('contrastFg');
+            const bgSelect = document.getElementById('contrastBg');
+            
+            const fgVal = fgSelect.value || colors[0].hex;
+            const bgVal = bgSelect.value || colors[4].hex;
+            
+            fgSelect.innerHTML = '';
+            bgSelect.innerHTML = '';
+            
+            colors.forEach((c, i) => {
+                const opt1 = new Option(`Color ${i+1} (${c.hex})`, c.hex);
+                const opt2 = new Option(`Color ${i+1} (${c.hex})`, c.hex);
+                fgSelect.add(opt1);
+                bgSelect.add(opt2);
+            });
+            
+            // Try to restore previous values if they exist in current palette, else default
+            fgSelect.value = colors.find(c => c.hex === fgVal) ? fgVal : colors[0].hex;
+            bgSelect.value = colors.find(c => c.hex === bgVal) ? bgVal : colors[colors.length-1].hex;
+            
+            updateContrast();
+        }
+
+        function updateContrast() {
+            const fg = document.getElementById('contrastFg').value;
+            const bg = document.getElementById('contrastBg').value;
+            const preview = document.getElementById('contrastPreview');
+            const ratioEl = document.getElementById('contrastRatio');
+            const bNormal = document.getElementById('badgeNormal');
+            const bLarge = document.getElementById('badgeLarge');
+            
+            preview.style.color = fg;
+            preview.style.backgroundColor = bg;
+            
+            const ratio = getContrastRatio(fg, bg);
+            ratioEl.textContent = ratio.toFixed(2) + ':1';
+            
+            // Normal text (AA = 4.5, AAA = 7.0)
+            if (ratio >= 7) {
+                bNormal.textContent = 'AAA';
+                bNormal.className = 'badge pass';
+            } else if (ratio >= 4.5) {
+                bNormal.textContent = 'AA';
+                bNormal.className = 'badge pass';
+            } else {
+                bNormal.textContent = 'FAIL';
+                bNormal.className = 'badge fail';
+            }
+            
+            // Large text (AA = 3.0, AAA = 4.5)
+            if (ratio >= 4.5) {
+                bLarge.textContent = 'AAA';
+                bLarge.className = 'badge pass';
+            } else if (ratio >= 3.0) {
+                bLarge.textContent = 'AA';
+                bLarge.className = 'badge pass';
+            } else {
+                bLarge.textContent = 'FAIL';
+                bLarge.className = 'badge fail';
+            }
+        }
+
+        function exportCode(type) {
+            const ta = document.getElementById('exportCode');
+            if (type === 'css') {
+                let css = ':root {\n';
+                colors.forEach((c, i) => {
+                    css += `  --color-${i+1}: ${c.hex};\n`;
+                });
+                css += '}';
+                ta.value = css;
+            } else if (type === 'tailwind') {
+                let tw = 'theme: {\n  extend: {\n    colors: {\n';
+                colors.forEach((c, i) => {
+                    tw += `      'color-${i+1}': '${c.hex}',\n`;
+                });
+                tw += '    }\n  }\n}';
+                ta.value = tw;
+            }
+        }
+
+        function exportImage() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1000;
+            canvas.height = 500;
+            
+            const colW = canvas.width / colors.length;
+            
+            colors.forEach((c, i) => {
+                ctx.fillStyle = c.hex;
+                ctx.fillRect(i * colW, 0, colW, canvas.height - 100);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(i * colW, canvas.height - 100, colW, 100);
+                
+                ctx.fillStyle = '#1a1a2e';
+                ctx.font = 'bold 24px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(c.hex, (i * colW) + (colW/2), canvas.height - 40);
+            });
+            
+            const link = document.createElement('a');
+            link.download = 'palette.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Fullscreen functionality
+        const overlay = document.getElementById('fullscreenOverlay');
+        
+        function openFullscreen(startIndex = 0) {
+            overlay.innerHTML = `
+                <button class="fullscreen-close" onclick="closeFullscreen()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            `;
+            
+            colors.forEach((c, i) => {
+                const div = document.createElement('div');
+                div.style.flex = '1';
+                div.style.backgroundColor = c.hex;
+                div.style.transition = 'flex 0.3s';
+                div.style.cursor = 'pointer';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                
+                const hsl = hexToHsl(c.hex);
+                const textCol = hsl[2] > 60 ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
+                
+                div.innerHTML = `<span style="color: ${textCol}; font-weight: bold; font-size: 1.5rem; opacity: 0; transition: opacity 0.2s;">${c.hex}</span>`;
+                
+                div.onmouseover = () => { div.style.flex = '2'; div.querySelector('span').style.opacity = '1'; };
+                div.onmouseout = () => { div.style.flex = '1'; div.querySelector('span').style.opacity = '0'; };
+                div.onclick = () => { copyHex(c.hex); closeFullscreen(); };
+                
+                overlay.appendChild(div);
+            });
+            
+            overlay.classList.add('active');
+        }
+        
+        function closeFullscreen() {
+            overlay.classList.remove('active');
+        }
+
+        // Run on load
+        init();
+    </script>
+</body>
+</html>

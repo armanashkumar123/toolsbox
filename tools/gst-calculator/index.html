@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator India - Calculate CGST SGST IGST Online | ToolsHub</title>
+    <meta name="description" content="Calculate Goods and Services Tax (GST) for India easily. Find CGST, SGST, IGST amounts with inclusive and exclusive GST options.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a1a;
+            --card-bg: rgba(18, 18, 42, 0.8);
+            --card-border: rgba(108, 99, 255, 0.2);
+            --primary: #6C63FF;
+            --primary-hover: #5a52d9;
+            --accent: #00D4AA;
+            --text-light: #f4f4f5;
+            --text-muted: #a1a1aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 15% 50%, rgba(108, 99, 255, 0.05), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 212, 170, 0.05), transparent 25%);
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo a:hover {
+            opacity: 0.8;
+        }
+
+        .logo span {
+            color: var(--text-light);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 3rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .calculator-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+        
+        /* Remove arrows from number input */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .gst-rates {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        @media (min-width: 480px) {
+            .gst-rates {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .rate-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .rate-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .rate-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+        }
+
+        /* Toggle Switches */
+        .toggle-group {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 0.3rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 0.6rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* State Type Switch */
+        .state-type-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        
+        .radio-label input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            outline: none;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .radio-label input[type="radio"]:checked {
+            border-color: var(--accent);
+        }
+        
+        .radio-label input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .radio-label:has(input:checked) {
+            color: var(--text-light);
+        }
+
+        /* Quick Select */
+        .quick-select {
+            margin-bottom: 2rem;
+        }
+
+        .quick-select-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            color: var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: rgba(0, 212, 170, 0.2);
+        }
+
+        /* Results Section */
+        .results {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-top: 0.5rem;
+        }
+        
+        .result-row.sub-row {
+            padding: 0.4rem 0;
+            padding-left: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: var(--text-muted);
+        }
+
+        .result-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .total-row {
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .total-row .result-label {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .total-row .result-value {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Visual Bar */
+        .visual-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .bar-base {
+            background: var(--primary);
+            height: 100%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bar-tax {
+            background: var(--accent);
+            height: 100%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .bar-legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .dot-base { background: var(--primary); }
+        .dot-tax { background: var(--accent); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="../../index.html">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Tools<span>Hub</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-container">
+            <h1>GST Calculator India</h1>
+            <p class="subtitle">Quickly calculate inclusive and exclusive Goods and Services Tax</p>
+
+            <div class="toggle-group">
+                <button class="toggle-btn active" id="btn-add" onclick="setMode('add')">Add GST (Exclusive)</button>
+                <button class="toggle-btn" id="btn-remove" onclick="setMode('remove')">Remove GST (Inclusive)</button>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Initial Amount</label>
+                <div class="input-wrapper">
+                    <span class="currency-symbol">₹</span>
+                    <input type="number" id="amount" placeholder="0" min="0" step="any" oninput="calculateGST()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>GST Rate (%)</label>
+                <div class="gst-rates">
+                    <button class="rate-btn" onclick="setRate(0)">0%</button>
+                    <button class="rate-btn" onclick="setRate(3)">3%</button>
+                    <button class="rate-btn" onclick="setRate(5)">5%</button>
+                    <button class="rate-btn" onclick="setRate(12)">12%</button>
+                    <button class="rate-btn active" onclick="setRate(18)">18%</button>
+                    <button class="rate-btn" onclick="setRate(28)">28%</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Transaction Type</label>
+                <div class="state-type-group">
+                    <label class="radio-label">
+                        <input type="radio" name="taxType" value="intra" checked onchange="calculateGST()">
+                        Intra-State (CGST + SGST)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="taxType" value="inter" onchange="calculateGST()">
+                        Inter-State (IGST)
+                    </label>
+                </div>
+            </div>
+
+            <div class="quick-select">
+                <div class="quick-select-title">Common Items</div>
+                <div class="chips">
+                    <div class="chip" onclick="setRate(5)">Essential Goods (5%)</div>
+                    <div class="chip" onclick="setRate(12)">Computers/Mobiles (12%)</div>
+                    <div class="chip" onclick="setRate(18)">Electronics/Services (18%)</div>
+                    <div class="chip" onclick="setRate(28)">Luxury/Automobiles (28%)</div>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <div class="result-row">
+                    <span class="result-label">Original Amount</span>
+                    <span class="result-value" id="res-base">₹0</span>
+                </div>
+                
+                <div class="result-row">
+                    <span class="result-label">Total GST Amount (<span id="res-rate-text">18</span>%)</span>
+                    <span class="result-value" id="res-tax">₹0</span>
+                </div>
+                
+                <div id="split-tax-container">
+                    <div class="result-row sub-row">
+                        <span class="result-label">CGST (<span id="res-cgst-rate">9</span>%)</span>
+                        <span class="result-value" id="res-cgst">₹0</span>
+                    </div>
+                    <div class="result-row sub-row">
+                        <span class="result-label">SGST (<span id="res-sgst-rate">9</span>%)</span>
+                        <span class="result-value" id="res-sgst">₹0</span>
+                    </div>
+                </div>
+                
+                <div id="igst-tax-container" style="display: none;">
+                    <div class="result-row sub-row">
+                        <span class="result-label">IGST (<span id="res-igst-rate">18</span>%)</span>
+                        <span class="result-value" id="res-igst">₹0</span>
+                    </div>
+                </div>
+
+                <div class="result-row total-row">
+                    <span class="result-label">Total Amount</span>
+                    <span class="result-value" id="res-total">₹0</span>
+                </div>
+
+                <div class="visual-bar-container">
+                    <div class="bar-base" id="bar-base" style="width: 80%"></div>
+                    <div class="bar-tax" id="bar-tax" style="width: 20%"></div>
+                </div>
+                <div class="bar-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot dot-base"></div>
+                        <span>Base Amount</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot dot-tax"></div>
+                        <span>Tax</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ToolsHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentRate = 18;
+        let mode = 'add'; // 'add' or 'remove'
+
+        // Indian Number Formatter
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        };
+
+        function setRate(rate) {
+            currentRate = rate;
+            
+            // Update UI buttons
+            document.querySelectorAll('.rate-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.innerText) === rate) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            calculateGST();
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            
+            // Update UI toggles
+            document.getElementById('btn-add').classList.remove('active');
+            document.getElementById('btn-remove').classList.remove('active');
+            
+            document.getElementById('btn-' + mode).classList.add('active');
+            
+            calculateGST();
+        }
+
+        function calculateGST() {
+            const amountInput = document.getElementById('amount').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!amountInput || isNaN(amountInput) || amountInput <= 0) {
+                resultsDiv.classList.remove('show');
+                return;
+            }
+
+            const amount = parseFloat(amountInput);
+            const isIntraState = document.querySelector('input[name="taxType"]:checked').value === 'intra';
+            
+            let baseAmount, taxAmount, totalAmount;
+
+            if (mode === 'add') {
+                // Exclusive - Amount provided is the Base Amount
+                baseAmount = amount;
+                taxAmount = amount * (currentRate / 100);
+                totalAmount = baseAmount + taxAmount;
+            } else {
+                // Inclusive - Amount provided is the Total Amount
+                totalAmount = amount;
+                baseAmount = amount / (1 + (currentRate / 100));
+                taxAmount = totalAmount - baseAmount;
+            }
+            
+            // Tax Splitting
+            const halfTax = taxAmount / 2;
+            const halfRate = currentRate / 2;
+
+            // Update UI with formatted values
+            document.getElementById('res-base').innerText = formatCurrency(baseAmount);
+            document.getElementById('res-tax').innerText = formatCurrency(taxAmount);
+            document.getElementById('res-total').innerText = formatCurrency(totalAmount);
+            document.getElementById('res-rate-text').innerText = currentRate;
+            
+            const splitTaxContainer = document.getElementById('split-tax-container');
+            const igstTaxContainer = document.getElementById('igst-tax-container');
+            
+            if (isIntraState) {
+                splitTaxContainer.style.display = 'block';
+                igstTaxContainer.style.display = 'none';
+                
+                document.getElementById('res-cgst').innerText = formatCurrency(halfTax);
+                document.getElementById('res-sgst').innerText = formatCurrency(halfTax);
+                document.getElementById('res-cgst-rate').innerText = halfRate;
+                document.getElementById('res-sgst-rate').innerText = halfRate;
+            } else {
+                splitTaxContainer.style.display = 'none';
+                igstTaxContainer.style.display = 'block';
+                
+                document.getElementById('res-igst').innerText = formatCurrency(taxAmount);
+                document.getElementById('res-igst-rate').innerText = currentRate;
+            }
+
+            // Update visual bar
+            let basePercent = 100;
+            let taxPercent = 0;
+            
+            if (totalAmount > 0) {
+                basePercent = (baseAmount / totalAmount) * 100;
+                taxPercent = (taxAmount / totalAmount) * 100;
+            }
+            
+            document.getElementById('bar-base').style.width = `${basePercent}%`;
+            document.getElementById('bar-tax').style.width = `${taxPercent}%`;
+
+            // Show results
+            resultsDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>

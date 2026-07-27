@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation | ToolsHub</title>
+    <meta name="description" content="Free APIs for developers. Integrate EMI, GST, Password Generator, Text Case Conversion and more into your apps for free.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#0a0a1a;color:#e8e8f0;line-height:1.8}
+        .wrap{max-width:900px;margin:0 auto;padding:100px 2rem 60px}
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:70px;display:flex;align-items:center;background:rgba(10,10,26,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(108,99,255,0.15)}
+        nav a{color:#e8e8f0;text-decoration:none;display:flex;align-items:center;gap:10px}
+        .logo{width:36px;height:36px;background:linear-gradient(135deg,#6C63FF,#00D4AA);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff}
+        .brand{font-weight:700;font-size:1.25rem}
+        h1{font-size:2.2rem;margin-bottom:12px;background:linear-gradient(135deg,#6C63FF,#00D4AA);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .subtitle{color:#8888aa;font-size:1.1rem;margin-bottom:36px}
+        .badge{display:inline-block;padding:4px 12px;background:rgba(0,212,170,0.15);border:1px solid rgba(0,212,170,0.3);color:#00D4AA;border-radius:100px;font-size:0.8rem;font-weight:600;margin-bottom:16px}
+        
+        .api-card{background:rgba(18,18,42,0.8);border:1px solid rgba(108,99,255,0.15);border-radius:16px;padding:28px;backdrop-filter:blur(20px);margin-bottom:28px}
+        .api-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+        .api-method{padding:4px 10px;background:rgba(108,99,255,0.2);color:#6C63FF;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:700}
+        .api-title{font-size:1.2rem;font-weight:700}
+        .api-endpoint{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:#00D4AA;margin-bottom:12px;background:rgba(0,0,0,0.3);padding:8px 14px;border-radius:8px;display:inline-block}
+        
+        pre{background:#060612;padding:16px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#a29bfe;overflow-x:auto;border:1px solid rgba(108,99,255,0.1);margin-top:12px}
+        code{font-family:'JetBrains Mono',monospace}
+        
+        footer{text-align:center;padding:40px 2rem;border-top:1px solid rgba(108,99,255,0.15);color:#8888aa;font-size:.85rem;margin-top:40px}
+    </style>
+</head>
+<body>
+    <nav><a href="index.html"><div class="logo">T</div><span class="brand">ToolsHub</span></a></nav>
+    <div class="wrap">
+        <span class="badge">FREE DEVELOPER API</span>
+        <h1>ToolsHub Public APIs</h1>
+        <p class="subtitle">Integrate fast utility endpoints into your projects. Free, open, and no API keys required.</p>
+
+        <!-- API 1 -->
+        <div class="api-card">
+            <div class="api-header">
+                <span class="api-title">1. Password Generator API</span>
+                <span class="api-method">JS CLIENT / EMBED</span>
+            </div>
+            <p style="color:#8888aa;margin-bottom:8px;">Generate secure random passwords on-the-fly.</p>
+            <div class="api-endpoint">ToolsHub.generatePassword(length, options)</div>
+            <pre><code>// Example Usage
+const password = ToolsHub.generatePassword(16, {
+  uppercase: true,
+  numbers: true,
+  symbols: true
+});
+console.log(password); // e.g. "k9#Xm2@pL8$vQ1!z"</code></pre>
+        </div>
+
+        <!-- API 2 -->
+        <div class="api-card">
+            <div class="api-header">
+                <span class="api-title">2. EMI Calculation Formula API</span>
+                <span class="api-method">FORMULA</span>
+            </div>
+            <p style="color:#8888aa;margin-bottom:8px;">Calculate loan EMI for Home, Car & Personal loans.</p>
+            <div class="api-endpoint">ToolsHub.calculateEMI(principal, rate, tenureMonths)</div>
+            <pre><code>// Example Usage
+const result = ToolsHub.calculateEMI(1000000, 8.5, 240);
+// Returns: { emi: 8678, totalInterest: 1082760, totalPayment: 2082760 }</code></pre>
+        </div>
+
+        <!-- API 3 -->
+        <div class="api-card">
+            <div class="api-header">
+                <span class="api-title">3. GST Tax Calculation API</span>
+                <span class="api-method">FORMULA</span>
+            </div>
+            <p style="color:#8888aa;margin-bottom:8px;">Calculate CGST, SGST, IGST inclusive & exclusive values.</p>
+            <div class="api-endpoint">ToolsHub.calculateGST(amount, ratePercent, isInclusive)</div>
+            <pre><code>// Example Usage
+const tax = ToolsHub.calculateGST(5000, 18, false);
+// Returns: { original: 5000, cgst: 450, sgst: 450, total: 5900 }</code></pre>
+        </div>
+
+        <!-- API 4 -->
+        <div class="api-card">
+            <div class="api-header">
+                <span class="api-title">4. Unit Conversion API</span>
+                <span class="api-method">CLIENT ENGINE</span>
+            </div>
+            <p style="color:#8888aa;margin-bottom:8px;">Convert between 100+ units across 10 categories.</p>
+            <div class="api-endpoint">ToolsHub.convertUnit(value, fromUnit, toUnit, category)</div>
+            <pre><code>// Example Usage
+const dist = ToolsHub.convertUnit(10, 'km', 'miles', 'length');
+// Returns: 6.21371</code></pre>
+        </div>
+
+        <p><a href="index.html" style="color:#6C63FF;">← Back to ToolsHub Home</a></p>
+    </div>
+    <footer><p>© 2026 ToolsHub | Free Developer APIs</p></footer>
+</body>
+</html>
