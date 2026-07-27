@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolsHub — 100% Free In-Browser Tools. Zero Signups.</title>
-    <meta name="description" content="Free open-source in-browser tools directory. EMI Calculator, GST Calculator, Markdown Editor, Regex Tester, Base64, Passwords, QR Codes & more. 100% client-side privacy.">
-    <meta name="keywords" content="no signup tools, in-browser tools, free online tools, EMI calculator India, GST calculator, markdown editor, regex tester, base64 encoder, image compressor">
+    <title>ToolsHub — 246+ Free In-Browser Tools. Zero Signups.</title>
+    <meta name="description" content="Master directory of 246+ free in-browser web tools. YouTube Downloader, PDF Tools, Image Editor, EMI, GST, Markdown, Regex, Base64, Excalidraw, IT-Tools, and more. 100% client-side privacy.">
+    <meta name="keywords" content="no signup tools, in-browser tools, free online tools, YouTube downloader, PDF tools, image editor, EMI calculator India, GST calculator, markdown editor, regex tester, base64 encoder">
     <meta name="author" content="ToolsHub">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://toolsbox.qd.je/">
     
-    <!-- OpenGraph / Social Cards -->
-    <meta property="og:title" content="ToolsHub — Free In-Browser Tools | Zero Signups">
-    <meta property="og:description" content="Open-source directory of no-signup, client-side web tools. Fast, private, zero data collection.">
+    <meta property="og:title" content="ToolsHub — 246+ Free In-Browser Tools | Zero Signups">
+    <meta property="og:description" content="Master directory of 246+ open-source, client-side web tools. Fast, private, zero data collection.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://toolsbox.qd.je/">
     
@@ -51,7 +50,6 @@
             line-height: 1.6;
         }
 
-        /* Ambient Glow Background */
         .bg-canvas {
             position: fixed;
             inset: 0;
@@ -157,7 +155,7 @@
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
             padding: 150px 2rem 60px;
             text-align: center;
@@ -217,20 +215,20 @@
 
         /* Search Bar */
         .search-container {
-            max-width: 560px;
+            max-width: 580px;
             margin: 0 auto 36px;
             position: relative;
         }
 
         .search-input {
             width: 100%;
-            padding: 16px 24px 16px 54px;
+            padding: 18px 24px 18px 56px;
             background: rgba(15, 15, 35, 0.9);
             border: 1px solid var(--border);
             border-radius: 16px;
             color: var(--text);
             font-family: inherit;
-            font-size: 1.05rem;
+            font-size: 1.08rem;
             outline: none;
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 30px rgba(0,0,0,0.3);
@@ -257,7 +255,7 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .cat-btn {
@@ -280,56 +278,50 @@
             box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
         }
 
+        /* Tools Counter Bar */
+        .count-bar {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        .count-bar span { color: var(--accent); font-weight: 800; }
+
         /* Tools Grid */
         .tools-section {
-            max-width: 1240px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 2rem 100px;
         }
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 22px;
         }
 
         .tool-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 30px;
+            padding: 26px;
             backdrop-filter: blur(20px);
             text-decoration: none;
             color: var(--text);
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             position: relative;
             overflow: hidden;
         }
-
-        .tool-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: var(--radius);
-            padding: 1px;
-            background: linear-gradient(135deg, var(--accent), transparent, var(--primary));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.35s ease;
-            pointer-events: none;
-        }
-
-        .tool-card:hover::after { opacity: 1; }
 
         .tool-card:hover {
             background: var(--bg-card-hover);
             transform: translateY(-6px);
             box-shadow: var(--shadow), 0 0 30px var(--primary-glow);
+            border-color: var(--accent);
         }
 
         .tool-top {
@@ -339,55 +331,59 @@
         }
 
         .tool-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 24px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
 
         .tool-badge {
-            padding: 4px 12px;
+            padding: 3px 10px;
             background: rgba(124, 58, 237, 0.15);
             border: 1px solid rgba(124, 58, 237, 0.3);
             border-radius: 100px;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: var(--accent);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        .tool-badge.native {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: rgba(0, 242, 254, 0.4);
+            color: #00F2FE;
+        }
+
         .tool-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: -0.3px;
         }
 
         .tool-card p {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            line-height: 1.55;
+            line-height: 1.5;
             flex-grow: 1;
         }
 
-        .tool-arrow {
+        .tool-footer {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
+            justify-content: space-between;
+            font-size: 0.82rem;
             font-weight: 700;
             color: var(--accent);
             margin-top: 4px;
-            transition: gap 0.2s ease;
         }
+        .tool-stars { color: #FFD700; font-size: 0.75rem; }
 
-        .tool-card:hover .tool-arrow { gap: 10px; }
-
-        /* Stats & Trust Section */
+        /* Trust Section */
         .trust-section {
             border-top: 1px solid var(--border);
             padding: 80px 2rem;
@@ -418,7 +414,6 @@
             margin-top: 4px;
         }
 
-        /* Footer */
         footer {
             padding: 50px 2rem;
             border-top: 1px solid var(--border);
@@ -427,15 +422,9 @@
             font-size: 0.9rem;
         }
 
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
+        footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
         footer a:hover { text-decoration: underline; }
 
-        /* No Results */
         .no-results {
             text-align: center;
             padding: 80px 20px;
@@ -457,14 +446,13 @@
     <div class="bg-grid"></div>
 
     <div class="content">
-        <!-- Header Nav -->
         <nav>
             <a href="/" class="nav-brand">
                 <div class="nav-logo">⚡</div>
                 <span class="nav-name">ToolsHub</span>
             </a>
             <div class="nav-links">
-                <a href="#tools">Tools</a>
+                <a href="#tools">246+ Tools</a>
                 <a href="api.html">Developer API</a>
                 <a href="about.html">About</a>
                 <a href="privacy.html">Privacy</a>
@@ -475,50 +463,52 @@
             </div>
         </nav>
 
-        <!-- Hero -->
         <section class="hero">
             <div class="hero-pill">
                 <span class="dot"></span>
-                Open-Source · Zero Signups · 100% In-Browser Privacy
+                246+ Open-Source & In-Browser Tools · Zero Signups · 100% Free
             </div>
-            <h1>The <span class="gradient">No-Bullsh*t</span> Utility Hub for Creators & Developers</h1>
-            <p>15+ powerful, privacy-first web tools that run 100% locally inside your browser. No accounts, no data tracking, zero friction.</p>
+            <h1>The <span class="gradient">No-Bullsh*t</span> Master Web Tool Directory</h1>
+            <p>18 native client-side tools + 228 curated open-source apps from NoSignups.net. All in one instant, searchable portal.</p>
 
             <div class="search-container">
                 <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" class="search-input" id="searchInput" placeholder="Search 15+ tools... (EMI, GST, Markdown, Regex, Base64...)">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search 246+ tools... (YouTube, PDF, Excalidraw, Regex, EMI, CyberChef...)">
             </div>
 
             <div class="categories" id="categories">
-                <button class="cat-btn active" data-cat="all">All Tools (15)</button>
-                <button class="cat-btn" data-cat="dev">Developer</button>
-                <button class="cat-btn" data-cat="finance">Finance & Tax</button>
-                <button class="cat-btn" data-cat="text">Text & Docs</button>
-                <button class="cat-btn" data-cat="media">Media & Design</button>
-                <button class="cat-btn" data-cat="utility">Utilities</button>
+                <button class="cat-btn active" data-cat="all">All Tools (246+)</button>
+                <button class="cat-btn" data-cat="native">⚡ Native Tools (18)</button>
+                <button class="cat-btn" data-cat="development">💻 Development</button>
+                <button class="cat-btn" data-cat="productivity">⚡ Productivity</button>
+                <button class="cat-btn" data-cat="design">🎨 Design</button>
+                <button class="cat-btn" data-cat="writing">✍️ Writing & Docs</button>
+                <button class="cat-btn" data-cat="media">🎬 Media</button>
+                <button class="cat-btn" data-cat="privacy">🔒 Privacy & Security</button>
+                <button class="cat-btn" data-cat="utilities">🛠️ Utilities</button>
+                <button class="cat-btn" data-cat="finance">🏦 Finance & Tax</button>
             </div>
         </section>
 
-        <!-- Tools Directory Grid -->
         <section class="tools-section" id="tools">
+            <div class="count-bar" id="countBar">Showing <span id="visibleCount">246</span> of <span>246</span> Tools</div>
             <div class="tools-grid" id="toolsGrid">
                 <!-- Injected via JavaScript -->
             </div>
             <div class="no-results" id="noResults">
-                <p style="font-size:1.2rem;">No matching tools found. Try searching for "JSON", "EMI", "Regex", or "Base64".</p>
+                <p style="font-size:1.2rem;">No tools found matching your search. Try "PDF", "YouTube", "Excalidraw", "Regex", or "Convert".</p>
             </div>
         </section>
 
-        <!-- Trust & Stats -->
         <section class="trust-section">
             <div class="trust-grid">
                 <div class="trust-item">
-                    <h4>15+</h4>
-                    <p>In-Browser Tools</p>
+                    <h4>246+</h4>
+                    <p>Total Tools Cataloged</p>
                 </div>
                 <div class="trust-item">
-                    <h4>0 B</h4>
-                    <p>Data Sent to Server</p>
+                    <h4>18</h4>
+                    <p>Native Client-Side Apps</p>
                 </div>
                 <div class="trust-item">
                     <h4>100%</h4>
@@ -527,165 +517,33 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <footer>
-            <p>© 2026 ToolsHub · Inspired by the open-source web movement · Hosted on Cloudflare Pages</p>
+            <p>© 2026 ToolsHub · Master Web Tool Portal · Powered by Open-Source (NoSignups.net / FckSignups)</p>
             <p style="margin-top:10px;">
                 <a href="api.html">Developer APIs</a> · <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="https://github.com/armanashkumar123/toolsbox" target="_blank">GitHub Repository</a>
             </p>
         </footer>
     </div>
 
+    <!-- Load Master Tool Dataset -->
+    <script src="tools-data.js"></script>
     <script>
-        const tools = [
-            // Developer & Text Tools (Inspired by NoSignups.net)
-            {
-                name: 'Markdown Editor & Live Preview',
-                desc: 'Split-pane real-time markdown editor with HTML export, scroll sync & live word counts.',
-                icon: '✍️',
-                bg: 'linear-gradient(135deg, #7C3AED, #6366F1)',
-                tag: 'text',
-                url: 'tools/markdown-editor/',
-                keywords: ['markdown', 'editor', 'md', 'html', 'preview', 'writing', 'docs']
-            },
-            {
-                name: 'Regex Tester & Debugger',
-                desc: 'Test regular expressions with real-time match highlighting, regex cheatsheet & replacement mode.',
-                icon: '🔍',
-                bg: 'linear-gradient(135deg, #00F2FE, #4FACFE)',
-                tag: 'dev',
-                url: 'tools/regex-tester/',
-                keywords: ['regex', 'regexp', 'test', 'match', 'pattern', 'expression', 'debug']
-            },
-            {
-                name: 'Base64 Encoder / Decoder',
-                desc: 'Convert text and binary files (images, PDFs) to/from Base64 strings with live previews.',
-                icon: '🔐',
-                bg: 'linear-gradient(135deg, #EC4899, #8B5CF6)',
-                tag: 'dev',
-                url: 'tools/base64-encoder/',
-                keywords: ['base64', 'encode', 'decode', 'text', 'file', 'binary', 'convert']
-            },
-            {
-                name: 'Meta Tag & Open Graph Generator',
-                desc: 'Generate complete HTML meta tags with live social media card previews for Twitter & Facebook.',
-                icon: '🌐',
-                bg: 'linear-gradient(135deg, #10B981, #059669)',
-                tag: 'dev',
-                url: 'tools/meta-tag-generator/',
-                keywords: ['meta', 'tag', 'seo', 'opengraph', 'og', 'twitter', 'card', 'social']
-            },
-            {
-                name: 'Dummy Data & Lorem Ipsum Generator',
-                desc: 'Generate fake Indian personas, mock JSON datasets, and custom Lorem Ipsum text.',
-                icon: '📊',
-                bg: 'linear-gradient(135deg, #F59E0B, #D97706)',
-                tag: 'dev',
-                url: 'tools/dummy-data-generator/',
-                keywords: ['dummy', 'fake', 'lorem', 'ipsum', 'json', 'data', 'user', 'persona']
-            },
-            // Core Utilities & Finance
-            {
-                name: 'EMI Calculator',
-                desc: 'Calculate loan EMIs for Home, Car & Personal loans. Includes interactive pie chart & amortization schedule.',
-                icon: '🏦',
-                bg: 'linear-gradient(135deg, #7C3AED, #4338CA)',
-                tag: 'finance',
-                url: 'tools/emi-calculator/',
-                keywords: ['emi', 'loan', 'home loan', 'car loan', 'personal loan', 'interest', 'india', 'bank']
-            },
-            {
-                name: 'GST Calculator India',
-                desc: 'Calculate GST inclusive & exclusive values across all Indian slabs (5%, 12%, 18%, 28%) with CGST/SGST split.',
-                icon: '🧾',
-                bg: 'linear-gradient(135deg, #059669, #10B981)',
-                tag: 'finance',
-                url: 'tools/gst-calculator/',
-                keywords: ['gst', 'tax', 'cgst', 'sgst', 'igst', 'india', 'calculator', 'amount']
-            },
-            {
-                name: 'Image Compressor',
-                desc: 'Compress JPEG, PNG & WebP images 100% in your browser. Side-by-side comparison & batch ZIP export.',
-                icon: '🖼️',
-                bg: 'linear-gradient(135deg, #EF4444, #DC2626)',
-                tag: 'media',
-                url: 'tools/image-compressor/',
-                keywords: ['image', 'compress', 'photo', 'resize', 'jpeg', 'png', 'webp', 'shrink']
-            },
-            {
-                name: 'JSON Formatter & Validator',
-                desc: 'Beautify, format, minify, and validate JSON data with collapsible tree view & line error detection.',
-                icon: '{ }',
-                bg: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
-                tag: 'dev',
-                url: 'tools/json-formatter/',
-                keywords: ['json', 'format', 'validator', 'beautify', 'minify', 'tree', 'code']
-            },
-            {
-                name: 'Color Palette Generator',
-                desc: 'Generate 5-color aesthetic palettes with spacebar. Includes harmony modes, contrast checker & CSS export.',
-                icon: '🎨',
-                bg: 'linear-gradient(135deg, #EC4899, #F43F5E)',
-                tag: 'media',
-                url: 'tools/color-palette/',
-                keywords: ['color', 'palette', 'hex', 'rgb', 'design', 'scheme', 'picker']
-            },
-            {
-                name: 'QR Code Generator',
-                desc: 'Create custom QR codes for URLs, text, WiFi credentials, and phone calls. Instant PNG download.',
-                icon: '📱',
-                bg: 'linear-gradient(135deg, #8B5CF6, #6D28D9)',
-                tag: 'utility',
-                url: 'tools/qr-code-generator/',
-                keywords: ['qr', 'code', 'wifi', 'url', 'barcode', 'generate', 'scan']
-            },
-            {
-                name: 'Unit Converter Hub',
-                desc: 'Convert 100+ units across 10 categories (Length, Weight, Temp, Speed, Data, Area, Volume).',
-                icon: '📏',
-                bg: 'linear-gradient(135deg, #F59E0B, #B45309)',
-                tag: 'utility',
-                url: 'tools/unit-converter/',
-                keywords: ['unit', 'converter', 'length', 'weight', 'temperature', 'speed', 'kg', 'miles']
-            },
-            {
-                name: 'Age Calculator & Milestones',
-                desc: 'Calculate exact age in years, months & days. Zodiac sign, solar system ages & lifetime milestone tracker.',
-                icon: '🎂',
-                bg: 'linear-gradient(135deg, #EC4899, #BE185D)',
-                tag: 'utility',
-                url: 'tools/age-calculator/',
-                keywords: ['age', 'birthday', 'zodiac', 'days', 'date', 'milestone', 'calculator']
-            },
-            {
-                name: 'Password Generator',
-                desc: 'Generate cryptographically strong passwords with custom length, bulk generation & strength indicator.',
-                icon: '🔑',
-                bg: 'linear-gradient(135deg, #10B981, #047857)',
-                tag: 'utility',
-                url: 'tools/password-generator/',
-                keywords: ['password', 'generator', 'strong', 'security', 'random', 'hash']
-            },
-            {
-                name: 'Text Case Converter',
-                desc: 'Convert text between 12+ case formats (UPPER, lower, Title, camelCase, snake_case, mock case).',
-                icon: '🔤',
-                bg: 'linear-gradient(135deg, #6366F1, #4338CA)',
-                tag: 'text',
-                url: 'tools/text-case-converter/',
-                keywords: ['text', 'case', 'upper', 'lower', 'title', 'camel', 'snake', 'convert']
-            }
-        ];
-
         const grid = document.getElementById('toolsGrid');
         const noResults = document.getElementById('noResults');
+        const visibleCount = document.getElementById('visibleCount');
+        const allTools = window.ALL_TOOLS || [];
 
         function render(cat = 'all', query = '') {
-            const filtered = tools.filter(t => {
-                const matchCat = cat === 'all' || t.tag === cat;
-                const matchQ = !query || t.name.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query) || t.keywords.some(k => k.includes(query));
+            const filtered = allTools.filter(t => {
+                const matchCat = cat === 'all' || (cat === 'native' ? t.isNative : t.tag === cat);
+                const matchQ = !query ||
+                    t.name.toLowerCase().includes(query) ||
+                    t.desc.toLowerCase().includes(query) ||
+                    (t.keywords && t.keywords.some(k => String(k).toLowerCase().includes(query)));
                 return matchCat && matchQ;
             });
+
+            visibleCount.textContent = filtered.length;
 
             if (filtered.length === 0) {
                 grid.innerHTML = '';
@@ -695,14 +553,17 @@
 
             noResults.style.display = 'none';
             grid.innerHTML = filtered.map(t => `
-                <a href="${t.url}" class="tool-card">
+                <a href="${t.url}" ${t.isNative ? '' : 'target="_blank"'} class="tool-card">
                     <div class="tool-top">
                         <div class="tool-icon" style="background:${t.bg}">${t.icon}</div>
-                        <span class="tool-badge">${t.tag}</span>
+                        <span class="tool-badge ${t.isNative ? 'native' : ''}">${t.isNative ? '⚡ NATIVE' : t.tag}</span>
                     </div>
                     <h3>${t.name}</h3>
                     <p>${t.desc}</p>
-                    <div class="tool-arrow">Launch Tool →</div>
+                    <div class="tool-footer">
+                        <span>${t.isNative ? 'Launch Tool →' : 'Open App ↗'}</span>
+                        ${t.stars ? `<span class="tool-stars">${t.stars}</span>` : ''}
+                    </div>
                 </a>
             `).join('');
         }
