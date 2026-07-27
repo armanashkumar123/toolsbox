@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dummy Data & Lorem Ipsum Generator - Fake JSON & Text | ToolsHub</title>
+    <meta name="description" content="Generate custom Lorem Ipsum text, fake user JSON arrays, and realistic Indian personas with instant live generator options. Free, fast, and 100% client-side.">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Dummy Data & Lorem Ipsum Generator",
+      "url": "https://toolshub.example.com/tools/dummy-data-generator",
+      "description": "Generate customizable Lorem Ipsum text, fake user JSON data, and Indian personas instantly.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a1a;
+            --card-bg: rgba(18, 18, 42, 0.75);
+            --card-bg-solid: #12122a;
+            --card-border: rgba(108, 99, 255, 0.25);
+            --card-border-hover: rgba(0, 212, 170, 0.4);
+            --primary: #6C63FF;
+            --primary-hover: #5a52d6;
+            --accent: #00D4AA;
+            --accent-hover: #00b894;
+            --text-main: #ffffff;
+            --text-muted: #a0a0c0;
+            --text-dim: #6c6c8a;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #00D4AA;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.08), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(0, 212, 170, 0.08), transparent 30%);
+            background-attachment: fixed;
+        }
+
+        /* Header */
+        header {
+            padding: 1.25rem 2rem;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent);
+        }
+
+        .logo:hover i {
+            transform: rotate(15deg);
+        }
+
+        .header-badge {
+            background: rgba(108, 99, 255, 0.15);
+            border: 1px solid var(--card-border);
+            color: var(--accent);
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        /* Generator Workspace Grid */
+        .workspace {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Control Panel Card */
+        .panel-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .tabs-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .panel-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tabs-nav {
+            display: flex;
+            background: rgba(10, 10, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.25rem;
+            gap: 0.25rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.65rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn i {
+            font-size: 1rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), #534bae);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.35);
+        }
+
+        /* Controls Options */
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .mode-options {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .mode-options.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .badge-val {
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            padding: 0.15rem 0.55rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        /* Custom Select */
+        select, input[type="text"] {
+            width: 100%;
+            background: rgba(10, 10, 26, 0.7);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.65rem 0.85rem;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25);
+        }
+
+        /* Range Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Number Box */
+        .num-input {
+            width: 60px !important;
+            text-align: center;
+            padding: 0.4rem !important;
+            font-family: var(--font-mono);
+        }
+
+        /* Checkbox Switch & Grid */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--card-border);
+            border-radius: 6px;
+            background: rgba(10, 10, 26, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: transparent;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + .custom-check {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+        }
+
+        .check-label {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            background: rgba(10, 10, 26, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+
+        /* Action Buttons */
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #5a52d6);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(108, 99, 255, 0.5);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #00b894);
+            color: #0a0a1a;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        /* Output Window */
+        .output-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 580px;
+        }
+
+        .output-header {
+            background: rgba(10, 10, 26, 0.9);
+            border-bottom: 1px solid var(--card-border);
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .output-title-group {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .output-title-group i {
+            color: var(--accent);
+        }
+
+        .output-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Stats Strip */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-pill span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Search Filter */
+        .search-box {
+            position: relative;
+            max-width: 220px;
+        }
+
+        .search-box input {
+            padding-left: 2.2rem;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+            font-size: 0.82rem;
+            border-radius: 20px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Content Container */
+        .output-body {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            position: relative;
+            max-height: 650px;
+        }
+
+        /* Text Display Area */
+        .text-view {
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            color: #e0e0f0;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .text-view p {
+            margin-bottom: 1.2rem;
+        }
+
+        /* Syntax Highlight Code Block */
+        .code-view {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            white-space: pre;
+            color: #d4d4d4;
+            tab-size: 4;
+        }
+
+        .json-key { color: #00D4AA; font-weight: 500; }
+        .json-string { color: #ce9178; }
+        .json-number { color: #b5cea8; }
+        .json-boolean { color: #569cd6; font-weight: 600; }
+        .json-null { color: #ff79c6; font-style: italic; }
+
+        /* Indian Persona Cards Grid */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .persona-card {
+            background: rgba(18, 18, 42, 0.9);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+
+        .persona-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-border-hover);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+        }
+
+        .persona-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .persona-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .persona-sub {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .badges-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-id {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(108, 99, 255, 0.15);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            color: #a5a0ff;
+        }
+
+        .badge-id.pan {
+            background: rgba(0, 212, 170, 0.15);
+            border-color: rgba(0, 212, 170, 0.3);
+            color: var(--accent);
+        }
+
+        .persona-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            font-size: 0.82rem;
+            background: rgba(10, 10, 26, 0.5);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+
+        .detail-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .detail-val {
+            color: var(--text-main);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg-solid);
+            border: 1px solid var(--accent);
+            color: var(--text-main);
+            padding: 0.85rem 1.4rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 1.5rem 2rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid var(--card-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        /* Quick Presets Bar */
+        .preset-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .preset-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.3rem 0.65rem;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-pill:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        .empty-search {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-search i {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--card-border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-cubes"></i>
+                <span>ToolsHub</span>
+            </a>
+            <div class="header-badge">
+                <i class="fas fa-bolt"></i> Client-Side Generator
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Hero Title -->
+        <section class="hero-section">
+            <h1>Dummy Data & Lorem Ipsum Generator</h1>
+            <p class="subtitle">Create instant dummy Latin text, structured user JSON arrays, and realistic Indian identity personas for mockups, testing, and development.</p>
+        </section>
+
+        <!-- Workspace Layout -->
+        <div class="workspace">
+            <!-- Left Control Sidebar -->
+            <div class="panel-card">
+                <div class="tabs-header">
+                    <div class="panel-label">Select Generator Mode</div>
+                    <nav class="tabs-nav">
+                        <button class="tab-btn active" data-tab="lorem">
+                            <i class="fas fa-paragraph"></i>
+                            <span>Lorem Ipsum</span>
+                        </button>
+                        <button class="tab-btn" data-tab="json">
+                            <i class="fas fa-code"></i>
+                            <span>Fake JSON</span>
+                        </button>
+                        <button class="tab-btn" data-tab="persona">
+                            <i class="fas fa-address-card"></i>
+                            <span>Indian Persona</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Controls Form -->
+                <div class="controls-group">
+                    
+                    <!-- Mode 1: Lorem Options -->
+                    <div id="opts-lorem" class="mode-options active">
+                        <div class="form-control">
+                            <label class="control-title">Generate Type</label>
+                            <select id="loremType">
+                                <option value="paragraphs" selected>Paragraphs</option>
+                                <option value="words">Words</option>
+                                <option value="sentences">Sentences</option>
+                                <option value="bytes">Bytes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-control">
+                            <div class="label-row">
+                                <label class="control-title" id="loremCountLabel">Count</label>
+                                <span class="badge-val" id="loremBadgeVal">5</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="loremSlider" min="1" max="100" value="5">
+                                <input type="number" id="loremNum" class="num-input" min="1" max="100" value="5">
+                            </div>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="chkStartLorem" checked>
+                                <span class="custom-check"><i class="fas fa-check"></i></span>
+                                <span class="check-label">Start with "Lorem ipsum dolor sit..."</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="chkHtmlTags">
+                                <span class="custom-check"><i class="fas fa-check"></i></span>
+                                <span class="check-label">Wrap with HTML &lt;p&gt; tags</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <div class="panel-label">Quick Presets</div>
+                            <div class="preset-pills">
+                                <div class="preset-pill" onclick="setLoremPreset('paragraphs', 3)">3 Paragraphs</div>
+                                <div class="preset-pill" onclick="setLoremPreset('words', 50)">50 Words</div>
+                                <div class="preset-pill" onclick="setLoremPreset('sentences', 10)">10 Sentences</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mode 2: Fake JSON Options -->
+                    <div id="opts-json" class="mode-options">
+                        <div class="form-control">
+                            <div class="label-row">
+                                <label class="control-title">Number of Users</label>
+                                <span class="badge-val" id="jsonBadgeVal">10</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="jsonSlider" min="1" max="100" value="10">
+                                <input type="number" id="jsonNum" class="num-input" min="1" max="100" value="10">
+                            </div>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="control-title">JSON Indentation</label>
+                            <select id="jsonIndent">
+                                <option value="2" selected>2 Spaces (Standard)</option>
+                                <option value="4">4 Spaces</option>
+                                <option value="0">Minified / Compact</option>
+                            </select>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="control-title">Include Fields</label>
+                            <div class="fields-grid">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="name" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Name</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="email" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Email</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="phone" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Phone</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="address" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Address</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="age" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Age</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="city" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">City</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="occupation" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Occupation</span>
+                                </label>
+                                <label class="checkbox-group">
+                                    <input type="checkbox" class="json-field" value="company" checked>
+                                    <span class="custom-check"><i class="fas fa-check"></i></span>
+                                    <span class="check-label">Company</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mode 3: Persona Options -->
+                    <div id="opts-persona" class="mode-options">
+                        <div class="form-control">
+                            <div class="label-row">
+                                <label class="control-title">Count of Personas</label>
+                                <span class="badge-val" id="personaBadgeVal">6</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="personaSlider" min="1" max="100" value="6">
+                                <input type="number" id="personaNum" class="num-input" min="1" max="100" value="6">
+                            </div>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="control-title">Display View</label>
+                            <select id="personaViewMode">
+                                <option value="cards" selected>Profile Cards Grid</option>
+                                <option value="json">Raw JSON Code</option>
+                            </select>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="control-title">Gender Filter</label>
+                            <select id="personaGender">
+                                <option value="all" selected>All Genders</option>
+                                <option value="Male">Male Only</option>
+                                <option value="Female">Female Only</option>
+                            </select>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="control-title">Filter State</label>
+                            <select id="personaState">
+                                <option value="all" selected>All Indian States</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Delhi NCR">Delhi NCR</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Common Action Buttons -->
+                    <div class="btn-stack">
+                        <button id="btnRegenerate" class="btn btn-outline">
+                            <i class="fas fa-sync-alt" id="refreshIcon"></i> Regenerate Data
+                        </button>
+                        <button id="btnCopy" class="btn btn-primary">
+                            <i class="fas fa-copy"></i> Copy Output
+                        </button>
+                        <button id="btnDownload" class="btn btn-accent">
+                            <i class="fas fa-download"></i> Download File
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Output Display -->
+            <div class="output-card">
+                <!-- Header Toolbar -->
+                <div class="output-header">
+                    <div class="output-title-group">
+                        <i class="fas fa-terminal"></i>
+                        <span class="output-title" id="outputTitle">Generated Output</span>
+                    </div>
+
+                    <!-- Live Search Box -->
+                    <div class="search-box" id="searchBoxContainer" style="display:none;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search in output...">
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="stats-bar">
+                        <div class="stat-pill">Items: <span id="statItems">0</span></div>
+                        <div class="stat-pill">Words: <span id="statWords">0</span></div>
+                        <div class="stat-pill">Chars: <span id="statChars">0</span></div>
+                        <div class="stat-pill">Size: <span id="statSize">0 KB</span></div>
+                    </div>
+                </div>
+
+                <!-- Display Content Area -->
+                <div class="output-body" id="outputBody">
+                    <div id="textView" class="text-view"></div>
+                    <pre id="codeView" class="code-view" style="display:none;"></pre>
+                    <div id="personaView" class="persona-grid" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMsg">Copied to clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <a href="../../index.html">ToolsHub</a>. Premium Client-Side Web Tools. All mock data generated locally.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Data Dictionaries for Generators
+        const LOREM_WORDS = [
+            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "sed", "do",
+            "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua", "ut",
+            "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris",
+            "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat", "duis", "aute", "irure", "in",
+            "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat",
+            "nulla", "pariatur", "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt",
+            "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum",
+            "perspiciatis", "unde", "omnis", "iste", "natus", "error", "sit", "voluptatem", "accusantium",
+            "doloremque", "laudantium", "totam", "rem", "aperiam", "eaque", "ipsa", "quae", "ab",
+            "illo", "inventore", "veritatis", "et", "quasi", "architecto", "beatae", "vitae", "dicta",
+            "sunt", "explicabo", "nemo", "enim", "ipsam", "voluptatem", "quia", "voluptas", "sit",
+            "aspernatur", "aut", "odit", "aut", "fugit", "sed", "quia", "consequuntur", "magni", "dolores"
+        ];
+
+        const INDIAN_DATA = {
+            maleNames: [
+                'Aarav', 'Vihaan', 'Aditya', 'Sai', 'Reyansh', 'Arjun', 'Kabir', 'Rohan', 'Vivaan', 
+                'Dev', 'Ishaan', 'Shaurya', 'Aaryan', 'Atharva', 'Ayaan', 'Krishna', 'Vikram', 'Rajesh', 
+                'Suresh', 'Amit', 'Rahul', 'Karan', 'Deepak', 'Manoj', 'Abhishek', 'Pranav', 'Siddharth', 
+                'Nikhil', 'Gaurav', 'Tarun', 'Harsh', 'Varun', 'Yash', 'Rishabh', 'Kartik', 'Anand'
+            ],
+            femaleNames: [
+                'Aanya', 'Diya', 'Ananya', 'Pari', 'Saanvi', 'Isha', 'Aadhya', 'Avani', 'Riya', 'Kavya', 
+                'Priya', 'Neha', 'Sneha', 'Pooja', 'Shreya', 'Anushka', 'Meera', 'Divya', 'Tanvi', 'Aditi', 
+                'Roshni', 'Kirti', 'Simran', 'Nisha', 'Jyoti', 'Swati', 'Deepika', 'Sonam', 'Preeti', 'Nikita'
+            ],
+            lastNames: [
+                'Sharma', 'Verma', 'Gupta', 'Patel', 'Singh', 'Kumar', 'Joshi', 'Mehta', 'Rao', 'Reddy', 
+                'Nair', 'Iyer', 'Chatterjee', 'Banerjee', 'Deshmukh', 'Kulkarni', 'Patil', 'Agarwal', 'Shah', 
+                'Chawla', 'Kapoor', 'Malhotra', 'Bhatia', 'Saxena', 'Trivedi', 'Pandey', 'Mishra', 'Choudhury', 
+                'Dutta', 'Das', 'Sen', 'Gowda', 'Shetty', 'Pillai', 'Menon'
+            ],
+            states: {
+                "Maharashtra": {
+                    cities: ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
+                    areas: ["Andheri West", "Kothrud", "Dharampeth", "College Road", "Vashi", "Bandra West", "Baner"],
+                    pins: ["400053", "411038", "440010", "422005", "400703", "400050", "411045"]
+                },
+                "Karnataka": {
+                    cities: ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru"],
+                    areas: ["Indiranagar", "Koramangala", "Whitefield", "Gokulam", "HSR Layout", "Jayanagar"],
+                    pins: ["560038", "560034", "560066", "570002", "560102", "560041"]
+                },
+                "Delhi NCR": {
+                    cities: ["New Delhi", "Noida", "Gurugram", "Faridabad"],
+                    areas: ["Connaught Place", "Sector 62", "DLF Phase 3", "Green Park", "Saket", "Golf Course Road"],
+                    pins: ["110001", "201309", "122002", "110016", "110017", "122011"]
+                },
+                "Tamil Nadu": {
+                    cities: ["Chennai", "Coimbatore", "Madurai", "Salem"],
+                    areas: ["T. Nagar", "RS Puram", "Anna Nagar", "Velachery", "Adyar", "Peelamedu"],
+                    pins: ["600017", "641002", "600040", "600042", "600020", "641004"]
+                },
+                "Telangana": {
+                    cities: ["Hyderabad", "Warangal", "Nizamabad"],
+                    areas: ["Banjara Hills", "HITEC City", "Gachibowli", "Jubilee Hills", "Madhapur", "Kondapur"],
+                    pins: ["500034", "500081", "500032", "500033", "500084", "500084"]
+                },
+                "West Bengal": {
+                    cities: ["Kolkata", "Howrah", "Siliguri"],
+                    areas: ["Salt Lake", "Park Street", "Ballygunge", "New Town", "Alipore"],
+                    pins: ["700091", "700016", "700019", "700156", "700027"]
+                },
+                "Gujarat": {
+                    cities: ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+                    areas: ["Navrangpura", "Vesu", "Alkapuri", "CG Road", "Satellite", "Bodakdev"],
+                    pins: ["380009", "395007", "390007", "380015", "380054"]
+                },
+                "Uttar Pradesh": {
+                    cities: ["Lucknow", "Kanpur", "Agra", "Varanasi"],
+                    areas: ["Gomti Nagar", "Hazratganj", "Civil Lines", "Swaroop Nagar", "Indira Nagar"],
+                    pins: ["226010", "226001", "208001", "208002", "226016"]
+                }
+            },
+            occupations: [
+                "Software Engineer", "Data Analyst", "Product Manager", "UX Designer", "Chartered Accountant",
+                "Financial Analyst", "Civil Engineer", "Doctor", "Marketing Manager", "Content Writer",
+                "HR Specialist", "Architect", "Business Analyst", "Operations Manager", "Sales Director",
+                "Research Scientist", "Teacher", "Graphic Designer", "Cybersecurity Specialist", "DevOps Engineer"
+            ],
+            companies: [
+                "TCS", "Infosys", "Wipro", "HCL Tech", "Reliance Industries", "Tata Motors", "HDFC Bank",
+                "ICICI Bank", "Zomato", "Swiggy", "Flipkart", "Paytm", "Razorpay", "Zoho", "Freshworks",
+                "Tech Mahindra", "L&T Infotech", "Airtel", "Jio Platforms", "Acko"
+            ],
+            emailDomains: [
+                "gmail.com", "yahoo.co.in", "outlook.com", "hotmail.com", "icloud.com", "rediffmail.com"
+            ]
+        };
+
+        // DOM Elements
+        const DOM = {
+            tabs: document.querySelectorAll('.tab-btn'),
+            modeOptions: document.querySelectorAll('.mode-options'),
+            // Lorem
+            loremType: document.getElementById('loremType'),
+            loremSlider: document.getElementById('loremSlider'),
+            loremNum: document.getElementById('loremNum'),
+            loremBadgeVal: document.getElementById('loremBadgeVal'),
+            loremCountLabel: document.getElementById('loremCountLabel'),
+            chkStartLorem: document.getElementById('chkStartLorem'),
+            chkHtmlTags: document.getElementById('chkHtmlTags'),
+            // JSON
+            jsonSlider: document.getElementById('jsonSlider'),
+            jsonNum: document.getElementById('jsonNum'),
+            jsonBadgeVal: document.getElementById('jsonBadgeVal'),
+            jsonIndent: document.getElementById('jsonIndent'),
+            jsonFields: document.querySelectorAll('.json-field'),
+            // Persona
+            personaSlider: document.getElementById('personaSlider'),
+            personaNum: document.getElementById('personaNum'),
+            personaBadgeVal: document.getElementById('personaBadgeVal'),
+            personaViewMode: document.getElementById('personaViewMode'),
+            personaGender: document.getElementById('personaGender'),
+            personaState: document.getElementById('personaState'),
+            // Views
+            textView: document.getElementById('textView'),
+            codeView: document.getElementById('codeView'),
+            personaView: document.getElementById('personaView'),
+            // Action Buttons
+            btnRegenerate: document.getElementById('btnRegenerate'),
+            btnCopy: document.getElementById('btnCopy'),
+            btnDownload: document.getElementById('btnDownload'),
+            refreshIcon: document.getElementById('refreshIcon'),
+            // Header & Stats
+            outputTitle: document.getElementById('outputTitle'),
+            searchBoxContainer: document.getElementById('searchBoxContainer'),
+            searchInput: document.getElementById('searchInput'),
+            statItems: document.getElementById('statItems'),
+            statWords: document.getElementById('statWords'),
+            statChars: document.getElementById('statChars'),
+            statSize: document.getElementById('statSize'),
+            // Toast
+            toast: document.getElementById('toast'),
+            toastMsg: document.getElementById('toastMsg')
+        };
+
+        // App State
+        let currentTab = 'lorem';
+        let rawGeneratedOutput = '';
+        let currentGeneratedData = [];
+
+        // Random Helper Utility
+        function randomChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomDigits(length) {
+            let str = '';
+            for (let i = 0; i < length; i++) {
+                str += Math.floor(Math.random() * 10);
+            }
+            return str;
+        }
+
+        function getRandomUppercaseLetters(length) {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let res = '';
+            for (let i = 0; i < length; i++) {
+                res += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            return res;
+        }
+
+        // --- LOREM IPSUM GENERATOR ---
+        function generateLoremSentence(wordCount = null, isFirstSentence = false) {
+            const count = wordCount || randomInt(6, 14);
+            let words = [];
+            
+            if (isFirstSentence && DOM.chkStartLorem.checked) {
+                words = ["Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit"];
+                while (words.length < count) {
+                    words.push(randomChoice(LOREM_WORDS));
+                }
+            } else {
+                for (let i = 0; i < count; i++) {
+                    words.push(randomChoice(LOREM_WORDS));
+                }
+                words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+            }
+
+            // Capitalization & punctuation
+            let sentence = words.join(' ');
+            sentence = sentence.replace(/,/g, ''); // clean double commas
+            
+            // Add a random comma if sentence is long
+            if (words.length > 8 && !sentence.includes(',')) {
+                const mid = Math.floor(words.length / 2);
+                words[mid] += ',';
+                sentence = words.join(' ');
+            }
+
+            return sentence + '.';
+        }
+
+        function generateLoremParagraph(isFirst = false) {
+            const sentenceCount = randomInt(3, 6);
+            let sentences = [];
+            for (let i = 0; i < sentenceCount; i++) {
+                sentences.push(generateLoremSentence(null, isFirst && i === 0));
+            }
+            return sentences.join(' ');
+        }
+
+        function generateLorem() {
+            const type = DOM.loremType.value;
+            const count = parseInt(DOM.loremSlider.value);
+            const useHtml = DOM.chkHtmlTags.checked;
+            let result = '';
+
+            if (type === 'paragraphs') {
+                let paragraphs = [];
+                for (let i = 0; i < count; i++) {
+                    const pText = generateLoremParagraph(i === 0);
+                    paragraphs.push(useHtml ? `<p>${pText}</p>` : pText);
+                }
+                result = paragraphs.join(useHtml ? '\n\n' : '\n\n');
+            } else if (type === 'words') {
+                let words = [];
+                if (DOM.chkStartLorem.checked) {
+                    const prefix = ["Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit"];
+                    words = prefix.slice(0, count);
+                }
+                while (words.length < count) {
+                    words.push(randomChoice(LOREM_WORDS));
+                }
+                let text = words.join(' ');
+                result = useHtml ? `<p>${text}</p>` : text;
+            } else if (type === 'sentences') {
+                let sentences = [];
+                for (let i = 0; i < count; i++) {
+                    sentences.push(generateLoremSentence(null, i === 0));
+                }
+                result = useHtml ? sentences.map(s => `<p>${s}</p>`).join('\n') : sentences.join(' ');
+            } else if (type === 'bytes') {
+                let text = '';
+                while (text.length < count) {
+                    text += (text ? ' ' : '') + generateLoremParagraph(text.length === 0);
+                }
+                text = text.substring(0, count);
+                result = useHtml ? `<p>${text}</p>` : text;
+            }
+
+            return { text: result, count: count };
+        }
+
+        // --- FAKE USER JSON GENERATOR ---
+        function generateFakeUser(index, selectedFields) {
+            const gender = Math.random() > 0.5 ? 'Male' : 'Female';
+            const firstName = gender === 'Male' ? randomChoice(INDIAN_DATA.maleNames) : randomChoice(INDIAN_DATA.femaleNames);
+            const lastName = randomChoice(INDIAN_DATA.lastNames);
+            const fullName = `${firstName} ${lastName}`;
+            const stateName = randomChoice(Object.keys(INDIAN_DATA.states));
+            const stateObj = INDIAN_DATA.states[stateName];
+            const city = randomChoice(stateObj.cities);
+            const area = randomChoice(stateObj.areas);
+            const pin = randomChoice(stateObj.pins);
+            const address = `Flat ${randomInt(101, 909)}, ${area}, ${city}, ${stateName} - ${pin}`;
+            const domain = randomChoice(INDIAN_DATA.emailDomains);
+            const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${randomInt(10, 99)}@${domain}`;
+            const phone = `+91 ${randomChoice(['9', '8', '7', '6'])}${getRandomDigits(9)}`;
+            const age = randomInt(21, 60);
+            const occupation = randomChoice(INDIAN_DATA.occupations);
+            const company = randomChoice(INDIAN_DATA.companies);
+
+            let user = {};
+            user.id = index + 1;
+
+            if (selectedFields.includes('name')) user.name = fullName;
+            if (selectedFields.includes('email')) user.email = email;
+            if (selectedFields.includes('phone')) user.phone = phone;
+            if (selectedFields.includes('address')) user.address = address;
+            if (selectedFields.includes('age')) user.age = age;
+            if (selectedFields.includes('city')) user.city = city;
+            if (selectedFields.includes('occupation')) user.occupation = occupation;
+            if (selectedFields.includes('company')) user.company = company;
+
+            return user;
+        }
+
+        function generateFakeJSON() {
+            const count = parseInt(DOM.jsonSlider.value);
+            const selectedFields = Array.from(DOM.jsonFields)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            let users = [];
+            for (let i = 0; i < count; i++) {
+                users.push(generateFakeUser(i, selectedFields));
+            }
+            return users;
+        }
+
+        // --- INDIAN PERSONA GENERATOR ---
+        function generateIndianPersona(index) {
+            const genderFilter = DOM.personaGender.value;
+            let gender = genderFilter;
+            if (genderFilter === 'all') {
+                gender = Math.random() > 0.5 ? 'Male' : 'Female';
+            }
+
+            const firstName = gender === 'Male' ? randomChoice(INDIAN_DATA.maleNames) : randomChoice(INDIAN_DATA.femaleNames);
+            const lastName = randomChoice(INDIAN_DATA.lastNames);
+            const fullName = `${firstName} ${lastName}`;
+
+            // State Selection
+            const stateFilter = DOM.personaState.value;
+            let stateName = stateFilter;
+            if (stateFilter === 'all') {
+                stateName = randomChoice(Object.keys(INDIAN_DATA.states));
+            }
+            const stateObj = INDIAN_DATA.states[stateName] || INDIAN_DATA.states['Maharashtra'];
+
+            const city = randomChoice(stateObj.cities);
+            const area = randomChoice(stateObj.areas);
+            const pin = randomChoice(stateObj.pins);
+            const doorNo = `${randomInt(10, 150)}/${randomChoice(['A', 'B', 'C', 'D'])}`;
+            const streetAddress = `${doorNo}, ${area}`;
+            const fullAddress = `${streetAddress}, ${city}, ${stateName} - ${pin}`;
+
+            // Dates & Identifiers
+            const age = randomInt(22, 58);
+            const birthYear = 2026 - age;
+            const dob = `${birthYear}-${String(randomInt(1, 12)).padStart(2, '0')}-${String(randomInt(1, 28)).padStart(2, '0')}`;
+            
+            // Aadhaar mock: 12 digits
+            const aadhaar = `${randomInt(2, 9)}${getRandomDigits(3)} ${getRandomDigits(4)} ${getRandomDigits(4)}`;
+            
+            // PAN format: 5 letters (4th is P for Individual), 4 digits, 1 letter
+            const panPrefix = getRandomUppercaseLetters(3) + 'P' + getRandomUppercaseLetters(1);
+            const pan = `${panPrefix}${getRandomDigits(4)}${getRandomUppercaseLetters(1)}`;
+
+            const mobile = `+91 ${randomChoice(['9', '8', '7', '6'])}${getRandomDigits(9)}`;
+            const emailDomain = randomChoice(INDIAN_DATA.emailDomains);
+            const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${randomInt(1, 999)}@${emailDomain}`;
+
+            const occupation = randomChoice(INDIAN_DATA.occupations);
+            const company = randomChoice(INDIAN_DATA.companies);
+            const upiId = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@ok${randomChoice(['axis', 'icici', 'hdfc', 'sbi'])}`;
+
+            return {
+                id: `IND-${2026}-${String(index + 1).padStart(4, '0')}`,
+                fullName,
+                gender,
+                dob,
+                age,
+                aadhaarNumber: aadhaar,
+                panNumber: pan,
+                mobile,
+                email,
+                streetAddress,
+                area,
+                city,
+                state: stateName,
+                pincode: pin,
+                fullAddress,
+                occupation,
+                company,
+                upiId
+            };
+        }
+
+        function generatePersonas() {
+            const count = parseInt(DOM.personaSlider.value);
+            let personas = [];
+            for (let i = 0; i < count; i++) {
+                personas.push(generateIndianPersona(i));
+            }
+            return personas;
+        }
+
+        // --- SYNTAX HIGHLIGHTING FOR JSON ---
+        function highlightJSON(jsonStr) {
+            if (!jsonStr) return '';
+            const escaped = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return escaped.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        // --- RENDER PERSONA CARDS ---
+        function renderPersonaCards(personas) {
+            if (!personas || personas.length === 0) {
+                return `<div class="empty-search"><i class="fas fa-search"></i><p>No matching personas found.</p></div>`;
+            }
+
+            return personas.map(p => {
+                const initials = p.fullName.split(' ').map(n => n[0]).join('');
+                return `
+                    <div class="persona-card">
+                        <div class="persona-header">
+                            <div class="avatar-circle">${initials}</div>
+                            <div class="persona-title">
+                                <div class="persona-name">${p.fullName}</div>
+                                <div class="persona-sub">${p.occupation} @ ${p.company}</div>
+                            </div>
+                        </div>
+
+                        <div class="badges-row">
+                            <span class="badge-id" title="Aadhaar Mock"><i class="fas fa-fingerprint"></i> Aadhaar: ${p.aadhaarNumber}</span>
+                            <span class="badge-id pan" title="PAN Mock"><i class="fas fa-id-card"></i> PAN: ${p.panNumber}</span>
+                        </div>
+
+                        <div class="persona-details">
+                            <div class="detail-item">
+                                <span class="detail-lbl">Mobile</span>
+                                <span class="detail-val">${p.mobile}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-lbl">Age / Gender</span>
+                                <span class="detail-val">${p.age} yrs (${p.gender})</span>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span class="detail-lbl">Email</span>
+                                <span class="detail-val">${p.email}</span>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span class="detail-lbl">Address</span>
+                                <span class="detail-val">${p.fullAddress}</span>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span class="detail-lbl">UPI Handle</span>
+                                <span class="detail-val" style="color:var(--accent); font-family:var(--font-mono);">${p.upiId}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- MAIN GENERATE & RENDER CONTROLLER ---
+        function updateOutput() {
+            const query = DOM.searchInput.value.toLowerCase().trim();
+
+            if (currentTab === 'lorem') {
+                DOM.searchBoxContainer.style.display = 'none';
+                DOM.textView.style.display = 'block';
+                DOM.codeView.style.display = 'none';
+                DOM.personaView.style.display = 'none';
+                DOM.outputTitle.textContent = 'Generated Lorem Ipsum Text';
+
+                const loremRes = generateLorem();
+                rawGeneratedOutput = loremRes.text;
+
+                if (DOM.chkHtmlTags.checked) {
+                    DOM.textView.textContent = rawGeneratedOutput;
+                } else {
+                    DOM.textView.innerHTML = rawGeneratedOutput.split('\n\n').map(p => `<p>${p}</p>`).join('');
+                }
+
+                updateStats(rawGeneratedOutput, loremRes.count);
+
+            } else if (currentTab === 'json') {
+                DOM.searchBoxContainer.style.display = 'block';
+                DOM.textView.style.display = 'none';
+                DOM.codeView.style.display = 'block';
+                DOM.personaView.style.display = 'none';
+
+                let users = generateFakeJSON();
+                currentGeneratedData = users;
+
+                if (query) {
+                    users = users.filter(u => JSON.stringify(u).toLowerCase().includes(query));
+                }
+
+                DOM.outputTitle.textContent = `Generated JSON Array (${users.length} Users)`;
+
+                const indentSpace = parseInt(DOM.jsonIndent.value);
+                rawGeneratedOutput = JSON.stringify(users, null, indentSpace);
+
+                DOM.codeView.innerHTML = highlightJSON(rawGeneratedOutput);
+                updateStats(rawGeneratedOutput, users.length);
+
+            } else if (currentTab === 'persona') {
+                DOM.searchBoxContainer.style.display = 'block';
+                DOM.outputTitle.textContent = 'Generated Indian Personas';
+
+                let personas = generatePersonas();
+                currentGeneratedData = personas;
+
+                if (query) {
+                    personas = personas.filter(p => JSON.stringify(p).toLowerCase().includes(query));
+                }
+
+                const viewMode = DOM.personaViewMode.value;
+                rawGeneratedOutput = JSON.stringify(personas, null, 2);
+
+                if (viewMode === 'cards') {
+                    DOM.textView.style.display = 'none';
+                    DOM.codeView.style.display = 'none';
+                    DOM.personaView.style.display = 'grid';
+                    DOM.personaView.innerHTML = renderPersonaCards(personas);
+                } else {
+                    DOM.textView.style.display = 'none';
+                    DOM.codeView.style.display = 'block';
+                    DOM.personaView.style.display = 'none';
+                    DOM.codeView.innerHTML = highlightJSON(rawGeneratedOutput);
+                }
+
+                updateStats(rawGeneratedOutput, personas.length);
+            }
+        }
+
+        // --- STATS CALCULATOR ---
+        function updateStats(text, itemLength) {
+            DOM.statItems.textContent = itemLength;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            DOM.statWords.textContent = words.toLocaleString();
+            DOM.statChars.textContent = text.length.toLocaleString();
+            
+            // KB size
+            const bytes = new Blob([text]).size;
+            const kb = (bytes / 1024).toFixed(2);
+            DOM.statSize.textContent = `${kb} KB`;
+        }
+
+        // --- TOAST HELPER ---
+        function showToast(message) {
+            DOM.toastMsg.textContent = message;
+            DOM.toast.classList.add('show');
+            setTimeout(() => {
+                DOM.toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // --- COPY & DOWNLOAD HANDLERS ---
+        async function copyOutput() {
+            if (!rawGeneratedOutput) return;
+            try {
+                await navigator.clipboard.writeText(rawGeneratedOutput);
+                showToast('Output copied to clipboard!');
+            } catch (err) {
+                // Fallback copy
+                const textarea = document.createElement('textarea');
+                textarea.value = rawGeneratedOutput;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Output copied to clipboard!');
+            }
+        }
+
+        function downloadOutput() {
+            if (!rawGeneratedOutput) return;
+            
+            let ext = 'txt';
+            let mime = 'text/plain';
+            let filename = 'dummy-data';
+
+            if (currentTab === 'lorem') {
+                filename = 'lorem-ipsum';
+                ext = DOM.chkHtmlTags.checked ? 'html' : 'txt';
+                mime = DOM.chkHtmlTags.checked ? 'text/html' : 'text/plain';
+            } else if (currentTab === 'json' || (currentTab === 'persona' && DOM.personaViewMode.value === 'json')) {
+                filename = currentTab === 'json' ? 'fake-users' : 'indian-personas';
+                ext = 'json';
+                mime = 'application/json';
+            } else if (currentTab === 'persona') {
+                filename = 'indian-personas';
+                ext = 'json';
+                mime = 'application/json';
+            }
+
+            const blob = new Blob([rawGeneratedOutput], { type: mime });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`Downloaded as ${filename}.${ext}`);
+        }
+
+        // --- PRESET HELPER ---
+        window.setLoremPreset = function(type, val) {
+            DOM.loremType.value = type;
+            DOM.loremSlider.value = val;
+            DOM.loremNum.value = val;
+            DOM.loremBadgeVal.textContent = val;
+            updateOutput();
+        };
+
+        // --- EVENT LISTENERS & BINDINGS ---
+        
+        // Tab Switching
+        DOM.tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                DOM.tabs.forEach(t => t.classList.remove('active'));
+                btn.classList.add('active');
+                
+                currentTab = btn.dataset.tab;
+                
+                // Show options pane for current tab
+                DOM.modeOptions.forEach(opt => opt.classList.remove('active'));
+                document.getElementById(`opts-${currentTab}`).classList.add('active');
+
+                // Clear search box on tab switch
+                DOM.searchInput.value = '';
+
+                updateOutput();
+            });
+        });
+
+        // Sync Sliders with Number Inputs
+        function bindSliderAndNum(slider, numInput, badge) {
+            slider.addEventListener('input', (e) => {
+                numInput.value = e.target.value;
+                badge.textContent = e.target.value;
+                updateOutput();
+            });
+
+            numInput.addEventListener('input', (e) => {
+                let val = parseInt(e.target.value) || 1;
+                if (val < 1) val = 1;
+                if (val > 100) val = 100;
+                slider.value = val;
+                badge.textContent = val;
+                updateOutput();
+            });
+        }
+
+        bindSliderAndNum(DOM.loremSlider, DOM.loremNum, DOM.loremBadgeVal);
+        bindSliderAndNum(DOM.jsonSlider, DOM.jsonNum, DOM.jsonBadgeVal);
+        bindSliderAndNum(DOM.personaSlider, DOM.personaNum, DOM.personaBadgeVal);
+
+        // Lorem Input Listeners
+        DOM.loremType.addEventListener('change', (e) => {
+            const type = e.target.value;
+            DOM.loremCountLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Count';
+            updateOutput();
+        });
+        DOM.chkStartLorem.addEventListener('change', updateOutput);
+        DOM.chkHtmlTags.addEventListener('change', updateOutput);
+
+        // JSON Input Listeners
+        DOM.jsonIndent.addEventListener('change', updateOutput);
+        DOM.jsonFields.forEach(field => field.addEventListener('change', updateOutput));
+
+        // Persona Input Listeners
+        DOM.personaViewMode.addEventListener('change', updateOutput);
+        DOM.personaGender.addEventListener('change', updateOutput);
+        DOM.personaState.addEventListener('change', updateOutput);
+
+        // Search Filter Input
+        DOM.searchInput.addEventListener('input', updateOutput);
+
+        // Regenerate Button Animation
+        DOM.btnRegenerate.addEventListener('click', () => {
+            DOM.refreshIcon.style.transition = 'transform 0.5s ease';
+            DOM.refreshIcon.style.transform = 'rotate(360deg)';
+            setTimeout(() => { DOM.refreshIcon.style.transform = 'none'; }, 500);
+            updateOutput();
+        });
+
+        // Action Buttons
+        DOM.btnCopy.addEventListener('click', copyOutput);
+        DOM.btnDownload.addEventListener('click', downloadOutput);
+
+        // Initial Generation on Page Load
+        updateOutput();
+    </script>
+</body>
+</html>
