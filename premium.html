@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcroVault Premium — ₹199/mo Cybersecurity Intelligence</title>
+    <meta name="description" content="AcroVault Premium: Zero-day exploit intel, dark web leak feeds, rapid cybersecurity news, and premium Telegram channel access. ₹199/month.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --void: #0a0a0a; --surface: #121212; --surface-glass: rgba(18, 18, 18, 0.7);
+            --green: #00ff41; --green-dim: rgba(0, 255, 65, 0.15); --green-glow: rgba(0, 255, 65, 0.3);
+            --cyan: #00d4ff; --cyan-dim: rgba(0, 212, 255, 0.15);
+            --red: #ff3131; --red-dim: rgba(255, 49, 49, 0.15);
+            --text: #e5e2e1; --text-muted: #84967e; --border: rgba(0, 255, 65, 0.2);
+            --font-mono: 'JetBrains Mono', monospace; --font-label: 'Space Mono', monospace; --font-body: 'Inter', sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--void); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.015) 2px, rgba(0, 255, 65, 0.015) 4px); pointer-events: none; z-index: 9999; }
+        .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+        .content { position: relative; z-index: 1; }
+
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--green); font-family: var(--font-mono); font-weight: 700; font-size: 1.2rem; text-shadow: 0 0 10px var(--green-glow); }
+        .nav-brand .bracket { color: var(--text-muted); }
+
+        .premium-hero { padding: 160px 32px 80px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .premium-hero .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border: 1px solid var(--red); font-family: var(--font-label); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 32px; box-shadow: 0 0 20px var(--red-dim); }
+        .premium-hero h1 { font-family: var(--font-mono); font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 700; margin-bottom: 20px; }
+        .premium-hero h1 .price { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
+        .premium-hero .sub { font-size: 1rem; color: var(--text-muted); margin-bottom: 48px; line-height: 1.6; }
+
+        .features-grid { max-width: 900px; margin: 0 auto; padding: 0 32px 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .feature-card { background: var(--surface-glass); border: 1px solid var(--border); backdrop-filter: blur(12px); padding: 32px; display: flex; flex-direction: column; gap: 16px; transition: all 0.3s ease; }
+        .feature-card:hover { border-color: var(--green); box-shadow: 0 0 20px var(--green-dim); }
+        .feature-card .f-icon { font-size: 32px; }
+        .feature-card h3 { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 600; }
+        .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+        .cta-section { max-width: 600px; margin: 0 auto; padding: 0 32px 100px; text-align: center; }
+        .cta-section .price-block { background: var(--surface-glass); border: 2px solid var(--green); padding: 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; box-shadow: 0 0 40px var(--green-dim); }
+        .price-block .amount { font-family: var(--font-mono); font-size: 3rem; font-weight: 700; color: var(--green); text-shadow: 0 0 30px var(--green-glow); }
+        .price-block .period { font-family: var(--font-label); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.1em; }
+        .price-block ul { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 12px; }
+        .price-block li { font-family: var(--font-label); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; }
+        .price-block li::before { content: '▸ '; color: var(--green); font-weight: 700; }
+
+        .btn-subscribe { display: inline-flex; align-items: center; gap: 8px; padding: 16px 40px; background: var(--green); border: none; color: var(--void); font-family: var(--font-mono); font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; text-decoration: none; box-shadow: 0 0 30px var(--green-glow); }
+        .btn-subscribe:hover { box-shadow: 0 0 50px var(--green-glow); transform: translateY(-2px); }
+
+        .telegram-section { max-width: 600px; margin: 0 auto; padding: 0 32px 100px; text-align: center; }
+        .telegram-card { background: var(--surface-glass); border: 1px solid var(--cyan-dim); padding: 32px; }
+        .telegram-card h3 { font-family: var(--font-mono); color: var(--cyan); margin-bottom: 12px; }
+        .telegram-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+        .btn-telegram { display: inline-flex; padding: 12px 28px; border: 1px solid var(--cyan); color: var(--cyan); font-family: var(--font-label); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s ease; }
+        .btn-telegram:hover { background: var(--cyan-dim); box-shadow: 0 0 20px var(--cyan-dim); }
+
+        footer { border-top: 1px solid var(--border); padding: 48px 32px; text-align: center; font-family: var(--font-label); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted); }
+        footer a { color: var(--green); text-decoration: none; }
+
+        @media (max-width: 768px) { .premium-hero { padding: 120px 16px 60px; } .features-grid, .cta-section, .telegram-section { padding-left: 16px; padding-right: 16px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="content">
+        <nav>
+            <a href="/" class="nav-brand"><span class="bracket">[</span>ACROVAULT<span class="bracket">]</span></a>
+        </nav>
+
+        <section class="premium-hero">
+            <div class="badge">🔴 CLASSIFIED INTELLIGENCE ACCESS</div>
+            <h1>Premium Intel at <span class="price">₹199/mo</span></h1>
+            <p class="sub">Get ahead of threats with real-time zero-day intelligence, dark web breach monitoring, and an exclusive community of cybersecurity professionals.</p>
+        </section>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="f-icon">💀</div>
+                <h3>Zero-Day Exploits</h3>
+                <p>Early access to unreported vulnerability intelligence before public disclosure. Stay ahead of the threat landscape.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon">🌐</div>
+                <h3>Dark Web Leak Feeds</h3>
+                <p>Curated breach and leak intelligence from dark web marketplaces. Know when credentials are compromised.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon">⚡</div>
+                <h3>Rapid Cyber News</h3>
+                <p>Real-time alerts on active threats, critical patches, and incidents. Delivered faster than mainstream feeds.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon">📱</div>
+                <h3>Premium Telegram</h3>
+                <p>Exclusive private channel with direct intel drops, tool releases, and community discussions with verified professionals.</p>
+            </div>
+        </div>
+
+        <section class="cta-section">
+            <div class="price-block">
+                <div class="amount">₹199</div>
+                <div class="period">PER MONTH</div>
+                <ul>
+                    <li>Zero-Day Exploit Intelligence</li>
+                    <li>Dark Web Breach Monitoring</li>
+                    <li>Rapid Threat News Alerts</li>
+                    <li>Premium Telegram Channel Access</li>
+                    <li>All 200+ Free Tools — Always Free</li>
+                    <li>Priority Support</li>
+                </ul>
+                <a href="#" class="btn-subscribe">SUBSCRIBE_NOW →</a>
+            </div>
+        </section>
+
+        <section class="telegram-section">
+            <div class="telegram-card">
+                <h3>📡 JOIN THE NETWORK</h3>
+                <p>Connect with the AcroVault community on Telegram for free previews and announcements.</p>
+                <a href="#" class="btn-telegram">JOIN TELEGRAM →</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 ACROVAULT — CYBERSECURITY INTELLIGENCE PLATFORM</p>
+            <p style="margin-top:12px;"><a href="/">HOME</a> · <a href="about.html">ABOUT</a> · <a href="privacy.html">PRIVACY</a> · <a href="terms.html">TERMS</a></p>
+        </footer>
+    </div>
+</body>
+</html>
