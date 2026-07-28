@@ -33,10 +33,10 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text-main); }
         
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.5); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; position: relative; }
-        .btn-premium::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); box-shadow: 0 0 20px var(--cyan); opacity: 0.5; animation: pulseGlow 2s alternate infinite; z-index: -1; }
-        @keyframes pulseGlow { 0% { opacity: 0.2; transform: scale(1); } 100% { opacity: 0.6; transform: scale(1.05); } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.5); transform: translateY(-1px); }
+        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
+        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
         .btn-premium:active { transform: scale(0.95); }
         
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
