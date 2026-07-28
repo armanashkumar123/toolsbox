@@ -97,8 +97,10 @@
         .table-responsive { width: 100%; padding-bottom: 24px; }
         .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
         
-        .matrix-table th { padding: 16px 24px; text-align: center; font-size: 1.25rem; font-weight: 800; color: #fff; border: none; background: transparent; }
-        .matrix-table th:first-child { text-align: left; font-size: 1.5rem; color: #fff; }
+        .matrix-table thead { position: sticky; top: 80px; z-index: 100; }
+        .matrix-table th { padding: 16px 24px; text-align: center; font-size: 1.25rem; font-weight: 800; color: #fff; background: rgba(13, 14, 21, 0.8); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:first-child { text-align: left; font-size: 1.5rem; border-radius: 12px 0 0 12px; border-left: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:last-child { border-radius: 0 12px 12px 0; border-right: 1px solid rgba(255,255,255,0.1); }
         .matrix-table th:nth-child(3) { color: var(--cyan); }
         
         /* Row Cards (Elementor Style) */
