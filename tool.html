@@ -3,214 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tool Details — AcroVault</title>
+    <title>Tool Detail — AcroVault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg: #0c0c10; --surface: rgba(20, 20, 28, 0.6); --surface-solid: #14141c;
-            --primary: #00f0ff; --primary-dim: rgba(0, 240, 255, 0.12);
-            --secondary: #a855f7;
-            --accent: #00ff94;
-            --text: #eeeef0; --text-secondary: #8b8b9e;
-            --border: rgba(255, 255, 255, 0.08); --border-hover: rgba(0, 240, 255, 0.3);
-            --glass: blur(20px); --radius: 16px; --radius-sm: 10px;
-            --font-display: 'Outfit', sans-serif; --font-body: 'Inter', sans-serif;
+            --bg: #0a0a0b; --surface: #131314; --surface-hover: #1c1c1e;
+            --border: #27272a; --primary: #3e52ff; --primary-hover: #5a6eff;
+            --text-main: #ffffff; --text-muted: #a1a1aa;
+            --radius: 4px; --radius-lg: 8px;
+            --font-display: 'Geist', sans-serif; --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
         }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; }
-        .bg-ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse at 50% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 60%); }
-        .bg-dots { position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 28px 28px; }
-        .content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
-
-        nav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 64px); max-width: 1320px; z-index: 100;
-            padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(12, 12, 16, 0.7); backdrop-filter: var(--glass);
-            border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-        .nav-brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .nav-brand-icon i { color: #000; width: 20px; height: 20px; }
-        .nav-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.2s; }
-        .nav-links a:hover { color: var(--primary); }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         
-        .btn-premium-nav {
-            padding: 8px 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-sm); color: #000 !important;
-            text-decoration: none; font-weight: 600; font-size: 0.85rem;
-            transition: all 0.3s; box-shadow: 0 0 20px var(--primary-dim);
-        }
-        .btn-premium-nav:hover { box-shadow: 0 0 30px rgba(0,240,255,0.25); transform: translateY(-1px); }
-
-        .menu-btn { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 4px; }
-        .mobile-menu {
-            display: none; position: fixed; top: 80px; left: 16px; right: 16px;
-            background: var(--surface-solid); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 16px; z-index: 99;
-            flex-direction: column; gap: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-        .mobile-menu.active { display: flex; }
-        .mobile-menu a {
-            color: var(--text); text-decoration: none; padding: 12px;
-            border-radius: var(--radius-sm); background: rgba(255,255,255,0.05);
-            text-align: center; font-weight: 500;
-        }
-
-        .main-container { max-width: 900px; margin: 0 auto; padding: 160px 32px 100px; width: 100%; flex: 1; }
+        nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(10,10,11,0.95); border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; backdrop-filter: blur(8px); }
+        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); }
+        .nav-brand svg { width: 20px; height: 20px; color: var(--primary); }
+        .nav-brand-text { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-main); }
+        .btn-upgrade { background: var(--primary); color: #fff !important; padding: 6px 16px; border-radius: var(--radius); font-weight: 500; }
         
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-bottom: 32px; transition: 0.2s; }
-        .back-link:hover { color: var(--primary); transform: translateX(-4px); }
-
-        .tool-header {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 48px;
-            backdrop-filter: var(--glass); position: relative; overflow: hidden;
-            margin-bottom: 32px; animation: fadeUp 0.6s forwards; opacity: 0; transform: translateY(20px);
-        }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-        .tool-header::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .tool-icon-large {
-            width: 72px; height: 72px; border-radius: 20px;
-            background: var(--primary-dim); border: 1px solid rgba(0, 240, 255, 0.2);
-            display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
-            box-shadow: 0 0 30px var(--primary-dim);
-        }
-        .tool-icon-large i { color: var(--primary); width: 36px; height: 36px; }
-
-        .tool-cat-badge {
-            display: inline-block; padding: 6px 16px; border-radius: 100px;
-            background: var(--surface-solid); border: 1px solid var(--border);
-            color: var(--text-secondary); font-size: 0.8rem; font-weight: 600; margin-bottom: 16px;
-        }
-
-        .tool-title { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
-        .tool-desc-full { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; max-width: 700px; margin-bottom: 32px; }
-
-        .action-row { display: flex; gap: 16px; flex-wrap: wrap; }
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 14px 28px; background: var(--primary); color: #000;
-            text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 1rem;
-            border-radius: var(--radius-sm); transition: all 0.3s; box-shadow: 0 0 20px var(--primary-dim);
-        }
-        .btn-primary:hover { box-shadow: 0 0 30px var(--primary-glow); transform: translateY(-2px); }
-
-        .tool-meta {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-            animation: fadeUp 0.6s 0.2s forwards; opacity: 0; transform: translateY(20px);
-        }
-        .meta-card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 32px; backdrop-filter: var(--glass);
-        }
-        .meta-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-        .meta-content { color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+        .container { max-width: 1280px; margin: 100px auto 80px; padding: 0 32px; display: grid; grid-template-columns: 300px 1fr; gap: 48px; }
         
-        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .tag { padding: 4px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; color: var(--text); }
+        /* Sidebar Metadata */
+        .sidebar { display: flex; flex-direction: column; gap: 24px; }
+        .meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+        .meta-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .meta-value { font-size: 0.95rem; font-weight: 500; word-break: break-all; }
+        .meta-value a { color: var(--primary); text-decoration: none; }
+        .meta-value a:hover { text-decoration: underline; }
+        
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { background: var(--bg); border: 1px solid var(--border); padding: 4px 8px; border-radius: 2px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
 
-        footer { border-top: 1px solid var(--border); padding: 48px 32px; text-align: center; color: var(--text-secondary); font-size: 0.85rem; margin-top: auto; }
-        footer a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        /* Main Content */
+        .header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .title-area h1 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .category-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+        
+        .btn-launch { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: var(--radius); font-weight: 500; font-family: var(--font-body); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: background 0.2s; }
+        .btn-launch:hover { background: var(--primary-hover); }
 
-        @media (max-width: 768px) {
-            nav { width: calc(100% - 32px); padding: 0 16px; }
-            .nav-links { display: none; }
-            .menu-btn { display: block; }
-            .main-container { padding: 120px 16px 60px; }
-            .tool-header { padding: 32px 24px; }
-            .tool-meta { grid-template-columns: 1fr; }
+        .content { font-size: 1.05rem; color: #d4d4d8; line-height: 1.7; max-width: 800px; }
+        .content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-main); margin: 32px 0 16px; font-weight: 600; }
+        .content p { margin-bottom: 16px; }
+
+        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px; grid-column: span 2; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 24px; }
+            footer { grid-column: span 1; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-ambient"></div>
-    <div class="bg-dots"></div>
-    
-    <div class="content">
-        <nav id="navbar">
-            <a href="/" class="nav-brand">
-                <div class="nav-brand-icon"><i data-lucide="shield-check"></i></div>
-                <span class="nav-brand-text">AcroVault</span>
-            </a>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="about.html">About</a>
-                <a href="premium.html" class="btn-premium-nav">Get Premium</a>
-            </div>
-            <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.toggle('active')">
-                <i data-lucide="menu"></i>
-            </button>
-        </nav>
-
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="/">Home</a>
+    <nav>
+        <a href="/" class="nav-brand">
+            <i data-lucide="shield"></i>
+            <span class="nav-brand-text">AcroVault</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Directory</a>
             <a href="about.html">About</a>
-            <a href="premium.html" class="btn-premium-nav">Get Premium</a>
+            <a href="premium.html" class="btn-upgrade">Premium</a>
         </div>
+    </nav>
 
-        <div class="main-container">
-            <a href="/" class="back-link"><i data-lucide="arrow-left"></i> Back to Directory</a>
-            
-            <div id="loading" style="text-align:center; padding:100px; color:var(--text-secondary);">
-                <i data-lucide="loader-2" style="animation: spin 1s linear infinite; width: 40px; height: 40px;"></i>
-                <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="meta-card">
+                <span class="meta-label">Access Type</span>
+                <span class="meta-value">Free / Open Source</span>
             </div>
-            <div id="error" style="display:none; text-align:center; padding:100px; color:var(--danger);">
-                <i data-lucide="alert-circle" style="width: 48px; height: 48px; margin-bottom:16px;"></i>
-                <h2>Tool not found</h2>
-                <p>The requested tool could not be located in the vault.</p>
+            <div class="meta-card">
+                <span class="meta-label">Source URL</span>
+                <span class="meta-value" id="toolUrlDisplay"><a href="#" target="_blank">Loading...</a></span>
             </div>
-            
-            <div id="toolContent" style="display:none;">
-                <div class="tool-header">
-                    <div class="tool-icon-large"><i id="tIcon" data-lucide="box"></i></div>
-                    <div class="tool-cat-badge" id="tCat">Category</div>
-                    <h1 class="tool-title" id="tTitle">Tool Name</h1>
-                    <p class="tool-desc-full" id="tDesc">Full description here.</p>
-                    
-                    <div class="action-row">
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" id="tBtn">
-                            Launch Tool <i data-lucide="external-link"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="tool-meta">
-                    <div class="meta-card">
-                        <div class="meta-title"><i data-lucide="info"></i> Details</div>
-                        <div class="meta-content">
-                            <p><strong>URL:</strong> <span id="tUrlDomain">example.com</span></p>
-                            <p style="margin-top:8px;"><strong>Access:</strong> Free Open Source / Public</p>
-                            <div class="tags" id="tTags"></div>
-                        </div>
-                    </div>
-                    <div class="meta-card">
-                        <div class="meta-title"><i data-lucide="shield"></i> Security Notice</div>
-                        <div class="meta-content">
-                            Ensure you have authorization before using any offensive security tools against external targets. Always use in isolated environments.
-                        </div>
-                    </div>
+            <div class="meta-card">
+                <span class="meta-label">Tags</span>
+                <div class="tag-list" id="toolTags">
+                    <span class="tag">INTEL</span>
                 </div>
             </div>
-        </div>
+        </aside>
 
-        <footer>
-            <p>© 2026 AcroVault — Cybersecurity Intelligence Platform</p>
-            <p style="margin-top:10px;"><a href="/">Home</a> · <a href="premium.html">Premium</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
-        </footer>
+        <main>
+            <div class="header">
+                <div class="title-area">
+                    <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
+                    <h1 id="toolName">Loading...</h1>
+                </div>
+                <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
+                    Launch Tool <i data-lucide="external-link" style="width:18px;height:18px;"></i>
+                </a>
+            </div>
+
+            <div class="content" id="toolDesc">
+                Loading intelligence data...
+            </div>
+        </main>
     </div>
 
     <script src="tools-data.js"></script>
@@ -223,60 +122,57 @@
             'exploit-directory': 'bomb', 'malware-courses': 'graduation-cap',
             'digital-forensics': 'scan-search', 'port-scanners': 'network',
             'detection-tools': 'car', 'api-gateway': 'server', 'ethical-hacking': 'book-open',
-            'security-learning': 'gamepad-2', 'ai-vuln-scanner': 'eye',
-            'pentest-reports': 'file-text', 'jailbreak-ai': 'unlock',
-            'api-key-scanning': 'key', 'photo-forensics': 'camera',
-            'person-osint': 'user-search', 'dark-web-search': 'globe',
-            'red-team': 'target', 'geo-osint': 'map-pin',
-            'ai-infra-attack': 'cloud-lightning', 'dark-web-osint': 'moon',
-            'esp32-offensive': 'chip', 'image-video-osint': 'image',
             'breach-lookup': 'alert-triangle'
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            const tools = window.ACROVAULT_TOOLS || [];
-            const tool = tools.find(t => t.id === id);
-
-            document.getElementById('loading').style.display = 'none';
-
-            if (!tool) {
-                document.getElementById('error').style.display = 'block';
-                return;
-            }
-
-            document.getElementById('toolContent').style.display = 'block';
+        const urlParams = new URLSearchParams(window.location.search);
+        const toolId = urlParams.get('id');
+        const tools = window.ACROVAULT_TOOLS || [];
+        
+        const tool = tools.find(t => t.id === toolId);
+        
+        if (tool) {
             document.title = `${tool.name} — AcroVault`;
-
-            document.getElementById('tTitle').textContent = tool.name;
-            document.getElementById('tDesc').textContent = tool.desc;
-            document.getElementById('tCat').textContent = tool.categoryName;
+            document.getElementById('toolName').textContent = tool.name;
             
-            const iconName = CAT_ICONS[tool.category] || 'box';
-            document.getElementById('tIcon').setAttribute('data-lucide', iconName);
+            const icon = CAT_ICONS[tool.category] || 'box';
+            document.getElementById('toolCategory').innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i> <span>${tool.categoryName}</span>`;
             
-            document.getElementById('tBtn').href = tool.url;
+            document.getElementById('toolUrlBtn').href = tool.url;
             
-            try {
-                document.getElementById('tUrlDomain').textContent = new URL(tool.url).hostname;
-            } catch {
-                document.getElementById('tUrlDomain').textContent = tool.url;
+            const urlDisplay = document.getElementById('toolUrlDisplay');
+            let shortUrl = tool.url;
+            try { shortUrl = new URL(tool.url).hostname; } catch(e) {}
+            urlDisplay.innerHTML = `<a href="${tool.url}" target="_blank" rel="noopener">${shortUrl}</a>`;
+            
+            // Build Description
+            let descHtml = `<p>${tool.desc}</p>`;
+            descHtml += `<h2>Overview</h2><p>This tool provides intelligence gathering and technical analysis capabilities tailored for ${tool.categoryName.toLowerCase()} workflows.</p>`;
+            
+            if (tool.nativePath) {
+                document.getElementById('toolUrlBtn').href = tool.nativePath;
+                document.getElementById('toolUrlBtn').innerHTML = `Run Native Tool <i data-lucide="play" style="width:18px;height:18px;"></i>`;
+                descHtml += `<h2>Execution Environment</h2><p>This tool executes securely within the local browser sandbox. No data is transmitted to AcroVault servers during its operation.</p>`;
             }
 
+            document.getElementById('toolDesc').innerHTML = descHtml;
+
+            // Tags
+            let tagsHtml = '';
             if (tool.tags && tool.tags.length > 0) {
-                document.getElementById('tTags').innerHTML = tool.tags.map(t => `<span class="tag">${t}</span>`).join('');
+                tagsHtml = tool.tags.map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
+            } else {
+                tagsHtml = `<span class="tag">${tool.category.toUpperCase()}</span><span class="tag">INTEL</span>`;
             }
+            document.getElementById('toolTags').innerHTML = tagsHtml;
+            
+        } else {
+            document.getElementById('toolName').textContent = "Tool Not Found";
+            document.getElementById('toolDesc').innerHTML = "<p>The requested intelligence module could not be located in the vault.</p>";
+            document.getElementById('toolUrlBtn').style.display = 'none';
+        }
 
-            lucide.createIcons();
-        });
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) { document.getElementById('navbar').classList.add('scrolled'); }
-            else { document.getElementById('navbar').classList.remove('scrolled'); }
-        });
+        lucide.createIcons();
     </script>
 </body>
 </html>
