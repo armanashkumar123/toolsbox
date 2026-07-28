@@ -118,7 +118,9 @@
             .hero h1 { font-size: 2.2rem; }
             .tool-grid { grid-template-columns: 1fr; }
             .hero { padding: 140px 0 40px; }
-            .hero.search-active { padding: 110px 0 20px; }
+            .hero.search-active { padding: 80px 0 0px; }
+            .hero.search-active .search-container { margin-bottom: 12px; }
+            .hero-pill { max-height: 100px; padding: 10px 16px; white-space: normal; line-height: 1.4; font-size: 0.7rem; text-align: left; }
             .filter-btn { padding: 8px 14px; font-size: 0.8rem; }
         }
     </style>
@@ -146,7 +148,7 @@
     <div class="container">
         <section class="hero">
             <div class="hero-pill"><div class="hero-dot"></div>1,000+ Tools · Instant-Search · Zero Bullsh*t Cyber Security</div>
-            <h1>The <span style="color: var(--cyan);">Raw</span> <span style="color: var(--purple);">Unfiltered</span> Directory for<br>Tools and Cyber Security</h1>
+            <h1>The <span style="white-space: nowrap"><span style="color: var(--cyan);">Raw</span> <span style="color: var(--purple);">Unfiltered</span></span> Directory for<br>Tools and Cyber Security</h1>
             <p>1,000+ Instant-Search Tools for Aggressive Cyber Security<br>Built with <span style="font-weight:bold; color:var(--purple)">Zero Bullsh*t</span></p>
             
             <div class="search-container">
