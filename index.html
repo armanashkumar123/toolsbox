@@ -121,7 +121,8 @@
             .hero { padding: 140px 0 40px; }
             .hero.search-active { padding: 80px 0 0px; }
             .hero.search-active .search-container { margin-bottom: 12px; }
-            .hero-pill { padding: 8px 12px; white-space: nowrap; font-size: clamp(0.55rem, 2.8vw, 0.75rem); }
+            .hero-pill { display: flex; align-items: center; justify-content: center; margin: 0 auto 32px auto; width: max-content; max-width: 100vw; padding: 8px 12px; white-space: nowrap; font-size: clamp(0.5rem, 2.5vw, 0.75rem); }
+            .hero.search-active .hero-pill { margin: 0 auto; }
             .filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; margin-bottom: 32px; padding-bottom: 8px; }
             .filters::-webkit-scrollbar { display: none; }
             .filter-btn { padding: 8px 14px; font-size: 0.8rem; flex-shrink: 0; white-space: nowrap; }
