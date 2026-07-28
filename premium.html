@@ -59,12 +59,19 @@
         .trust-badges { display: flex; justify-content: center; gap: 40px; margin-bottom: 80px; opacity: 0.5; filter: grayscale(100%); }
         .trust-badge { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 1.2rem; }
         
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 100px; }
-        .pricing-card { background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.3s; }
-        .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 100px; perspective: 1000px; }
+        .pricing-card { background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.3s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.5s; }
+        .pricing-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.3); }
         .pricing-card.popular { background: rgba(13, 14, 21, 0.9); border: 1px solid rgba(0, 240, 255, 0.4); box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 40px rgba(0, 240, 255, 0.05); transform: scale(1.05); z-index: 10; }
         .pricing-card.popular::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); box-shadow: 0 0 20px var(--cyan); }
-        .pricing-card.popular:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 240, 255, 0.3); }
+        .pricing-card.popular:hover { transform: scale(1.07) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 60px rgba(0, 240, 255, 0.4); }
         .popular-badge { position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
@@ -84,30 +91,31 @@
         .btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; border: none; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.2); }
         .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
 
-        .matrix-section { margin-bottom: 160px; }
-        .matrix-title { text-align: center; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 80px; letter-spacing: -0.03em; }
+        .matrix-section { margin-bottom: 120px; }
+        .matrix-title { text-align: center; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 60px; letter-spacing: -0.03em; }
         
-        .table-responsive { width: 100%; overflow-x: auto; padding-bottom: 40px; -webkit-overflow-scrolling: touch; }
-        .matrix-table { width: 100%; min-width: 800px; border-collapse: collapse; }
+        .table-responsive { width: 100%; padding-bottom: 24px; }
+        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
         
-        .matrix-table th { padding: 24px 24px 40px; text-align: center; font-size: 1.35rem; font-weight: 700; color: #fff; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .matrix-table th:first-child { text-align: left; font-size: 1.2rem; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .matrix-table th:nth-child(3) { color: var(--cyan); font-weight: 800; }
+        .matrix-table th { padding: 16px 24px; text-align: center; font-size: 1.25rem; font-weight: 800; color: #fff; border: none; background: transparent; }
+        .matrix-table th:first-child { text-align: left; font-size: 1.5rem; color: #fff; }
+        .matrix-table th:nth-child(3) { color: var(--cyan); }
         
-        .matrix-table td { padding: 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
-        .matrix-table td:first-child { text-align: left; font-weight: 500; color: #e4e4e7; font-size: 1.05rem; }
+        /* Row Cards (Elementor Style) */
+        .matrix-table tbody tr:not(.category-row) { background: rgba(21, 22, 31, 0.6); box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        .matrix-table tbody tr:not(.category-row):hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 15px 30px rgba(0,0,0,0.5); background: rgba(30, 32, 45, 0.8); }
         
-        .recommended-badge { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); background: rgba(0, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.3); font-size: 0.65rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+        .matrix-table td { padding: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.03); border-style: solid none; }
+        .matrix-table td:first-child { text-align: left; font-weight: 600; color: #fff; font-size: 1.05rem; border-left-style: solid; border-radius: 12px 0 0 12px; }
+        .matrix-table td:last-child { border-right-style: solid; border-radius: 0 12px 12px 0; }
         
-        .category-row td { padding: 64px 24px 24px !important; text-align: left !important; font-weight: 700; color: #fff !important; font-size: 1.25rem; letter-spacing: 0.02em; border-bottom: 2px solid rgba(255,255,255,0.1) !important; }
+        .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.02); }
         
-        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.02); }
-        .matrix-table tbody tr:not(.category-row) td:first-child { transition: padding-left 0.3s ease, color 0.3s ease; }
-        .matrix-table tbody tr:not(.category-row):hover td:first-child { color: #fff; padding-left: 32px; }
+        .category-row td { background: transparent !important; border: none !important; padding: 40px 16px 8px !important; text-align: left !important; font-weight: 800; color: var(--cyan) !important; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; }
         
         .matrix-icon { display: inline-block; width: 24px; height: 24px; stroke-width: 2.5px; }
-        .matrix-check { color: #fff; opacity: 0.5; }
-        .matrix-table td:nth-child(3) .matrix-check { color: var(--cyan); opacity: 1; filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)); }
+        .matrix-check { color: #fff; opacity: 0.7; }
+        .matrix-table td:nth-child(3) .matrix-check { color: var(--cyan); opacity: 1; filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6)); }
         .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
 
         .faq-section { max-width: 800px; margin: 0 auto 100px; }
@@ -122,20 +130,26 @@
         .footer-links a:hover { color: var(--text-main); }
         
         @media (max-width: 900px) {
-            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; gap: 40px; }
             .pricing-card.popular { transform: none; }
-            .pricing-card.popular:hover { transform: translateY(-4px); }
+            .pricing-card.popular:hover { transform: translateY(-10px); }
             
-            .table-responsive::before {
-                content: 'Swipe to view plans \2192';
-                display: block;
-                text-align: right;
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: var(--text-muted);
-                margin-bottom: 12px;
-                padding-right: 8px;
-            }
+            /* Convert Elementor Matrix to Mobile Stacked Cards */
+            .table-responsive { overflow: hidden; padding-bottom: 0; }
+            .matrix-table, .matrix-table tbody, .matrix-table tr, .matrix-table td { display: block; width: 100%; }
+            .matrix-table thead { display: none; }
+            .matrix-table tbody tr:not(.category-row) { margin-bottom: 24px; border-radius: 16px; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1) !important; }
+            .matrix-table td { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; text-align: right; border-radius: 0 !important; }
+            .matrix-table td:last-child { border-bottom: none !important; }
+            
+            .matrix-table td:nth-child(2)::before { content: 'Free'; font-weight: 700; color: var(--text-muted); }
+            .matrix-table td:nth-child(3)::before { content: 'Premium'; font-weight: 800; color: var(--cyan); }
+            .matrix-table td:nth-child(4)::before { content: 'Ultra'; font-weight: 700; color: var(--purple); }
+            
+            .matrix-table td:first-child { justify-content: center; font-size: 1.15rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1) !important; margin-bottom: 8px; padding-bottom: 16px !important; }
+            .matrix-table td:first-child::before { display: none; }
+            
+            .category-row { display: none !important; }
         }
     </style>
 </head>
@@ -225,7 +239,7 @@
                         <tr>
                             <th>Features</th>
                             <th>Free</th>
-                            <th><div class="recommended-badge">RECOMMENDED</div>Premium</th>
+                            <th>Premium</th>
                             <th>Ultra</th>
                         </tr>
                     </thead>
