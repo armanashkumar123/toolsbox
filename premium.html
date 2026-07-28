@@ -83,17 +83,31 @@
         .btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; border: none; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.2); }
         .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
 
-        .matrix-section { margin-bottom: 100px; }
-        .matrix-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 48px; }
-        .matrix-table { width: 100%; border-collapse: collapse; background: rgba(21, 22, 31, 0.4); border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); }
-        .matrix-table th, .matrix-table td { padding: 24px; text-align: center; border-bottom: 1px solid var(--border); }
-        .matrix-table th { background: rgba(255,255,255,0.02); font-size: 1.1rem; font-weight: 700; }
-        .matrix-table th:first-child, .matrix-table td:first-child { text-align: left; }
+        .matrix-section { margin-bottom: 120px; }
+        .matrix-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 64px; }
+        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border); border-radius: var(--radius-card); background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(12px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); margin-top: 24px; }
+        .matrix-table th, .matrix-table td { padding: 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
+        .matrix-table th { background: rgba(255,255,255,0.02); font-size: 1.15rem; font-weight: 800; color: #fff; padding: 32px 24px; position: relative; }
+        .matrix-table th:first-child { border-top-left-radius: var(--radius-card); text-align: left; padding-left: 40px; font-weight: 500; color: #e4e4e7; width: 35%; }
+        .matrix-table th:last-child { border-top-right-radius: var(--radius-card); }
+        .matrix-table td:first-child { text-align: left; padding-left: 40px; font-weight: 500; color: #e4e4e7; }
+        .matrix-table tr:last-child td:first-child { border-bottom-left-radius: var(--radius-card); }
+        .matrix-table tr:last-child td:last-child { border-bottom-right-radius: var(--radius-card); }
         .matrix-table tr:last-child td { border-bottom: none; }
-        .matrix-category { background: rgba(0, 240, 255, 0.05); color: var(--cyan); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
-        .matrix-icon { display: inline-block; width: 20px; height: 20px; }
-        .matrix-check { color: var(--cyan); }
-        .matrix-minus { color: var(--text-muted); }
+        
+        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.03); }
+        .matrix-table th:nth-child(3) { color: var(--cyan); box-shadow: inset 0 20px 40px -20px rgba(0, 240, 255, 0.15); }
+        .matrix-table th:nth-child(3)::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--cyan); }
+        .recommended-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--cyan); color: #000; font-size: 0.65rem; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.1em; box-shadow: 0 4px 12px rgba(0, 240, 255, 0.4); z-index: 10; }
+        
+        .category-row td { background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), rgba(176, 91, 255, 0.05), transparent) !important; color: var(--cyan); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; border-bottom: 1px solid rgba(0, 240, 255, 0.2) !important; padding: 20px 40px !important; text-align: left !important; }
+        
+        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.03); }
+        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.08); }
+        
+        .matrix-icon { display: inline-block; width: 22px; height: 22px; stroke-width: 2.5px; }
+        .matrix-check { color: var(--cyan); filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6)); }
+        .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
 
         .faq-section { max-width: 800px; margin: 0 auto 100px; }
         .faq-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 48px; }
@@ -110,7 +124,11 @@
             .pricing-grid { grid-template-columns: 1fr; }
             .pricing-card.popular { transform: none; }
             .pricing-card.popular:hover { transform: translateY(-4px); }
-            .matrix-table th, .matrix-table td { padding: 16px 8px; font-size: 0.9rem; }
+            .matrix-table { margin-top: 40px; }
+            .matrix-table th, .matrix-table td { padding: 12px 8px; font-size: 0.8rem; }
+            .matrix-table th { padding: 20px 8px; font-size: 0.9rem; }
+            .matrix-table th:first-child, .matrix-table td:first-child { padding-left: 12px; width: 30%; }
+            .category-row td { padding: 12px 12px !important; font-size: 0.75rem; letter-spacing: 0; }
         }
     </style>
 </head>
@@ -198,12 +216,12 @@
                     <tr>
                         <th>Features</th>
                         <th>Free</th>
-                        <th>Premium</th>
+                        <th><div class="recommended-badge">RECOMMENDED</div>Premium</th>
                         <th>Enterprise</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="4" class="matrix-category">Core Platform</td></tr>
+                    <tr class="category-row"><td colspan="4">Core Platform</td></tr>
                     <tr>
                         <td>Local Tool Directory</td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
@@ -216,7 +234,7 @@
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                     </tr>
-                    <tr><td colspan="4" class="matrix-category">Threat Intelligence</td></tr>
+                    <tr class="category-row"><td colspan="4">Threat Intelligence</td></tr>
                     <tr>
                         <td>Zero-Day Exploit DB</td>
                         <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
@@ -229,7 +247,7 @@
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                     </tr>
-                    <tr><td colspan="4" class="matrix-category">API & Support</td></tr>
+                    <tr class="category-row"><td colspan="4">API & Support</td></tr>
                     <tr>
                         <td>REST API Rate Limit</td>
                         <td>None</td>
