@@ -19,7 +19,7 @@
             --radius-pill: 100px; --radius-card: 16px;
             --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
         }
-        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
 
         /* Nav */
         .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
@@ -50,7 +50,7 @@
             .btn-premium { text-align: center; }
         }
 
-        .container { max-width: 1100px; margin: 160px auto 80px; padding: 0 24px; }
+        .container { max-width: 1100px; margin: 160px auto 80px; padding: 0 24px; flex: 1; width: 100%; }
         .hero { text-align: center; margin-bottom: 80px; }
         .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 24px; text-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
         .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }

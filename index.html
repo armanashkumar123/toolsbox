@@ -27,6 +27,7 @@
             background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
             background-size: 40px 40px; background-position: center center;
             color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+            display: flex; flex-direction: column;
         }
         body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 0% 50%, rgba(0, 240, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
         body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 100% 50%, rgba(176, 91, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
@@ -60,7 +61,7 @@
             .btn-premium { text-align: center; }
         }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; flex: 1; width: 100%; }
         .hero { padding: 180px 0 72px; text-align: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .hero.search-active { padding: 120px 0 32px; }
         .hero-pill { display: inline-block; background: rgba(176, 91, 255, 0.08); border: 1px solid rgba(176, 91, 255, 0.25); color: #e0b3ff; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 8px 20px; border-radius: var(--radius-pill); margin-bottom: 32px; letter-spacing: 0.05em; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s, padding 0.4s, border 0.4s; overflow: hidden; max-height: 50px; text-align: center; }
