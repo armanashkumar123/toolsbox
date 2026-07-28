@@ -79,6 +79,7 @@
         .search-icon { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 20px; height: 20px; pointer-events: none; }
 
         .filters { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 72px; }
+        .hero.search-active + #tools .filters { display: none; }
         .filter-btn { display: flex; align-items: center; gap: 8px; background: rgba(21, 22, 31, 0.5); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: var(--radius-pill); font-family: var(--font-main); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(4px); }
         .filter-btn svg { width: 14px; height: 14px; }
         .filter-btn:hover { background: var(--surface); color: var(--text-main); border-color: rgba(255,255,255,0.1); }
@@ -121,7 +122,9 @@
             .hero.search-active { padding: 80px 0 0px; }
             .hero.search-active .search-container { margin-bottom: 12px; }
             .hero-pill { max-height: none; padding: 12px 20px; white-space: normal; line-height: 1.6; font-size: 0.75rem; text-align: center; justify-content: center; }
-            .filter-btn { padding: 8px 14px; font-size: 0.8rem; }
+            .filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; margin-bottom: 32px; padding-bottom: 8px; }
+            .filters::-webkit-scrollbar { display: none; }
+            .filter-btn { padding: 8px 14px; font-size: 0.8rem; flex-shrink: 0; white-space: nowrap; }
             .tool-card { background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(4px); border-color: rgba(255, 255, 255, 0.1); }
         }
     </style>
@@ -204,7 +207,7 @@
                 <button class="filter-btn ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">
                     All Tools (${tools.length}+)
                 </button>
-                ${categories.slice(0, 10).map(c => `
+                ${categories.map(c => `
                     <button class="filter-btn ${activeCategory === c.id ? 'active' : ''}" data-cat="${c.id}">
                         <i data-lucide="${CAT_ICONS[c.id] || 'box'}"></i> ${c.name}
                     </button>
