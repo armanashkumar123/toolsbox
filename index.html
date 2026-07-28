@@ -82,6 +82,13 @@
             backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
             border: 1px solid var(--border); border-radius: var(--radius);
             box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(12, 12, 16, 0.9);
+            box-shadow: 0 16px 48px rgba(0, 240, 255, 0.1);
+            border-color: var(--border-hover);
         }
 
         .nav-brand {
@@ -111,7 +118,7 @@
         .btn-premium-nav {
             padding: 8px 20px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-sm); color: #000;
+            border-radius: var(--radius-sm); color: #000 !important;
             text-decoration: none; font-weight: 600; font-size: 0.85rem;
             transition: all 0.3s; box-shadow: 0 0 20px var(--primary-dim);
         }
@@ -119,10 +126,22 @@
             box-shadow: 0 0 30px var(--primary-glow); transform: translateY(-1px);
         }
 
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none; background: none; border: none; color: var(--text);
+            cursor: pointer; padding: 4px;
+        }
+
         /* === HERO === */
         .hero {
             padding: 180px 32px 80px;
             text-align: center; max-width: 860px; margin: 0 auto;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero-badge {
@@ -154,8 +173,23 @@
             max-width: 600px; margin: 0 auto 44px;
         }
 
+        /* Platform Stats */
+        .platform-stats {
+            display: flex; justify-content: center; gap: 48px; margin-bottom: 48px;
+            opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+        }
+        .stat-item {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .stat-num {
+            font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--text);
+        }
+        .stat-label {
+            font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+
         /* === SEARCH === */
-        .search-wrap { max-width: 620px; margin: 0 auto 56px; position: relative; }
+        .search-wrap { max-width: 620px; margin: 0 auto 56px; position: relative; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
         .search-input {
             width: 100%; padding: 18px 24px 18px 52px;
             background: var(--surface); border: 1px solid var(--border);
@@ -229,6 +263,10 @@
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; gap: 14px;
             position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(10px); /* For stagger animation */
+        }
+        .tool-card.visible {
+            opacity: 1; transform: translateY(0);
         }
         .tool-card::after {
             content: ''; position: absolute; inset: -1px;
@@ -341,6 +379,11 @@
             backdrop-filter: var(--glass);
             display: flex; align-items: center; justify-content: space-between;
             gap: 32px; flex-wrap: wrap;
+            position: relative; overflow: hidden;
+        }
+        .premium-inner::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
         }
         .premium-text h2 {
             font-family: var(--font-display); font-size: 1.6rem;
@@ -383,12 +426,32 @@
             font-family: var(--font-display); font-size: 1.1rem;
         }
 
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none; position: fixed; top: 80px; left: 16px; right: 16px;
+            background: var(--surface-solid); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 16px; z-index: 99;
+            flex-direction: column; gap: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu a {
+            color: var(--text); text-decoration: none; padding: 12px;
+            border-radius: var(--radius-sm); background: rgba(255,255,255,0.05);
+            text-align: center; font-weight: 500;
+        }
+        .mobile-menu .btn-premium-nav {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000;
+        }
+
         @media (max-width: 768px) {
             nav { width: calc(100% - 32px); padding: 0 16px; }
             .hero { padding: 140px 20px 60px; }
+            .platform-stats { flex-direction: column; gap: 24px; }
             .main-section, .premium-banner { padding-left: 16px; padding-right: 16px; }
             .nav-links { display: none; }
+            .menu-btn { display: block; }
             .premium-inner { flex-direction: column; text-align: center; padding: 32px 20px; }
+            .premium-features-row { justify-content: center; }
             .tools-grid { grid-template-columns: 1fr; }
             .cat-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
         }
@@ -399,7 +462,7 @@
     <div class="bg-dots"></div>
 
     <div class="content">
-        <nav>
+        <nav id="navbar">
             <a href="/" class="nav-brand">
                 <div class="nav-brand-icon"><i data-lucide="shield-check"></i></div>
                 <span class="nav-brand-text">AcroVault</span>
@@ -410,15 +473,40 @@
                 <a href="about.html">About</a>
                 <a href="premium.html" class="btn-premium-nav">Get Premium</a>
             </div>
+            <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.toggle('active')">
+                <i data-lucide="menu"></i>
+            </button>
         </nav>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#categories" onclick="document.getElementById('mobileMenu').classList.remove('active')">Categories</a>
+            <a href="#tools" onclick="document.getElementById('mobileMenu').classList.remove('active')">All Tools</a>
+            <a href="about.html">About</a>
+            <a href="premium.html" class="btn-premium-nav">Get Premium</a>
+        </div>
 
         <section class="hero">
             <div class="hero-badge">
                 <span class="dot"></span>
-                200+ Cybersecurity Tools · Free Access · Premium Intel
+                Cybersecurity Toolkit · Free Access · Premium Intel
             </div>
             <h1>The <span class="grad">Cybersecurity</span> Intelligence Platform</h1>
             <p class="sub">Curated OSINT, forensics, exploit databases, malware analysis tools, and premium threat intelligence — all in one searchable vault.</p>
+
+            <div class="platform-stats">
+                <div class="stat-item">
+                    <span class="stat-num" id="stat-tools">200+</span>
+                    <span class="stat-label">Security Tools</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">35</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">24/7</span>
+                    <span class="stat-label">Threat Intel</span>
+                </div>
+            </div>
 
             <div class="search-wrap">
                 <div class="search-icon-wrap"><i data-lucide="search"></i></div>
@@ -470,6 +558,15 @@
             document.body.innerHTML = '<h1 style="color:#ff4757;text-align:center;padding:100px;font-family:sans-serif">Access Denied</h1>';
         }
 
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                document.getElementById('navbar').classList.add('scrolled');
+            } else {
+                document.getElementById('navbar').classList.remove('scrolled');
+            }
+        });
+
         // Icon mapping per category
         const CAT_ICONS = {
             'crime-evidence': 'scale', 'osint': 'radar', 'roadmap': 'map',
@@ -493,6 +590,7 @@
         const categories = window.ACROVAULT_CATEGORIES || [];
 
         document.getElementById('totalCount').textContent = tools.length;
+        document.getElementById('stat-tools').textContent = tools.length + '+';
 
         // Render category grid
         document.getElementById('catGrid').innerHTML = categories.map(c => `
@@ -527,11 +625,11 @@
             if (!filtered.length) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
 
-            grid.innerHTML = filtered.slice(0, 120).map(t => {
+            grid.innerHTML = filtered.slice(0, 120).map((t, index) => {
                 const icon = CAT_ICONS[t.category] || 'external-link';
                 const domain = t.url.replace(/https?:\/\//, '').split('/')[0];
                 return `
-                <a href="tool.html?id=${t.id}" class="tool-card">
+                <a href="tool.html?id=${t.id}" class="tool-card" style="animation: fadeUp 0.5s ease forwards ${index * 0.05}s">
                     <div class="tool-card-top">
                         <div class="tool-icon-wrap"><i data-lucide="${icon}"></i></div>
                         <span class="tool-cat-tag">${t.categoryName}</span>
@@ -545,6 +643,11 @@
                 </a>`;
             }).join('');
             lucide.createIcons();
+            
+            // Trigger animations
+            setTimeout(() => {
+                document.querySelectorAll('.tool-card').forEach(card => card.classList.add('visible'));
+            }, 50);
         }
 
         renderTools();
