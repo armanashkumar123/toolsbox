@@ -85,28 +85,28 @@
         .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
 
         .matrix-section { margin-bottom: 120px; }
-        .matrix-title { text-align: center; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 64px; }
-        .matrix-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
-        .matrix-table th, .matrix-table td { padding: 24px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); transition: all 0.3s ease; }
-        .matrix-table th { font-size: 1.25rem; font-weight: 800; color: #fff; padding: 40px 16px; border-bottom: none; position: relative; }
-        .matrix-table th:first-child, .matrix-table td:first-child { text-align: left; padding-left: 32px; font-weight: 500; color: rgba(255,255,255,0.8); width: 30%; font-size: 1.05rem; }
-
-        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: linear-gradient(180deg, rgba(0, 240, 255, 0.05) 0%, rgba(0, 240, 255, 0.02) 100%); position: relative; }
-        .matrix-table th:nth-child(3) { border-top-left-radius: 24px; border-top-right-radius: 24px; border-top: 2px solid var(--cyan); box-shadow: inset 0 30px 60px -30px rgba(0, 240, 255, 0.3); color: var(--cyan); }
-        .matrix-table tr:last-child td:nth-child(3) { border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; border-bottom: 2px solid var(--cyan); }
-        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { border-left: 1px solid rgba(0, 240, 255, 0.2); border-right: 1px solid rgba(0, 240, 255, 0.2); }
-
-        .recommended-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: #000; font-size: 0.7rem; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.1em; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.6); z-index: 10; white-space: nowrap; }
-
-        .category-row td { background: transparent !important; color: var(--cyan) !important; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.15em; padding: 40px 32px 16px !important; text-align: left !important; border-bottom: none !important; }
-
-        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.02); }
-        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.08); box-shadow: 0 0 30px rgba(0,240,255,0.1); }
-        .matrix-table tbody tr:not(.category-row):hover td:first-child { color: #fff; transform: translateX(5px); }
-
-        .matrix-icon { display: inline-block; width: 24px; height: 24px; stroke-width: 3px; }
-        .matrix-check { color: var(--cyan); filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)); }
-        .matrix-minus { color: rgba(255,255,255,0.05); stroke-width: 4px; }
+        .matrix-title { text-align: center; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 40px; }
+        
+        .table-responsive { width: 100%; overflow-x: auto; padding-bottom: 24px; -webkit-overflow-scrolling: touch; }
+        .matrix-table { width: 100%; min-width: 800px; border-collapse: collapse; background: rgba(21, 22, 31, 0.4); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .matrix-table th, .matrix-table td { padding: 20px 24px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
+        .matrix-table th { background: rgba(13, 14, 21, 0.95); font-size: 1.1rem; font-weight: 700; color: #fff; padding: 32px 24px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:first-child, .matrix-table td:first-child { text-align: left; padding-left: 32px; font-weight: 600; color: #e4e4e7; width: 35%; }
+        
+        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.02); border-left: 1px solid rgba(0, 240, 255, 0.2); border-right: 1px solid rgba(0, 240, 255, 0.2); }
+        .matrix-table th:nth-child(3) { border-top: 3px solid var(--cyan); }
+        .matrix-table tr:last-child td:nth-child(3) { border-bottom: 3px solid var(--cyan); }
+        
+        .recommended-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--cyan); color: #000; font-size: 0.65rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+        
+        .category-row td { background: rgba(13, 14, 21, 0.8) !important; color: var(--text-muted) !important; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; padding: 24px 32px 12px !important; text-align: left !important; border: 1px solid rgba(255,255,255,0.05) !important; border-bottom: none !important; }
+        
+        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.03); }
+        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.05); }
+        
+        .matrix-icon { display: inline-block; width: 20px; height: 20px; stroke-width: 2.5px; }
+        .matrix-check { color: var(--cyan); }
+        .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
 
         .faq-section { max-width: 800px; margin: 0 auto 100px; }
         .faq-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 48px; }
@@ -123,12 +123,17 @@
             .pricing-grid { grid-template-columns: 1fr; }
             .pricing-card.popular { transform: none; }
             .pricing-card.popular:hover { transform: translateY(-4px); }
-            .matrix-table { margin-top: 40px; }
-            .matrix-table th, .matrix-table td { padding: 12px 8px; font-size: 0.8rem; }
-            .matrix-table th { padding: 20px 8px; font-size: 0.9rem; }
-            .matrix-table th:first-child, .matrix-table td:first-child { padding-left: 12px; width: 30%; font-size: 0.85rem; }
-            .category-row td { padding: 24px 12px 12px !important; font-size: 0.75rem; letter-spacing: 0; }
-            .recommended-badge { font-size: 0.55rem; padding: 4px 8px; top: -10px; }
+            
+            .table-responsive::before {
+                content: 'Swipe to view plans \2192';
+                display: block;
+                text-align: right;
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--text-muted);
+                margin-bottom: 12px;
+                padding-right: 8px;
+            }
         }
     </style>
 </head>
@@ -195,12 +200,13 @@
             </div>
 
             <div class="pricing-card">
-                <div class="tier-name">Enterprise</div>
+                <div class="tier-name">Ultra</div>
                 <div class="price">Custom</div>
                 <p class="pricing-desc">For SOC teams requiring custom integrations and dedicated support SLAs.</p>
                 
                 <div class="features-list">
                     <div class="feature-item"><i data-lucide="check"></i><span>Everything in Premium</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Premium Tools Access</span></div>
                     <div class="feature-item"><i data-lucide="check"></i><span>1-on-1 Mentorship</span></div>
                     <div class="feature-item"><i data-lucide="check"></i><span>24/7 Priority Support</span></div>
                     <div class="feature-item"><i data-lucide="check"></i><span>Custom Threat Hunting</span></div>
@@ -211,29 +217,36 @@
 
         <section class="matrix-section">
             <h2 class="matrix-title">Compare Plans</h2>
-            <table class="matrix-table">
-                <thead>
-                    <tr>
-                        <th>Features</th>
-                        <th>Free</th>
-                        <th><div class="recommended-badge">RECOMMENDED</div>Premium</th>
-                        <th>Enterprise</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="category-row"><td colspan="4">Core Platform</td></tr>
-                    <tr>
-                        <td>Local Tool Directory</td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Daily Updates</td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                    </tr>
+            <div class="table-responsive">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Features</th>
+                            <th>Free</th>
+                            <th><div class="recommended-badge">RECOMMENDED</div>Premium</th>
+                            <th>Ultra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="category-row"><td colspan="4">Core Platform</td></tr>
+                        <tr>
+                            <td>Local Tool Directory</td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Premium Tools Access</td>
+                            <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Daily Updates</td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
                     
                     <tr class="category-row"><td colspan="4">Premium Resources</td></tr>
                     <tr>
@@ -276,8 +289,9 @@
                         <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="faq-section">
