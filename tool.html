@@ -101,10 +101,12 @@
         .spec-key i { width: 14px; height: 14px; }
         .spec-val { color: var(--text-main); font-family: var(--font-mono); font-weight: 500; }
 
-        .btn-launch { position: relative; overflow: hidden; display: inline-flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 18px; border-radius: var(--radius-card); font-weight: 700; font-size: 1.1rem; background: rgba(255, 255, 255, 0.05); color: #fff; text-decoration: none; box-shadow: 0 8px 32px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); border-left: 1px solid rgba(255,255,255,0.2); }
-        .btn-launch:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.1); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(176, 91, 255, 0.2); border-color: rgba(255,255,255,0.3); }
-        .btn-launch:active { transform: translateY(0) scale(0.98); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-        .btn-launch::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent); transform: skewX(-20deg); animation: shine 4s infinite; }
+        .btn-launch { position: relative; overflow: hidden; display: inline-flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 18px; border-radius: var(--radius-card); font-weight: 700; font-size: 1.15rem; background: rgba(255, 255, 255, 0.03); color: #fff; text-decoration: none; box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 0 20px rgba(0, 240, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.25); border-left: 1px solid rgba(255,255,255,0.25); z-index: 1; }
+        .btn-launch::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(176, 91, 255, 0.15) 0%, transparent 70%); opacity: 0; transition: opacity 0.4s; z-index: -1; }
+        .btn-launch:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.08); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(176, 91, 255, 0.3), inset 0 0 30px rgba(0, 240, 255, 0.2); border-color: rgba(255,255,255,0.4); }
+        .btn-launch:hover::before { opacity: 1; }
+        .btn-launch:active { transform: translateY(0) scale(0.98); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+        .btn-launch::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent); transform: skewX(-20deg); animation: shine 3s infinite; z-index: 2; }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
         
         .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }

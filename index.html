@@ -61,14 +61,19 @@
         }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
-        .hero { padding: 180px 0 72px; text-align: center; }
-        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(176, 91, 255, 0.08); border: 1px solid rgba(176, 91, 255, 0.25); color: #e0b3ff; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 8px 20px; border-radius: var(--radius-pill); margin-bottom: 32px; letter-spacing: 0.05em; }
+        .hero { padding: 180px 0 72px; text-align: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hero.search-active { padding: 120px 0 32px; }
+        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(176, 91, 255, 0.08); border: 1px solid rgba(176, 91, 255, 0.25); color: #e0b3ff; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 8px 20px; border-radius: var(--radius-pill); margin-bottom: 32px; letter-spacing: 0.05em; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s, padding 0.4s, border 0.4s; overflow: hidden; max-height: 50px; }
+        .hero.search-active .hero-pill { opacity: 0; transform: translateY(-10px); max-height: 0; margin: 0; padding-top: 0; padding-bottom: 0; border: none; pointer-events: none; }
         .hero-dot { width: 6px; height: 6px; background: var(--purple); border-radius: 50%; box-shadow: 0 0 10px var(--purple); }
-        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s; overflow: hidden; max-height: 200px; }
+        .hero.search-active h1 { opacity: 0; transform: translateY(-20px); max-height: 0; margin: 0; pointer-events: none; }
         .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
-        .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 48px; }
+        .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 48px; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s; overflow: hidden; max-height: 150px; }
+        .hero.search-active p { opacity: 0; transform: translateY(-20px); max-height: 0; margin: 0; pointer-events: none; }
 
-        .search-container { position: relative; max-width: 640px; margin: 0 auto 56px; }
+        .search-container { position: relative; max-width: 640px; margin: 0 auto 56px; transition: all 0.5s; z-index: 10; }
+        .hero.search-active .search-container { margin-bottom: 24px; }
         .search-input { width: 100%; padding: 20px 24px 20px 52px; background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--text-main); font-family: var(--font-main); font-size: 1.05rem; outline: none; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
         .search-input:focus { border-color: rgba(0, 240, 255, 0.5); box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1), 0 12px 40px rgba(0,0,0,0.5); background: rgba(21, 22, 31, 0.9); }
         .search-icon { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 20px; height: 20px; pointer-events: none; }
@@ -110,8 +115,11 @@
         .footer-links a:hover { color: var(--text-main); }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
             .tool-grid { grid-template-columns: 1fr; }
+            .hero { padding: 140px 0 40px; }
+            .hero.search-active { padding: 110px 0 20px; }
+            .filter-btn { padding: 8px 14px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -137,9 +145,9 @@
 
     <div class="container">
         <section class="hero">
-            <div class="hero-pill"><div class="hero-dot"></div>1,251+ Open-Source & In-Browser Tools · Zero Signups · 100% Free</div>
-            <h1>The <span style="color: var(--cyan);">No-</span><span style="color: var(--purple);">Bullsh*t</span> Master<br>Web Tool Directory</h1>
-            <p>1,023 native client-side tools + 228 curated open-source apps from NoSignups.net.<br>All in one instant, searchable portal.</p>
+            <div class="hero-pill"><div class="hero-dot"></div>1,000+ Tools. Instant-Search. Zero Bullsh*t Cyber Security</div>
+            <h1>The Raw, Unfiltered Directory for<br>Tools and Cyber Security</h1>
+            <p>1,000+ Instant-Search Tools for Aggressive Cyber Security:<br>Built with <span style="font-weight:bold; color:var(--purple)">Zero Bullsh*t</span></p>
             
             <div class="search-container">
                 <i data-lucide="search" class="search-icon"></i>
@@ -250,6 +258,12 @@
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
             searchQuery = e.target.value.trim();
+            const hero = document.querySelector('.hero');
+            if (searchQuery) {
+                hero.classList.add('search-active');
+            } else {
+                hero.classList.remove('search-active');
+            }
             renderTools();
         });
 
