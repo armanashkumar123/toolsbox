@@ -19,8 +19,8 @@
             --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
         }
         body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        body::before { content: ''; position: fixed; top: 0; left: -20%; width: 50%; height: 100%; background: radial-gradient(circle at center, rgba(0, 240, 255, 0.08) 0%, transparent 60%); z-index: -1; pointer-events: none; }
-        body::after { content: ''; position: fixed; top: 0; right: -20%; width: 50%; height: 100%; background: radial-gradient(circle at center, rgba(176, 91, 255, 0.08) 0%, transparent 60%); z-index: -1; pointer-events: none; }
+        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 0% 50%, rgba(0, 240, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
+        body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 100% 50%, rgba(176, 91, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
 
         /* Nav */
         .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
@@ -76,8 +76,8 @@
         .vp-icon-container { position: relative; z-index: 10; width: 72px; height: 72px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
         .vp-icon-container i { color: var(--purple); width: 32px; height: 32px; }
         .vp-text { position: relative; z-index: 10; font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
-        .vp-subtext { position: relative; z-index: 10; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-        .vp-subtext i { width: 14px; height: 14px; color: var(--cyan); }
+        .vp-subtext { position: relative; z-index: 10; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 90%; word-break: break-all; text-align: center; }
+        .vp-subtext i { width: 14px; height: 14px; color: var(--cyan); flex-shrink: 0; }
 
         .content { font-size: 1.15rem; color: var(--text-main); line-height: 1.8; }
         .content h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 48px 0 24px; letter-spacing: -0.02em; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
