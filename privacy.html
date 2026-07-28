@@ -6,59 +6,63 @@
     <title>Privacy Policy — AcroVault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg: #0a0a0b; --surface: #131314; --surface-hover: #1c1c1e;
-            --border: #27272a; --primary: #3e52ff; --primary-hover: #5a6eff;
-            --text-main: #ffffff; --text-muted: #a1a1aa;
-            --radius: 4px; --radius-lg: 8px;
-            --font-display: 'Geist', sans-serif; --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --bg-color: #0b0c10; --surface: #14151a; --surface-hover: #1c1d24;
+            --border: #22242b; --border-active: #00e5ff;
+            --text-main: #f0f0f5; --text-muted: #8b8d98;
+            --cyan: #00e5ff; --purple: #9d4edd;
+            --radius-pill: 100px; --radius-card: 12px;
+            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
         }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 32px 32px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
         
-        nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(10,10,11,0.95); border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; backdrop-filter: blur(8px); }
-        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); }
-        .nav-brand svg { width: 20px; height: 20px; color: var(--primary); }
-        .nav-brand-text { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; }
-        .nav-links { display: flex; gap: 24px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
+        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(20, 21, 26, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 12px 24px; width: 100%; max-width: 1100px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 8px; color: #fff; }
+        .nav-brand-icon svg { width: 16px; height: 16px; }
+        .nav-brand-text { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text-main); }
-        .btn-upgrade { background: var(--primary); color: #fff !important; padding: 6px 16px; border-radius: var(--radius); font-weight: 500; }
         
-        .container { max-width: 800px; margin: 120px auto 80px; padding: 0 32px; }
-        .page-header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 32px; }
-        h1 { font-family: var(--font-display); font-size: 3rem; letter-spacing: -0.04em; margin-bottom: 16px; }
+        .container { max-width: 800px; margin: 160px auto 80px; padding: 0 24px; }
+        .page-header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 40px; }
+        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
+        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .content { color: #d4d4d8; font-size: 1rem; }
-        .content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-main); margin: 40px 0 16px; }
-        .content p { margin-bottom: 16px; }
-        .content ul { margin-bottom: 24px; padding-left: 24px; }
-        .content li { margin-bottom: 8px; }
+        .content { color: var(--text-muted); font-size: 1.05rem; }
+        .content h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin: 48px 0 24px; }
+        .content p { margin-bottom: 24px; }
         
-        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px; }
+        footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(11, 12, 16, 0.8); }
         .footer-links { display: flex; justify-content: center; gap: 24px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-main); }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="/" class="nav-brand">
-            <i data-lucide="shield"></i>
-            <span class="nav-brand-text">AcroVault</span>
-        </a>
-        <div class="nav-links">
-            <a href="/">Directory</a>
-            <a href="about.html">About</a>
-            <a href="premium.html" class="btn-upgrade">Premium</a>
-        </div>
-    </nav>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="/" class="nav-brand">
+                <div class="nav-brand-icon"><i data-lucide="zap"></i></div>
+                <span class="nav-brand-text">AcroVault</span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Directory</a>
+                <a href="premium.html">Premium API</a>
+                <a href="about.html">About</a>
+            </div>
+        </nav>
+    </div>
 
     <div class="container">
         <div class="page-header">
-            <h1>Privacy Policy</h1>
+            <h1><span class="gradient-text">Privacy</span> Policy</h1>
             <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem;">Last Updated: October 2026</p>
         </div>
 
@@ -79,6 +83,7 @@
             <a href="/">Home</a>
             <a href="premium.html">Premium</a>
             <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
             <a href="terms.html">Terms</a>
         </div>
         <p>© 2026 AcroVault. Built for security professionals.</p>

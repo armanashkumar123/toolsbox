@@ -6,82 +6,110 @@
     <title>Tool Detail — AcroVault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg: #0a0a0b; --surface: #131314; --surface-hover: #1c1c1e;
-            --border: #27272a; --primary: #3e52ff; --primary-hover: #5a6eff;
-            --text-main: #ffffff; --text-muted: #a1a1aa;
-            --radius: 4px; --radius-lg: 8px;
-            --font-display: 'Geist', sans-serif; --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --bg-color: #0b0c10; --surface: #14151a; --surface-hover: #1c1d24;
+            --border: #22242b; --border-active: #00e5ff;
+            --text-main: #f0f0f5; --text-muted: #8b8d98;
+            --cyan: #00e5ff; --purple: #9d4edd;
+            --radius-pill: 100px; --radius-card: 12px;
+            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
         }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        
-        nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(10,10,11,0.95); border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; backdrop-filter: blur(8px); }
-        .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); }
-        .nav-brand svg { width: 20px; height: 20px; color: var(--primary); }
-        .nav-brand-text { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; }
-        .nav-links { display: flex; gap: 24px; align-items: center; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+
+        body {
+            font-family: var(--font-main); background-color: var(--bg-color);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px; background-position: center center;
+            color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+        }
+
+        /* Nav */
+        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
+        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(20, 21, 26, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 12px 24px; width: 100%; max-width: 1100px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 8px; color: #fff; }
+        .nav-brand-icon svg { width: 16px; height: 16px; }
+        .nav-brand-text { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text-main); }
-        .btn-upgrade { background: var(--primary); color: #fff !important; padding: 6px 16px; border-radius: var(--radius); font-weight: 500; }
         
-        .container { max-width: 1280px; margin: 100px auto 80px; padding: 0 32px; display: grid; grid-template-columns: 300px 1fr; gap: 48px; }
+        .container { max-width: 1100px; margin: 120px auto 80px; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
         
+        /* Main Content */
+        .header { margin-bottom: 40px; }
+        .title-area h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; text-shadow: 0 0 30px rgba(0, 229, 255, 0.1); }
+        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .category-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.2); padding: 6px 12px; border-radius: var(--radius-pill); margin-bottom: 24px; }
+        
+        .content { font-size: 1.1rem; color: var(--text-main); line-height: 1.8; }
+        .content h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin: 40px 0 20px; }
+        .content p { margin-bottom: 20px; color: var(--text-muted); }
+
         /* Sidebar Metadata */
-        .sidebar { display: flex; flex-direction: column; gap: 24px; }
-        .meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-        .meta-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
-        .meta-value { font-size: 0.95rem; font-weight: 500; word-break: break-all; }
-        .meta-value a { color: var(--primary); text-decoration: none; }
-        .meta-value a:hover { text-decoration: underline; }
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .meta-card { background: rgba(20, 21, 26, 0.6); backdrop-filter: blur(4px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; }
+        .meta-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .meta-value { font-size: 1rem; font-weight: 500; word-break: break-all; }
+        .meta-value a { color: var(--cyan); text-decoration: none; transition: all 0.2s; }
+        .meta-value a:hover { text-shadow: 0 0 10px rgba(0,229,255,0.4); }
+        
+        .btn-launch { display: inline-flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 16px; border-radius: var(--radius-card); font-weight: 600; font-size: 1.05rem; background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; text-decoration: none; box-shadow: 0 8px 24px rgba(0, 229, 255, 0.2); transition: all 0.3s; margin-bottom: 24px; }
+        .btn-launch:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 229, 255, 0.4); }
         
         .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { background: var(--bg); border: 1px solid var(--border); padding: 4px 8px; border-radius: 2px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+        .tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
 
-        /* Main Content */
-        .header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
-        .title-area h1 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .category-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
-        
-        .btn-launch { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: var(--radius); font-weight: 500; font-family: var(--font-body); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); transition: background 0.2s; }
-        .btn-launch:hover { background: var(--primary-hover); }
-
-        .content { font-size: 1.05rem; color: #d4d4d8; line-height: 1.7; max-width: 800px; }
-        .content h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-main); margin: 32px 0 16px; font-weight: 600; }
-        .content p { margin-bottom: 16px; }
-
-        footer { border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px; grid-column: span 2; }
+        footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(11, 12, 16, 0.8); grid-column: 1 / -1; }
         .footer-links { display: flex; justify-content: center; gap: 24px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-main); }
 
         @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; }
-            .header { flex-direction: column; gap: 24px; }
-            footer { grid-column: span 1; }
+            .nav-wrapper { top: 12px; padding: 0 12px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="/" class="nav-brand">
-            <i data-lucide="shield"></i>
-            <span class="nav-brand-text">AcroVault</span>
-        </a>
-        <div class="nav-links">
-            <a href="/">Directory</a>
-            <a href="about.html">About</a>
-            <a href="premium.html" class="btn-upgrade">Premium</a>
-        </div>
-    </nav>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="/" class="nav-brand">
+                <div class="nav-brand-icon"><i data-lucide="zap"></i></div>
+                <span class="nav-brand-text">AcroVault</span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Directory</a>
+                <a href="premium.html">Premium API</a>
+                <a href="about.html">About</a>
+            </div>
+        </nav>
+    </div>
 
     <div class="container">
+        <main>
+            <div class="header">
+                <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
+                <h1 id="toolName" class="gradient-text">Loading...</h1>
+            </div>
+            <div class="content" id="toolDesc">
+                Loading intelligence data...
+            </div>
+        </main>
+
         <aside class="sidebar" id="sidebar">
+            <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
+                Launch Platform <i data-lucide="external-link" style="width:18px;height:18px;"></i>
+            </a>
             <div class="meta-card">
                 <span class="meta-label">Access Type</span>
-                <span class="meta-value">Free / Open Source</span>
+                <span class="meta-value" style="color: var(--text-main);">Free / Open Source</span>
             </div>
             <div class="meta-card">
                 <span class="meta-label">Source URL</span>
@@ -94,23 +122,18 @@
                 </div>
             </div>
         </aside>
-
-        <main>
-            <div class="header">
-                <div class="title-area">
-                    <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
-                    <h1 id="toolName">Loading...</h1>
-                </div>
-                <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
-                    Launch Tool <i data-lucide="external-link" style="width:18px;height:18px;"></i>
-                </a>
-            </div>
-
-            <div class="content" id="toolDesc">
-                Loading intelligence data...
-            </div>
-        </main>
     </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="premium.html">Premium</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </div>
+        <p>© 2026 AcroVault. Built for security professionals.</p>
+    </footer>
 
     <script src="tools-data.js"></script>
     <script>
@@ -132,8 +155,8 @@
         const tool = tools.find(t => t.id === toolId);
         
         if (tool) {
-            document.title = `${tool.name} — AcroVault`;
-            document.getElementById('toolName').textContent = tool.name;
+            document.title = `${tool.name || 'Unnamed Tool'} — AcroVault`;
+            document.getElementById('toolName').textContent = tool.name || 'Unnamed Tool';
             
             const icon = CAT_ICONS[tool.category] || 'box';
             document.getElementById('toolCategory').innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i> <span>${tool.categoryName}</span>`;
@@ -145,19 +168,17 @@
             try { shortUrl = new URL(tool.url).hostname; } catch(e) {}
             urlDisplay.innerHTML = `<a href="${tool.url}" target="_blank" rel="noopener">${shortUrl}</a>`;
             
-            // Build Description
-            let descHtml = `<p>${tool.desc}</p>`;
-            descHtml += `<h2>Overview</h2><p>This tool provides intelligence gathering and technical analysis capabilities tailored for ${tool.categoryName.toLowerCase()} workflows.</p>`;
+            let descHtml = `<p style="font-size: 1.2rem; color: #fff; margin-bottom: 32px;">${tool.desc || ''}</p>`;
+            descHtml += `<h2>Overview</h2><p>This module provides advanced intelligence gathering and technical analysis capabilities tailored for ${tool.categoryName.toLowerCase()} operations.</p>`;
             
             if (tool.nativePath) {
                 document.getElementById('toolUrlBtn').href = tool.nativePath;
-                document.getElementById('toolUrlBtn').innerHTML = `Run Native Tool <i data-lucide="play" style="width:18px;height:18px;"></i>`;
+                document.getElementById('toolUrlBtn').innerHTML = `Run Native Script <i data-lucide="play" style="width:18px;height:18px;"></i>`;
                 descHtml += `<h2>Execution Environment</h2><p>This tool executes securely within the local browser sandbox. No data is transmitted to AcroVault servers during its operation.</p>`;
             }
 
             document.getElementById('toolDesc').innerHTML = descHtml;
 
-            // Tags
             let tagsHtml = '';
             if (tool.tags && tool.tags.length > 0) {
                 tagsHtml = tool.tags.map(t => `<span class="tag">${t.toUpperCase()}</span>`).join('');
@@ -167,7 +188,7 @@
             document.getElementById('toolTags').innerHTML = tagsHtml;
             
         } else {
-            document.getElementById('toolName').textContent = "Tool Not Found";
+            document.getElementById('toolName').textContent = "404 Not Found";
             document.getElementById('toolDesc').innerHTML = "<p>The requested intelligence module could not be located in the vault.</p>";
             document.getElementById('toolUrlBtn').style.display = 'none';
         }
