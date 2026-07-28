@@ -84,28 +84,30 @@
         .btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; border: none; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.2); }
         .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
 
-        .matrix-section { margin-bottom: 120px; }
-        .matrix-title { text-align: center; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 40px; }
+        .matrix-section { margin-bottom: 160px; }
+        .matrix-title { text-align: center; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 80px; letter-spacing: -0.03em; }
         
-        .table-responsive { width: 100%; overflow-x: auto; padding-bottom: 24px; -webkit-overflow-scrolling: touch; }
-        .matrix-table { width: 100%; min-width: 800px; border-collapse: collapse; background: rgba(21, 22, 31, 0.4); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .matrix-table th, .matrix-table td { padding: 20px 24px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
-        .matrix-table th { background: rgba(13, 14, 21, 0.95); font-size: 1.1rem; font-weight: 700; color: #fff; padding: 32px 24px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .matrix-table th:first-child, .matrix-table td:first-child { text-align: left; padding-left: 32px; font-weight: 600; color: #e4e4e7; width: 35%; }
+        .table-responsive { width: 100%; overflow-x: auto; padding-bottom: 40px; -webkit-overflow-scrolling: touch; }
+        .matrix-table { width: 100%; min-width: 800px; border-collapse: collapse; }
         
-        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.02); border-left: 1px solid rgba(0, 240, 255, 0.2); border-right: 1px solid rgba(0, 240, 255, 0.2); }
-        .matrix-table th:nth-child(3) { border-top: 3px solid var(--cyan); }
-        .matrix-table tr:last-child td:nth-child(3) { border-bottom: 3px solid var(--cyan); }
+        .matrix-table th { padding: 24px 24px 40px; text-align: center; font-size: 1.35rem; font-weight: 700; color: #fff; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:first-child { text-align: left; font-size: 1.2rem; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:nth-child(3) { color: var(--cyan); font-weight: 800; }
         
-        .recommended-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--cyan); color: #000; font-size: 0.65rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+        .matrix-table td { padding: 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
+        .matrix-table td:first-child { text-align: left; font-weight: 500; color: #e4e4e7; font-size: 1.05rem; }
         
-        .category-row td { background: rgba(13, 14, 21, 0.8) !important; color: var(--text-muted) !important; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; padding: 24px 32px 12px !important; text-align: left !important; border: 1px solid rgba(255,255,255,0.05) !important; border-bottom: none !important; }
+        .recommended-badge { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); background: rgba(0, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.3); font-size: 0.65rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
         
-        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.03); }
-        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.05); }
+        .category-row td { padding: 64px 24px 24px !important; text-align: left !important; font-weight: 700; color: #fff !important; font-size: 1.25rem; letter-spacing: 0.02em; border-bottom: 2px solid rgba(255,255,255,0.1) !important; }
         
-        .matrix-icon { display: inline-block; width: 20px; height: 20px; stroke-width: 2.5px; }
-        .matrix-check { color: var(--cyan); }
+        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.02); }
+        .matrix-table tbody tr:not(.category-row) td:first-child { transition: padding-left 0.3s ease, color 0.3s ease; }
+        .matrix-table tbody tr:not(.category-row):hover td:first-child { color: #fff; padding-left: 32px; }
+        
+        .matrix-icon { display: inline-block; width: 24px; height: 24px; stroke-width: 2.5px; }
+        .matrix-check { color: #fff; opacity: 0.5; }
+        .matrix-table td:nth-child(3) .matrix-check { color: var(--cyan); opacity: 1; filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)); }
         .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
 
         .faq-section { max-width: 800px; margin: 0 auto 100px; }
