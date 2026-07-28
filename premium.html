@@ -62,8 +62,9 @@
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 100px; }
         .pricing-card { background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.3s; }
         .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .pricing-card.popular { border-color: rgba(0, 240, 255, 0.4); background: rgba(21, 22, 31, 0.9); box-shadow: 0 0 40px rgba(0, 240, 255, 0.1); transform: scale(1.05); z-index: 10; }
-        .pricing-card.popular:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 40px rgba(0, 240, 255, 0.2); }
+        .pricing-card.popular { background: rgba(13, 14, 21, 0.9); border: 1px solid rgba(0, 240, 255, 0.4); box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 40px rgba(0, 240, 255, 0.05); transform: scale(1.05); z-index: 10; }
+        .pricing-card.popular::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); box-shadow: 0 0 20px var(--cyan); }
+        .pricing-card.popular:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 240, 255, 0.3); }
         .popular-badge { position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
@@ -84,30 +85,28 @@
         .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
 
         .matrix-section { margin-bottom: 120px; }
-        .matrix-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 64px; }
-        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border); border-radius: var(--radius-card); background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(12px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); margin-top: 24px; }
-        .matrix-table th, .matrix-table td { padding: 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
-        .matrix-table th { background: rgba(255,255,255,0.02); font-size: 1.15rem; font-weight: 800; color: #fff; padding: 32px 24px; position: relative; }
-        .matrix-table th:first-child { border-top-left-radius: var(--radius-card); text-align: left; padding-left: 40px; font-weight: 500; color: #e4e4e7; width: 35%; }
-        .matrix-table th:last-child { border-top-right-radius: var(--radius-card); }
-        .matrix-table td:first-child { text-align: left; padding-left: 40px; font-weight: 500; color: #e4e4e7; }
-        .matrix-table tr:last-child td:first-child { border-bottom-left-radius: var(--radius-card); }
-        .matrix-table tr:last-child td:last-child { border-bottom-right-radius: var(--radius-card); }
-        .matrix-table tr:last-child td { border-bottom: none; }
-        
-        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.03); }
-        .matrix-table th:nth-child(3) { color: var(--cyan); box-shadow: inset 0 20px 40px -20px rgba(0, 240, 255, 0.15); }
-        .matrix-table th:nth-child(3)::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--cyan); }
-        .recommended-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--cyan); color: #000; font-size: 0.65rem; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.1em; box-shadow: 0 4px 12px rgba(0, 240, 255, 0.4); z-index: 10; }
-        
-        .category-row td { background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), rgba(176, 91, 255, 0.05), transparent) !important; color: var(--cyan); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; border-bottom: 1px solid rgba(0, 240, 255, 0.2) !important; padding: 20px 40px !important; text-align: left !important; }
-        
-        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.03); }
-        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.08); }
-        
-        .matrix-icon { display: inline-block; width: 22px; height: 22px; stroke-width: 2.5px; }
-        .matrix-check { color: var(--cyan); filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6)); }
-        .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
+        .matrix-title { text-align: center; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 64px; }
+        .matrix-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+        .matrix-table th, .matrix-table td { padding: 24px 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); transition: all 0.3s ease; }
+        .matrix-table th { font-size: 1.25rem; font-weight: 800; color: #fff; padding: 40px 16px; border-bottom: none; position: relative; }
+        .matrix-table th:first-child, .matrix-table td:first-child { text-align: left; padding-left: 32px; font-weight: 500; color: rgba(255,255,255,0.8); width: 30%; font-size: 1.05rem; }
+
+        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { background: linear-gradient(180deg, rgba(0, 240, 255, 0.05) 0%, rgba(0, 240, 255, 0.02) 100%); position: relative; }
+        .matrix-table th:nth-child(3) { border-top-left-radius: 24px; border-top-right-radius: 24px; border-top: 2px solid var(--cyan); box-shadow: inset 0 30px 60px -30px rgba(0, 240, 255, 0.3); color: var(--cyan); }
+        .matrix-table tr:last-child td:nth-child(3) { border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; border-bottom: 2px solid var(--cyan); }
+        .matrix-table th:nth-child(3), .matrix-table td:nth-child(3) { border-left: 1px solid rgba(0, 240, 255, 0.2); border-right: 1px solid rgba(0, 240, 255, 0.2); }
+
+        .recommended-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: #000; font-size: 0.7rem; font-weight: 800; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.1em; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.6); z-index: 10; white-space: nowrap; }
+
+        .category-row td { background: transparent !important; color: var(--cyan) !important; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.15em; padding: 40px 32px 16px !important; text-align: left !important; border-bottom: none !important; }
+
+        .matrix-table tbody tr:not(.category-row):hover td { background: rgba(255,255,255,0.02); }
+        .matrix-table tbody tr:not(.category-row):hover td:nth-child(3) { background: rgba(0, 240, 255, 0.08); box-shadow: 0 0 30px rgba(0,240,255,0.1); }
+        .matrix-table tbody tr:not(.category-row):hover td:first-child { color: #fff; transform: translateX(5px); }
+
+        .matrix-icon { display: inline-block; width: 24px; height: 24px; stroke-width: 3px; }
+        .matrix-check { color: var(--cyan); filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8)); }
+        .matrix-minus { color: rgba(255,255,255,0.05); stroke-width: 4px; }
 
         .faq-section { max-width: 800px; margin: 0 auto 100px; }
         .faq-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 48px; }
@@ -127,8 +126,9 @@
             .matrix-table { margin-top: 40px; }
             .matrix-table th, .matrix-table td { padding: 12px 8px; font-size: 0.8rem; }
             .matrix-table th { padding: 20px 8px; font-size: 0.9rem; }
-            .matrix-table th:first-child, .matrix-table td:first-child { padding-left: 12px; width: 30%; }
-            .category-row td { padding: 12px 12px !important; font-size: 0.75rem; letter-spacing: 0; }
+            .matrix-table th:first-child, .matrix-table td:first-child { padding-left: 12px; width: 30%; font-size: 0.85rem; }
+            .category-row td { padding: 24px 12px 12px !important; font-size: 0.75rem; letter-spacing: 0; }
+            .recommended-badge { font-size: 0.55rem; padding: 4px 8px; top: -10px; }
         }
     </style>
 </head>
@@ -171,10 +171,10 @@
                 <p class="pricing-desc">For security students and independent researchers needing basic OSINT access.</p>
                 
                 <div class="features-list">
-                    <div class="feature-item"><i data-lucide="check"></i><span>Access to 1,200+ local tools</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Access to 1,000+ local tools</span></div>
                     <div class="feature-item"><i data-lucide="check"></i><span>Basic Search Functionality</span></div>
-                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No API Access</span></div>
-                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No Zero-Day Intelligence</span></div>
+                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No Premium Resources</span></div>
+                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No Mentorship</span></div>
                 </div>
                 <a href="/" class="btn-pricing btn-outline">Current Plan</a>
             </div>
@@ -186,10 +186,10 @@
                 <p class="pricing-desc">For active security professionals requiring real-time vulnerability data.</p>
                 
                 <div class="features-list">
-                    <div class="feature-item"><i data-lucide="check"></i><span>Everything in Free</span></div>
-                    <div class="feature-item"><i data-lucide="check"></i><span><strong>Zero-Day Exploit Intel</strong></span></div>
-                    <div class="feature-item"><i data-lucide="check"></i><span>Dark Web Leak Archives</span></div>
-                    <div class="feature-item"><i data-lucide="check"></i><span>Live Telegram Alerts</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Private Telegram Groups</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Dark Web Intel</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Databases & Resources</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Free Premium Courses</span></div>
                 </div>
                 <a href="#" class="btn-pricing btn-primary">Start 14-Day Trial</a>
             </div>
@@ -201,9 +201,9 @@
                 
                 <div class="features-list">
                     <div class="feature-item"><i data-lucide="check"></i><span>Everything in Premium</span></div>
-                    <div class="feature-item"><i data-lucide="check"></i><span>Unrestricted API Access</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>1-on-1 Mentorship</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>24/7 Priority Support</span></div>
                     <div class="feature-item"><i data-lucide="check"></i><span>Custom Threat Hunting</span></div>
-                    <div class="feature-item"><i data-lucide="check"></i><span>Dedicated Account Manager</span></div>
                 </div>
                 <a href="#" class="btn-pricing btn-outline">Contact Sales</a>
             </div>
@@ -234,31 +234,47 @@
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                     </tr>
+                    
+                    <tr class="category-row"><td colspan="4">Premium Resources</td></tr>
+                    <tr>
+                        <td>Private Telegram Groups</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Databases & Premium Resources</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Free Premium Courses</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    
                     <tr class="category-row"><td colspan="4">Threat Intelligence</td></tr>
                     <tr>
-                        <td>Zero-Day Exploit DB</td>
+                        <td>Dark Web Intel</td>
                         <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
                     </tr>
+
+                    <tr class="category-row"><td colspan="4">Elite Support</td></tr>
                     <tr>
-                        <td>Dark Web Leaks</td>
+                        <td>1-on-1 Mentorship</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
                         <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>24/7 Priority Support</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
                         <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
-                    </tr>
-                    <tr class="category-row"><td colspan="4">API & Support</td></tr>
-                    <tr>
-                        <td>REST API Rate Limit</td>
-                        <td>None</td>
-                        <td>10,000 / day</td>
-                        <td>Unlimited</td>
-                    </tr>
-                    <tr>
-                        <td>Support SLA</td>
-                        <td>Community</td>
-                        <td>24 Hours</td>
-                        <td>1 Hour Dedicated</td>
                     </tr>
                 </tbody>
             </table>
