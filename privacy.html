@@ -34,7 +34,19 @@
         .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; position: relative; overflow: hidden; }
         .btn-premium::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, transparent, var(--cyan)); animation: rotate 4s linear infinite; opacity: 0.3; z-index: -1; }
         @keyframes rotate { 100% { transform: rotate(360deg); } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
+        .btn-premium:active { transform: scale(0.95); }
+        
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
+        
+        @media (max-width: 768px) {
+            .nav-wrapper { top: 12px; padding: 0 12px; }
+            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
+            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
+            .nav-links.show { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .btn-premium { text-align: center; }
+        }
 
         .container { max-width: 900px; margin: 160px auto 80px; padding: 0 24px; }
         .page-header { text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 40px; margin-bottom: 48px; }
@@ -63,8 +75,6 @@
         @media (max-width: 768px) {
             .legal-layout { grid-template-columns: 1fr; }
             .sidebar { display: none; }
-            .nav-links { display: none; }
-            .nav-wrapper { top: 12px; padding: 0 12px; }
         }
     </style>
 </head>
@@ -75,10 +85,14 @@
                 <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
                 <span class="nav-brand-text">AcroVault</span>
             </a>
-            <div class="nav-links">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
                 <a href="/">Directory</a>
                 <a href="about.html">About</a>
                 <a href="privacy.html" style="color: var(--text-main);">Privacy</a>
+                <a href="terms.html">Terms</a>
                 <a href="premium.html" class="btn-premium">Premium</a>
             </div>
         </nav>
@@ -165,6 +179,10 @@
 
     <script>
         lucide.createIcons();
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('show');
+        });
+        
         // Simple scrollspy for sidebar
         const sections = document.querySelectorAll('.content section');
         const navLinks = document.querySelectorAll('.sidebar a');
