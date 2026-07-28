@@ -63,9 +63,9 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
         .hero { padding: 180px 0 72px; text-align: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .hero.search-active { padding: 120px 0 32px; }
-        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(176, 91, 255, 0.08); border: 1px solid rgba(176, 91, 255, 0.25); color: #e0b3ff; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 8px 20px; border-radius: var(--radius-pill); margin-bottom: 32px; letter-spacing: 0.05em; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s, padding 0.4s, border 0.4s; overflow: hidden; max-height: 50px; }
+        .hero-pill { display: inline-block; background: rgba(176, 91, 255, 0.08); border: 1px solid rgba(176, 91, 255, 0.25); color: #e0b3ff; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 8px 20px; border-radius: var(--radius-pill); margin-bottom: 32px; letter-spacing: 0.05em; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s, padding 0.4s, border 0.4s; overflow: hidden; max-height: 50px; text-align: center; }
         .hero.search-active .hero-pill { opacity: 0; transform: translateY(-10px); max-height: 0; margin: 0; padding-top: 0; padding-bottom: 0; border: none; pointer-events: none; }
-        .hero-dot { width: 6px; height: 6px; background: var(--purple); border-radius: 50%; box-shadow: 0 0 10px var(--purple); }
+        .hero-dot { display: inline-block; vertical-align: middle; margin-right: 8px; margin-bottom: 2px; width: 6px; height: 6px; background: var(--purple); border-radius: 50%; box-shadow: 0 0 10px var(--purple); }
         .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; transition: opacity 0.4s, transform 0.4s, max-height 0.4s, margin 0.4s; overflow: hidden; max-height: 200px; }
         .hero.search-active h1 { opacity: 0; transform: translateY(-20px); max-height: 0; margin: 0; pointer-events: none; }
         .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
@@ -121,7 +121,7 @@
             .hero { padding: 140px 0 40px; }
             .hero.search-active { padding: 80px 0 0px; }
             .hero.search-active .search-container { margin-bottom: 12px; }
-            .hero-pill { max-height: none; padding: 12px 20px; white-space: normal; line-height: 1.6; font-size: 0.75rem; text-align: center; justify-content: center; }
+            .hero-pill { max-height: none; padding: 12px 20px; white-space: normal; line-height: 1.6; font-size: 0.75rem; }
             .filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; margin-bottom: 32px; padding-bottom: 8px; }
             .filters::-webkit-scrollbar { display: none; }
             .filter-btn { padding: 8px 14px; font-size: 0.8rem; flex-shrink: 0; white-space: nowrap; }
