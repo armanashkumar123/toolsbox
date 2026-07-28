@@ -32,10 +32,10 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text-main); }
         
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-premium::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, transparent, var(--cyan)); animation: rotate 4s linear infinite; opacity: 0.3; z-index: -1; }
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
+        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.5); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; position: relative; }
+        .btn-premium::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); box-shadow: 0 0 20px var(--cyan); opacity: 0.5; animation: pulseGlow 2s alternate infinite; z-index: -1; }
+        @keyframes pulseGlow { 0% { opacity: 0.2; transform: scale(1); } 100% { opacity: 0.6; transform: scale(1.05); } }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.5); transform: translateY(-1px); }
         .btn-premium:active { transform: scale(0.95); }
         
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
@@ -50,8 +50,13 @@
         }
 
         /* SaaS Layout Container */
-        .container { max-width: 1200px; margin: 140px auto 80px; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 48px; }
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        .container { max-width: 1200px; margin: 120px auto 80px; padding: 0 24px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-bottom: 32px; transition: color 0.2s; }
+        .back-link:hover { color: var(--text-main); }
+        .back-link i { width: 18px; height: 18px; }
+
+        .layout-grid { display: grid; grid-template-columns: 1fr 340px; gap: 48px; }
+        @media (max-width: 900px) { .layout-grid { grid-template-columns: 1fr; } }
         
         /* Main Content */
         .header { margin-bottom: 40px; }
@@ -60,15 +65,24 @@
         
         .category-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); padding: 6px 14px; border-radius: var(--radius-pill); margin-bottom: 24px; box-shadow: 0 0 15px rgba(0,240,255,0.1); }
         
-        /* Visual Placeholder (SaaS style) */
-        .visual-placeholder { width: 100%; height: 360px; background: rgba(21, 22, 31, 0.6); border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: 48px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .visual-placeholder::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, transparent 50%, rgba(176, 91, 255, 0.05) 100%); pointer-events: none; }
-        .vp-header { height: 40px; border-bottom: 1px solid var(--border); background: rgba(13, 14, 21, 0.8); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
-        .vp-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
-        .vp-dot:nth-child(2) { background: #ffbd2e; }
-        .vp-dot:nth-child(3) { background: #27c93f; }
-        .vp-body { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); color: var(--text-muted); font-size: 0.9rem; flex-direction: column; gap: 16px; }
-        .vp-body i { width: 48px; height: 48px; color: rgba(255,255,255,0.1); }
+        /* Visual Placeholder (Dynamic Telemetry Grid) */
+        .visual-placeholder { width: 100%; height: 360px; background: rgba(13, 14, 21, 0.8); border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: 48px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .telemetry-grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(0, 240, 255, 0.15) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.6; z-index: 1; }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 800px; height: 800px; margin-top: -400px; margin-left: -400px; background: conic-gradient(from 0deg, transparent 70%, rgba(0, 240, 255, 0.15) 100%); border-radius: 50%; animation: radar 4s linear infinite; z-index: 2; }
+        @keyframes radar { 100% { transform: rotate(360deg); } }
+
+        .metrics-overlay { position: absolute; top: 20px; left: 20px; z-index: 10; display: flex; flex-direction: column; gap: 12px; }
+        .metric { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 8px 12px; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; }
+        .metric i { width: 14px; height: 14px; opacity: 0.8; }
+
+        .vp-center-node { position: relative; width: 80px; height: 80px; background: rgba(21, 22, 31, 0.9); border: 1px solid var(--cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 0 40px rgba(0, 240, 255, 0.3); }
+        .vp-center-node i { color: var(--cyan); width: 32px; height: 32px; }
+        .vp-pulse-ring { position: absolute; inset: -1px; border: 1px solid var(--cyan); border-radius: 50%; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; opacity: 0.6; }
+        .vp-pulse-ring.delay { animation-delay: 1s; }
+        @keyframes ping { 75%, 100% { transform: scale(2.5); opacity: 0; } }
+
+        .vp-status { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-main); background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; }
+        .vp-status::before { content:''; display:inline-block; width:8px; height:8px; border-radius:50%; background:#27c93f; box-shadow:0 0 10px #27c93f; }
 
         .content { font-size: 1.15rem; color: var(--text-main); line-height: 1.8; }
         .content h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 48px 0 24px; letter-spacing: -0.02em; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
@@ -131,63 +145,74 @@
     </div>
 
     <div class="container">
-        <main>
-            <div class="header">
-                <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
-                <h1 id="toolName" class="gradient-text">Loading...</h1>
-            </div>
-            
-            <div class="visual-placeholder">
-                <div class="vp-header">
-                    <div class="vp-dot"></div><div class="vp-dot"></div><div class="vp-dot"></div>
+        <a href="/" class="back-link"><i data-lucide="arrow-left"></i> Back to Directory</a>
+        <div class="layout-grid">
+            <main>
+                <div class="header">
+                    <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
+                    <h1 id="toolName" class="gradient-text">Loading...</h1>
                 </div>
-                <div class="vp-body">
-                    <i id="toolIconLarge" data-lucide="terminal"></i>
-                    <span id="toolNameTerminal">Initializing Interface...</span>
+                
+                <div class="visual-placeholder">
+                    <div class="radar-sweep"></div>
+                    <div class="telemetry-grid"></div>
+                    
+                    <div class="metrics-overlay">
+                        <div class="metric"><i data-lucide="shield-check"></i> <span>Sandbox Integrity: 99.9%</span></div>
+                        <div class="metric"><i data-lucide="activity"></i> <span id="vpLatency">Latency: &lt; 50ms</span></div>
+                        <div class="metric"><i data-lucide="radio"></i> <span>Telemetry: Standby</span></div>
+                    </div>
+                    
+                    <div class="vp-center-node">
+                        <i id="toolIconLarge" data-lucide="terminal"></i>
+                        <div class="vp-pulse-ring"></div>
+                        <div class="vp-pulse-ring delay"></div>
+                    </div>
+                    <div class="vp-status" id="toolNameTerminal">Initializing Sandbox Environment...</div>
                 </div>
-            </div>
 
-            <div class="content" id="toolDesc">
-                Loading intelligence data...
-            </div>
-        </main>
+                <div class="content" id="toolDesc">
+                    Loading intelligence data...
+                </div>
+            </main>
 
-        <aside class="sidebar" id="sidebar">
-            <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
-                Launch Platform <i data-lucide="external-link" style="width:18px;height:18px;"></i>
-            </a>
-            
-            <div class="meta-card">
-                <span class="meta-label">Technical Specifications</span>
-                <div class="spec-row">
-                    <div class="spec-key"><i data-lucide="zap"></i> Latency</div>
-                    <div class="spec-val">&lt; 50ms</div>
+            <aside class="sidebar" id="sidebar">
+                <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
+                    Launch Platform <i data-lucide="external-link" style="width:18px;height:18px;"></i>
+                </a>
+                
+                <div class="meta-card">
+                    <span class="meta-label">Technical Specifications</span>
+                    <div class="spec-row">
+                        <div class="spec-key"><i data-lucide="zap"></i> Latency</div>
+                        <div class="spec-val">&lt; 50ms</div>
+                    </div>
+                    <div class="spec-row">
+                        <div class="spec-key"><i data-lucide="shield-off"></i> Telemetry</div>
+                        <div class="spec-val">Disabled</div>
+                    </div>
+                    <div class="spec-row">
+                        <div class="spec-key"><i data-lucide="server"></i> Environment</div>
+                        <div class="spec-val">Client Sandbox</div>
+                    </div>
+                    <div class="spec-row">
+                        <div class="spec-key"><i data-lucide="check-circle"></i> Status</div>
+                        <div class="spec-val" style="color: #27c93f;">Operational</div>
+                    </div>
                 </div>
-                <div class="spec-row">
-                    <div class="spec-key"><i data-lucide="shield-off"></i> Telemetry</div>
-                    <div class="spec-val">Disabled</div>
-                </div>
-                <div class="spec-row">
-                    <div class="spec-key"><i data-lucide="server"></i> Environment</div>
-                    <div class="spec-val">Client Sandbox</div>
-                </div>
-                <div class="spec-row">
-                    <div class="spec-key"><i data-lucide="check-circle"></i> Status</div>
-                    <div class="spec-val" style="color: #27c93f;">Operational</div>
-                </div>
-            </div>
 
-            <div class="meta-card">
-                <span class="meta-label">Source URL</span>
-                <span class="meta-value" id="toolUrlDisplay"><a href="#" target="_blank">Loading...</a></span>
-            </div>
-            <div class="meta-card">
-                <span class="meta-label">Tags</span>
-                <div class="tag-list" id="toolTags">
-                    <span class="tag">INTEL</span>
+                <div class="meta-card">
+                    <span class="meta-label">Source URL</span>
+                    <span class="meta-value" id="toolUrlDisplay"><a href="#" target="_blank">Loading...</a></span>
                 </div>
-            </div>
-        </aside>
+                <div class="meta-card">
+                    <span class="meta-label">Tags</span>
+                    <div class="tag-list" id="toolTags">
+                        <span class="tag">INTEL</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </div>
 
     <footer>
@@ -228,7 +253,7 @@
         if (tool) {
             document.title = `${tool.name || 'Unnamed Tool'} — AcroVault`;
             document.getElementById('toolName').textContent = tool.name || 'Unnamed Tool';
-            document.getElementById('toolNameTerminal').textContent = `user@acro:~$ execute ${tool.name.toLowerCase().replace(/\s+/g, '-')}`;
+            document.getElementById('toolNameTerminal').textContent = `Initializing module: ${tool.name}`;
             
             const icon = CAT_ICONS[tool.category] || 'box';
             document.getElementById('toolCategory').innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i> <span>${tool.categoryName}</span>`;
@@ -269,6 +294,10 @@
                 tagsHtml = `<span class="tag">${tool.category}</span><span class="tag">INTEL</span>`;
             }
             document.getElementById('toolTags').innerHTML = tagsHtml;
+            
+            // Randomize visual latency metric for flavor
+            const ms = Math.floor(Math.random() * 30) + 10;
+            document.getElementById('vpLatency').textContent = `Latency: ${ms}ms`;
             
         } else {
             document.getElementById('toolName').textContent = "404 Not Found";

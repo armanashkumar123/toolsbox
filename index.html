@@ -41,10 +41,10 @@
         .nav-links a, .nav-links span { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text-main); }
         
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-premium::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, transparent, var(--cyan)); animation: rotate 4s linear infinite; opacity: 0.3; z-index: -1; }
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
+        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.5); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; position: relative; }
+        .btn-premium::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); box-shadow: 0 0 20px var(--cyan); opacity: 0.5; animation: pulseGlow 2s alternate infinite; z-index: -1; }
+        @keyframes pulseGlow { 0% { opacity: 0.2; transform: scale(1); } 100% { opacity: 0.6; transform: scale(1.05); } }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.5); transform: translateY(-1px); }
         .btn-premium:active { transform: scale(0.95); }
         
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
@@ -60,7 +60,7 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
         .hero { padding: 180px 0 72px; text-align: center; }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 24px; text-shadow: 0 0 60px rgba(0, 240, 255, 0.15); }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px; text-shadow: 0 0 60px rgba(0, 240, 255, 0.15); }
         .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
         .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 48px; }
 
@@ -76,7 +76,13 @@
         .filter-btn.active { background: rgba(0, 240, 255, 0.08); border-color: var(--border-active); color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
 
         .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 100px; }
-        .tool-card { background: rgba(21, 22, 31, 0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); height: 240px; position: relative; overflow: hidden; }
+        
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-card { background: rgba(21, 22, 31, 0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); height: 240px; position: relative; overflow: hidden; opacity: 0; animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         .tool-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--purple)); opacity: 0; transition: opacity 0.3s; }
         .tool-card:hover { border-color: rgba(0, 240, 255, 0.4); background: rgba(21, 22, 31, 0.8); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.1); }
         .tool-card:hover::before { opacity: 1; }
@@ -92,7 +98,7 @@
         .card-arrow { width: 16px; height: 16px; color: var(--cyan); opacity: 0; transform: translateX(-4px); transition: all 0.3s; }
         .tool-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
 
-        .no-results { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius-card); background: rgba(21, 22, 31, 0.4); backdrop-filter: blur(8px); }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius-card); background: rgba(21, 22, 31, 0.4); backdrop-filter: blur(8px); opacity: 0; animation: slideUpFade 0.4s ease forwards; }
 
         footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); }
         .footer-links { display: flex; justify-content: center; gap: 32px; }
@@ -127,7 +133,7 @@
 
     <div class="container">
         <section class="hero">
-            <h1>The <span class="gradient-text">No-Bullsh*t</span> Master<br>Web Tool Directory</h1>
+            <h1>The <span class="gradient-text">Uncompromised</span> Command Center<br>for Security Professionals</h1>
             <p>1,251+ native client-side tools & curated open-source apps. All in one instant, searchable portal.</p>
             
             <div class="search-container">
@@ -213,13 +219,14 @@
                 return;
             }
 
-            grid.innerHTML = filtered.slice(0, 60).map(t => {
+            grid.innerHTML = filtered.slice(0, 60).map((t, i) => {
                 const icon = CAT_ICONS[t.category] || 'box';
                 let domain = '';
                 try { domain = new URL(t.url).hostname.replace('www.',''); } catch(e) { domain = 'link'; }
                 
+                // Stagger the animation delay so they cascade in
                 return `
-                <a href="tool.html?id=${t.id}" class="tool-card">
+                <a href="tool.html?id=${t.id}" class="tool-card" style="animation-delay: ${i * 0.04}s">
                     <div class="card-top">
                         <div class="card-icon"><i data-lucide="${icon}"></i></div>
                         <span class="card-cat">${t.categoryName.substring(0, 18)}</span>
