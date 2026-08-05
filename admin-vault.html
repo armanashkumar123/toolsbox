@@ -8,636 +8,799 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-    --bg: #0d0e15; --surface: #15161f; --surface2: #1e202d;
+    --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
     --border: #262836; --border-active: #00f0ff;
-    --text: #f0f0f5; --muted: #8b8d98; --dim: #555;
-    --cyan: #00f0ff; --purple: #b05bff; --red: #ff4d6a; --green: #27c93f; --gold: #e9b44c;
-    --radius: 12px; --radius-sm: 8px;
-    --font: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+    --text-main: #f0f0f5; --text-muted: #8b8d98;
+    --cyan: #00f0ff; --purple: #b05bff;
+    --red: #ff4d6a; --green: #27c93f; --gold: #e9b44c;
+    --radius-pill: 100px; --radius-card: 16px; --radius-sm: 8px;
+    --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
 }
-body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+body {
+    font-family: var(--font-main); background-color: var(--bg-color);
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px; background-position: center center;
+    color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+}
+body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 0% 50%, rgba(0,240,255,0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
+body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 100% 50%, rgba(176,91,255,0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
 ::selection { background: var(--cyan); color: #000; }
-::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
-/* AUTH SCREEN */
+/* NAV — identical to index.html */
+.nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
+nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21,22,31,0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1400px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+.nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
+.nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
+.nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links a, .nav-links span { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text-main); }
+.nav-badge { font-family: var(--font-mono); font-size: .65rem; background: rgba(255,77,106,.1); border: 1px solid rgba(255,77,106,.3); color: var(--red); padding: 4px 10px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: .08em; }
+.mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
+@media (max-width: 768px) {
+    .nav-wrapper { top: 12px; padding: 0 12px; }
+    nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
+    .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
+    .nav-links.show { display: flex; }
+    .mobile-menu-btn { display: block; }
+}
+
+/* GRADIENT TEXT */
+.gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ===== AUTH SCREEN ===== */
 .auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
-.auth-box { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 48px 40px; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+.auth-box { width: 100%; max-width: 440px; background: rgba(21,22,31,0.6); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 48px 40px; box-shadow: 0 24px 80px rgba(0,0,0,.6); position: relative; overflow: hidden; }
+.auth-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
 .auth-logo { text-align: center; margin-bottom: 36px; }
-.auth-logo .icon { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 14px; font-size: 22px; margin-bottom: 16px; }
-.auth-logo h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
-.auth-logo p { font-family: var(--mono); font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; }
-.field { margin-bottom: 20px; }
-.field label { display: block; font-family: var(--mono); font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
-.field input, .field select, .field textarea { width: 100%; padding: 14px 16px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font); font-size: .95rem; outline: none; transition: border-color .2s; }
-.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,240,255,.1); }
-.field textarea { min-height: 80px; resize: vertical; }
-.field select { cursor: pointer; }
-.field input::placeholder { color: var(--dim); }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; border: none; border-radius: var(--radius-sm); font-family: var(--font); font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .2s; text-decoration: none; }
-.btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; width: 100%; }
-.btn-primary:hover { box-shadow: 0 8px 24px rgba(0,240,255,.3); transform: translateY(-1px); }
-.btn-ghost { background: rgba(255,255,255,.03); border: 1px solid var(--border); color: var(--text); }
-.btn-ghost:hover { border-color: var(--cyan); background: rgba(0,240,255,.05); }
-.btn-danger { background: rgba(255,77,106,.1); border: 1px solid rgba(255,77,106,.3); color: var(--red); }
-.btn-danger:hover { background: rgba(255,77,106,.2); }
-.btn-sm { padding: 8px 14px; font-size: .8rem; }
-.btn-gold { background: rgba(233,180,76,.1); border: 1px solid rgba(233,180,76,.3); color: var(--gold); }
-.btn-gold:hover { background: rgba(233,180,76,.2); }
-.alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: .85rem; margin-bottom: 20px; display: none; }
-.alert-error { background: rgba(255,77,106,.1); border: 1px solid rgba(255,77,106,.3); color: var(--red); }
-.alert-success { background: rgba(39,201,63,.1); border: 1px solid rgba(39,201,63,.3); color: var(--green); }
-.alert.show { display: block; }
-.totp-setup { text-align: center; margin: 20px 0; }
-.totp-setup canvas, .totp-setup img { border-radius: 8px; margin: 12px auto; display: block; }
-.totp-secret { font-family: var(--mono); font-size: .8rem; color: var(--cyan); background: rgba(0,0,0,.4); padding: 10px; border-radius: 6px; word-break: break-all; margin: 12px 0; user-select: all; }
-.step-indicator { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
-.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
-.step-dot.active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.auth-logo .logo-icon { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(0,240,255,.2); }
+.auth-logo .logo-icon svg { width: 28px; height: 28px; fill: #fff; }
+.auth-logo h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.03em; }
+.auth-logo p { font-family: var(--font-mono); font-size: .7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 8px; }
 
-/* DASHBOARD */
-.dashboard { display: none; }
-.dash-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(21,22,31,.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
-.dash-nav-left { display: flex; align-items: center; gap: 12px; }
-.dash-nav-left .icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.dash-nav-left span { font-weight: 800; font-size: 1rem; }
-.dash-nav-right { display: flex; align-items: center; gap: 16px; }
-.user-badge { font-family: var(--mono); font-size: .7rem; color: var(--muted); background: rgba(0,0,0,.3); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
-.dash-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-.dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
-.dash-header h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
-.stats-row { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
-.stat-card { flex: 1; min-width: 160px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-.stat-card .num { font-size: 2rem; font-weight: 800; background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-card .lbl { font-family: var(--mono); font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; }
+/* STEP DOTS */
+.step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all .3s; }
+.step-dot.active { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+
+/* FORM FIELDS */
+.field { margin-bottom: 20px; }
+.field label { display: block; font-family: var(--font-mono); font-size: .7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.field input, .field select, .field textarea {
+    width: 100%; padding: 14px 16px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text-main); font-family: var(--font-main); font-size: .95rem; outline: none; transition: all .2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,240,255,.08); }
+.field textarea { min-height: 80px; resize: vertical; }
+.field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b8d98' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.field input::placeholder, .field textarea::placeholder { color: #444; }
+.field-code input { text-align: center; font-family: var(--font-mono); font-size: 1.5rem; letter-spacing: .4em; padding: 16px; }
+
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; border: none; border-radius: var(--radius-sm); font-family: var(--font-main); font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .25s; text-decoration: none; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-full { width: 100%; }
+.btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; box-shadow: 0 4px 16px rgba(0,240,255,.15); }
+.btn-primary:hover:not(:disabled) { box-shadow: 0 8px 24px rgba(0,240,255,.3); transform: translateY(-1px); }
+.btn-ghost { background: rgba(255,255,255,.03); border: 1px solid var(--border); color: var(--text-main); }
+.btn-ghost:hover { border-color: var(--cyan); background: rgba(0,240,255,.05); }
+.btn-danger { background: rgba(255,77,106,.08); border: 1px solid rgba(255,77,106,.25); color: var(--red); }
+.btn-danger:hover { background: rgba(255,77,106,.15); }
+.btn-green { background: rgba(39,201,63,.08); border: 1px solid rgba(39,201,63,.25); color: var(--green); }
+.btn-green:hover { background: rgba(39,201,63,.15); }
+.btn-sm { padding: 8px 14px; font-size: .8rem; }
+
+/* ALERTS */
+.alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: .85rem; margin-bottom: 20px; display: none; animation: fadeIn .2s; }
+.alert.show { display: block; }
+.alert-error { background: rgba(255,77,106,.08); border: 1px solid rgba(255,77,106,.25); color: var(--red); }
+.alert-ok { background: rgba(39,201,63,.08); border: 1px solid rgba(39,201,63,.25); color: var(--green); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* LINK TOGGLE */
+.auth-toggle { text-align: center; margin-top: 20px; font-size: .8rem; color: var(--text-muted); }
+.auth-toggle a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+.auth-toggle a:hover { text-decoration: underline; }
+
+/* TOTP SETUP */
+.totp-qr { text-align: center; margin: 20px 0; }
+.totp-qr canvas { border-radius: 12px; margin: 12px auto; display: block; border: 2px solid var(--border); }
+.totp-secret-box { font-family: var(--font-mono); font-size: .8rem; color: var(--cyan); background: rgba(0,240,255,.05); border: 1px solid rgba(0,240,255,.15); padding: 12px; border-radius: var(--radius-sm); word-break: break-all; margin: 12px 0; user-select: all; text-align: center; letter-spacing: .15em; }
+
+/* ===== DASHBOARD ===== */
+.dashboard { display: none; padding-top: 100px; flex: 1; }
+.dash-container { max-width: 1400px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.stat-card { background: rgba(21,22,31,0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; transition: all .3s; }
+.stat-card:hover { border-color: rgba(0,240,255,.3); transform: translateY(-2px); }
+.stat-num { font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.stat-lbl { font-family: var(--font-mono); font-size: .65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; }
+
+/* ACTION BAR */
+.action-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.action-bar h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; display: flex; align-items: center; gap: 10px; }
+.action-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
 /* FORM PANEL */
-.form-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 32px; }
+.form-panel { background: rgba(21,22,31,0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 32px; margin-bottom: 24px; display: none; animation: slideDown .3s; }
+.form-panel.show { display: block; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
 .form-panel h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-@media (max-width: 768px) { .form-row, .form-row-3 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
 .form-actions { display: flex; gap: 12px; margin-top: 24px; }
 
 /* TOOLS TABLE */
-.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
-.table-header h3 { font-size: 1rem; font-weight: 700; }
-.table-search { padding: 8px 14px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: var(--mono); font-size: .8rem; outline: none; min-width: 240px; }
+.tools-table-wrap { background: rgba(21,22,31,0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
+.table-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+.table-top h3 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.table-search { padding: 10px 16px; background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--text-main); font-family: var(--font-mono); font-size: .8rem; outline: none; min-width: 260px; transition: border-color .2s; }
 .table-search:focus { border-color: var(--cyan); }
-table { width: 100%; border-collapse: collapse; }
-table th { font-family: var(--mono); font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.03); font-size: .9rem; vertical-align: middle; }
-table tr:hover td { background: rgba(255,255,255,.02); }
-.cat-pill { font-family: var(--mono); font-size: .65rem; color: var(--cyan); background: rgba(0,240,255,.08); border: 1px solid rgba(0,240,255,.2); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
-.actions-cell { display: flex; gap: 6px; }
-.table-empty { text-align: center; padding: 60px 20px; color: var(--muted); font-family: var(--mono); font-size: .85rem; }
 .overflow-x { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 700px; }
+table th { font-family: var(--font-mono); font-size: .65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,.2); }
+table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.03); font-size: .88rem; vertical-align: middle; }
+table tr:hover td { background: rgba(0,240,255,.02); }
+.cat-pill { font-family: var(--font-mono); font-size: .6rem; color: var(--cyan); background: rgba(0,240,255,.06); border: 1px solid rgba(0,240,255,.15); padding: 4px 10px; border-radius: var(--radius-pill); white-space: nowrap; display: inline-block; }
+.prem-badge { font-family: var(--font-mono); font-size: .6rem; padding: 4px 10px; border-radius: var(--radius-pill); display: inline-block; }
+.prem-yes { color: var(--gold); background: rgba(233,180,76,.08); border: 1px solid rgba(233,180,76,.2); }
+.prem-no { color: var(--green); background: rgba(39,201,63,.06); border: 1px solid rgba(39,201,63,.15); }
+.td-actions { display: flex; gap: 6px; }
+.url-cell { font-family: var(--font-mono); font-size: .72rem; color: var(--text-muted); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.table-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); font-family: var(--font-mono); font-size: .85rem; }
 
-/* HIDDEN */
+/* FOOTER */
+footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13,14,21,0.9); margin-top: auto; }
+.footer-links { display: flex; justify-content: center; gap: 32px; }
+.footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
+.footer-links a:hover { color: var(--text-main); }
+
 .hidden { display: none !important; }
+
+/* SPINNER */
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.2); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- ==================== AUTH SCREEN ==================== -->
+<!-- NAV — matches index.html -->
+<div class="nav-wrapper">
+    <nav>
+        <a href="/" class="nav-brand">
+            <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <span class="nav-brand-text">AcroVault</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><i data-lucide="menu"></i></button>
+        <div class="nav-links" id="navLinks">
+            <span class="nav-badge"><i data-lucide="shield-alert" style="width:12px;height:12px;vertical-align:middle;margin-right:4px"></i> ADMIN</span>
+            <a href="/">Directory</a>
+            <a href="about.html">About</a>
+            <span id="navUser" style="font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted)" class="hidden"></span>
+            <button class="btn btn-danger btn-sm hidden" id="navLogout" style="margin:0">Logout</button>
+        </div>
+    </nav>
+</div>
+
+<!-- ===================== AUTH SCREEN ===================== -->
 <div class="auth-screen" id="authScreen">
-  <div class="auth-box">
-    <div class="auth-logo">
-      <div class="icon">⚡</div>
-      <h1>AV-CMD</h1>
-      <p>Restricted Access · Admin Terminal</p>
-    </div>
+    <div class="auth-box">
+        <div class="auth-logo">
+            <div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <h1><span class="gradient-text">AV-CMD</span></h1>
+            <p>Restricted Access · Admin Terminal</p>
+        </div>
 
-    <div class="step-indicator">
-      <div class="step-dot active" id="dot1"></div>
-      <div class="step-dot" id="dot2"></div>
-      <div class="step-dot" id="dot3"></div>
-    </div>
+        <div class="step-dots">
+            <div class="step-dot active" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+            <div class="step-dot" id="dot3"></div>
+        </div>
 
-    <div class="alert alert-error" id="authError"></div>
-    <div class="alert alert-success" id="authSuccess"></div>
+        <div class="alert alert-error" id="alertErr"></div>
+        <div class="alert alert-ok" id="alertOk"></div>
 
-    <!-- Step 1: Login -->
-    <div id="step1">
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="loginEmail" placeholder="admin@acrovault.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="btn btn-primary" id="loginBtn">Authenticate →</button>
-      <p style="text-align:center;margin-top:16px;font-size:.8rem;color:var(--muted)">
-        First time? <a href="#" id="showRegister" style="color:var(--cyan);text-decoration:none">Create Admin Account</a>
-      </p>
-    </div>
+        <!-- STEP 1: LOGIN -->
+        <div id="authLogin">
+            <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" placeholder="admin@acrovault.com" autocomplete="email">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button class="btn btn-primary btn-full" id="loginBtn" type="button">
+                <i data-lucide="log-in" style="width:16px;height:16px"></i> Authenticate
+            </button>
+            <div class="auth-toggle">No account? <a href="#" id="toRegister">Create Admin Account</a></div>
+        </div>
 
-    <!-- Step 1b: Register -->
-    <div id="step1b" class="hidden">
-      <div class="field">
-        <label>Admin Email</label>
-        <input type="email" id="regEmail" placeholder="admin@acrovault.com">
-      </div>
-      <div class="field">
-        <label>Password (min 8 chars)</label>
-        <input type="password" id="regPassword" placeholder="••••••••">
-      </div>
-      <div class="field">
-        <label>Confirm Password</label>
-        <input type="password" id="regPassword2" placeholder="••••••••">
-      </div>
-      <button class="btn btn-primary" id="regBtn">Create Account →</button>
-      <p style="text-align:center;margin-top:16px;font-size:.8rem;color:var(--muted)">
-        Already have account? <a href="#" id="showLogin" style="color:var(--cyan);text-decoration:none">Sign In</a>
-      </p>
-    </div>
+        <!-- STEP 1B: REGISTER -->
+        <div id="authRegister" class="hidden">
+            <div class="field">
+                <label>Admin Email</label>
+                <input type="email" id="regEmail" placeholder="admin@acrovault.com">
+            </div>
+            <div class="field">
+                <label>Password (min 8 chars)</label>
+                <input type="password" id="regPass" placeholder="••••••••">
+            </div>
+            <div class="field">
+                <label>Confirm Password</label>
+                <input type="password" id="regPass2" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary btn-full" id="regBtn" type="button">
+                <i data-lucide="user-plus" style="width:16px;height:16px"></i> Create Account
+            </button>
+            <div class="auth-toggle">Have an account? <a href="#" id="toLogin">Sign In</a></div>
+        </div>
 
-    <!-- Step 2: TOTP Setup (first time) -->
-    <div id="step2" class="hidden">
-      <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;text-align:center">Scan this QR code with <strong style="color:var(--text)">Google Authenticator</strong></p>
-      <div class="totp-setup">
-        <canvas id="qrCanvas"></canvas>
-        <p style="font-size:.75rem;color:var(--muted);margin-top:8px">Or enter manually:</p>
-        <div class="totp-secret" id="totpSecretDisplay"></div>
-      </div>
-      <div class="field">
-        <label>Enter 6-digit code from app</label>
-        <input type="text" id="totpSetupCode" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off" style="text-align:center;font-family:var(--mono);font-size:1.3rem;letter-spacing:.3em">
-      </div>
-      <button class="btn btn-primary" id="verifySetupBtn">Verify & Activate →</button>
-    </div>
+        <!-- STEP 2: TOTP SETUP (first time) -->
+        <div id="authTotpSetup" class="hidden">
+            <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;text-align:center">
+                Scan with <strong style="color:var(--text-main)">Google Authenticator</strong>
+            </p>
+            <div class="totp-qr">
+                <canvas id="qrCanvas"></canvas>
+                <p style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Or enter this key manually:</p>
+                <div class="totp-secret-box" id="totpSecretShow"></div>
+            </div>
+            <div class="field field-code">
+                <label>Enter 6-Digit Code</label>
+                <input type="text" id="totpSetupCode" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off">
+            </div>
+            <button class="btn btn-primary btn-full" id="totpSetupBtn" type="button">
+                <i data-lucide="shield-check" style="width:16px;height:16px"></i> Verify & Activate 2FA
+            </button>
+        </div>
 
-    <!-- Step 3: TOTP Verify (returning) -->
-    <div id="step3" class="hidden">
-      <p style="color:var(--muted);font-size:.9rem;margin-bottom:20px;text-align:center">Enter code from <strong style="color:var(--text)">Google Authenticator</strong></p>
-      <div class="field">
-        <label>6-Digit Code</label>
-        <input type="text" id="totpVerifyCode" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off" style="text-align:center;font-family:var(--mono);font-size:1.3rem;letter-spacing:.3em">
-      </div>
-      <button class="btn btn-primary" id="verifyLoginBtn">Verify →</button>
+        <!-- STEP 3: TOTP VERIFY (returning user) -->
+        <div id="authTotpVerify" class="hidden">
+            <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:20px;text-align:center">
+                Enter code from <strong style="color:var(--text-main)">Google Authenticator</strong>
+            </p>
+            <div class="field field-code">
+                <label>6-Digit Code</label>
+                <input type="text" id="totpVerifyCode" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off">
+            </div>
+            <button class="btn btn-primary btn-full" id="totpVerifyBtn" type="button">
+                <i data-lucide="lock" style="width:16px;height:16px"></i> Verify & Enter
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- ==================== DASHBOARD ==================== -->
+<!-- ===================== DASHBOARD ===================== -->
 <div class="dashboard" id="dashboard">
-  <div class="dash-nav">
-    <div class="dash-nav-left">
-      <div class="icon">⚡</div>
-      <span>AV-CMD</span>
-    </div>
-    <div class="dash-nav-right">
-      <span class="user-badge" id="userBadge">admin</span>
-      <button class="btn btn-ghost btn-sm" id="exportBtn">📦 Export JS</button>
-      <button class="btn btn-danger btn-sm" id="logoutBtn">Logout</button>
-    </div>
-  </div>
-
-  <div class="dash-body">
-    <div class="dash-header">
-      <h2>Tool Command Center</h2>
-      <button class="btn btn-primary btn-sm" id="showAddForm">+ Add Tool</button>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-card"><div class="num" id="statTotal">0</div><div class="lbl">Total Tools</div></div>
-      <div class="stat-card"><div class="num" id="statCats">0</div><div class="lbl">Categories</div></div>
-      <div class="stat-card"><div class="num" id="statPrem">0</div><div class="lbl">Premium</div></div>
-      <div class="stat-card"><div class="num" id="statFree">0</div><div class="lbl">Free</div></div>
-    </div>
-
-    <!-- ADD/EDIT FORM -->
-    <div class="form-panel hidden" id="formPanel">
-      <h3 id="formTitle">➕ Add New Tool</h3>
-      <input type="hidden" id="editId">
-      <div class="form-row">
-        <div class="field"><label>Tool Name *</label><input type="text" id="fName" placeholder="e.g. Bellingcat"></div>
-        <div class="field"><label>URL *</label><input type="url" id="fUrl" placeholder="https://..."></div>
-      </div>
-      <div class="field"><label>Description *</label><textarea id="fDesc" placeholder="Short description of what this tool does..."></textarea></div>
-      <div class="form-row">
-        <div class="field">
-          <label>Category *</label>
-          <select id="fCategory"></select>
+    <div class="dash-container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num gradient-text" id="sTotal">0</div>
+                <div class="stat-lbl">Total Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num gradient-text" id="sCats">0</div>
+                <div class="stat-lbl">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" style="color:var(--gold)" id="sPrem">0</div>
+                <div class="stat-lbl">Premium</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" style="color:var(--green)" id="sFree">0</div>
+                <div class="stat-lbl">Free</div>
+            </div>
         </div>
-        <div class="field"><label>Tags (comma separated)</label><input type="text" id="fTags" placeholder="osint, recon, scanner"></div>
-      </div>
-      <div class="form-row">
-        <div class="field">
-          <label>Premium?</label>
-          <select id="fPremium"><option value="false">Free</option><option value="true">Premium</option></select>
-        </div>
-        <div class="field"><label>Custom Icon (emoji)</label><input type="text" id="fIcon" placeholder="🔍 (auto from category if empty)"></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" id="saveToolBtn">Save Tool</button>
-        <button class="btn btn-ghost" id="cancelFormBtn">Cancel</button>
-      </div>
-    </div>
 
-    <!-- TOOLS TABLE -->
-    <div class="table-wrap">
-      <div class="table-header">
-        <h3>📋 All Tools (<span id="tableCount">0</span>)</h3>
-        <input type="text" class="table-search" id="tableSearch" placeholder="Search tools...">
-      </div>
-      <div class="overflow-x">
-        <table>
-          <thead><tr><th>Name</th><th>Category</th><th>URL</th><th>Type</th><th>Actions</th></tr></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-      <div class="table-empty hidden" id="tableEmpty">No tools found. Add your first tool above.</div>
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <h2><i data-lucide="terminal" style="width:22px;height:22px;color:var(--cyan)"></i> Tool Command Center</h2>
+            <div class="action-btns">
+                <button class="btn btn-primary btn-sm" id="addToolBtn"><i data-lucide="plus" style="width:14px;height:14px"></i> Add Tool</button>
+                <button class="btn btn-green btn-sm" id="importBtn"><i data-lucide="download" style="width:14px;height:14px"></i> Import tools-data.js</button>
+                <button class="btn btn-ghost btn-sm" id="exportBtn"><i data-lucide="upload" style="width:14px;height:14px"></i> Export JS</button>
+            </div>
+        </div>
+
+        <!-- Add/Edit Form -->
+        <div class="form-panel" id="formPanel">
+            <h3 id="formTitle"><i data-lucide="plus-circle" style="width:18px;height:18px;color:var(--cyan)"></i> Add New Tool</h3>
+            <input type="hidden" id="editDocId">
+            <div class="form-row">
+                <div class="field"><label>Tool Name *</label><input type="text" id="fName" placeholder="e.g. Bellingcat"></div>
+                <div class="field"><label>URL *</label><input type="url" id="fUrl" placeholder="https://..."></div>
+            </div>
+            <div class="field"><label>Description *</label><textarea id="fDesc" placeholder="Short description of what this tool does..."></textarea></div>
+            <div class="form-row">
+                <div class="field">
+                    <label>Category *</label>
+                    <select id="fCat"></select>
+                </div>
+                <div class="field"><label>Tags (comma-separated)</label><input type="text" id="fTags" placeholder="osint, recon, scanner"></div>
+            </div>
+            <div class="form-row">
+                <div class="field">
+                    <label>Access Type</label>
+                    <select id="fPremium"><option value="false">Free</option><option value="true">Premium</option></select>
+                </div>
+                <div class="field"><label>Icon (emoji, optional)</label><input type="text" id="fIcon" placeholder="Auto from category"></div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="saveBtn" type="button"><i data-lucide="save" style="width:14px;height:14px"></i> Save Tool</button>
+                <button class="btn btn-ghost" id="cancelBtn" type="button">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="tools-table-wrap">
+            <div class="table-top">
+                <h3><i data-lucide="database" style="width:16px;height:16px;color:var(--cyan)"></i> All Tools <span style="color:var(--text-muted);font-weight:400">(<span id="tblCount">0</span>)</span></h3>
+                <input type="text" class="table-search" id="tblSearch" placeholder="🔍 Search tools...">
+            </div>
+            <div class="overflow-x">
+                <table>
+                    <thead><tr><th>Name</th><th>Category</th><th>URL</th><th>Type</th><th>Actions</th></tr></thead>
+                    <tbody id="tblBody"></tbody>
+                </table>
+            </div>
+            <div class="table-empty hidden" id="tblEmpty">No tools yet. Click "Add Tool" or "Import tools-data.js" to get started.</div>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- FIREBASE SDK (compat for simplicity — no build tools needed) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<!-- QR Code library for TOTP setup -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<footer>
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="premium.html">Premium</a>
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+    </div>
+    <p>&copy; 2026 AcroVault. Admin Panel — Restricted Access.</p>
+</footer>
+
+<!-- FIREBASE SDK — verified compat CDN -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<!-- QR CODE -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 
 <script>
-// ============================================================
-// FIREBASE INIT
-// ============================================================
-firebase.initializeApp({
-  apiKey: "AIzaSyCggSV3fCXGE8MxxctQVzmj9FC4qy_Dv2w",
-  authDomain: "acrovault-258a8.firebaseapp.com",
-  projectId: "acrovault-258a8",
-  storageBucket: "acrovault-258a8.firebasestorage.app",
-  messagingSenderId: "185059784832",
-  appId: "1:185059784832:web:0615e28ad2b94385e8ce65"
-});
+(function() {
+'use strict';
+
+// ======== FIREBASE INIT ========
+try {
+    firebase.initializeApp({
+        apiKey: "AIzaSyCggSV3fCXGE8MxxctQVzmj9FC4qy_Dv2w",
+        authDomain: "acrovault-258a8.firebaseapp.com",
+        projectId: "acrovault-258a8",
+        storageBucket: "acrovault-258a8.firebasestorage.app",
+        messagingSenderId: "185059784832",
+        appId: "1:185059784832:web:0615e28ad2b94385e8ce65"
+    });
+} catch(e) { console.error('Firebase init failed:', e); }
+
 var auth = firebase.auth();
 var db = firebase.firestore();
 
-// ============================================================
-// TOTP ENGINE (RFC 6238 — works with Google Authenticator)
-// ============================================================
+// ======== TOTP ENGINE (RFC 6238) ========
 var TOTP = {
-  _b32decode: function(s) {
-    var A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', bits = '', out = [];
-    s = s.replace(/=+$/, '').toUpperCase();
-    for (var i = 0; i < s.length; i++) { var v = A.indexOf(s[i]); if (v < 0) continue; bits += ('00000' + v.toString(2)).slice(-5); }
-    for (var i = 0; i + 8 <= bits.length; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
-    return new Uint8Array(out);
-  },
-  _hmacSha1: async function(key, msg) {
-    var ck = await crypto.subtle.importKey('raw', key, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
-    var sig = await crypto.subtle.sign('HMAC', ck, msg);
-    return new Uint8Array(sig);
-  },
-  generate: async function(secret, time) {
-    var T = Math.floor((time || Date.now() / 1000) / 30);
-    var msg = new Uint8Array(8);
-    for (var i = 7; i >= 0; i--) { msg[i] = T & 0xff; T >>= 8; }
-    var key = this._b32decode(secret);
-    var hash = await this._hmacSha1(key, msg);
-    var off = hash[hash.length - 1] & 0xf;
-    var code = ((hash[off] & 0x7f) << 24 | hash[off+1] << 16 | hash[off+2] << 8 | hash[off+3]) % 1000000;
-    return ('000000' + code).slice(-6);
-  },
-  verify: async function(secret, code) {
-    var now = Date.now() / 1000;
-    for (var d = -1; d <= 1; d++) { var c = await this.generate(secret, now + d * 30); if (c === code) return true; }
-    return false;
-  },
-  generateSecret: function() {
-    var A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', s = '';
-    var arr = new Uint8Array(20); crypto.getRandomValues(arr);
-    for (var i = 0; i < 16; i++) s += A[arr[i] % 32];
-    return s;
-  }
+    _b32chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
+    _b32decode: function(s) {
+        var bits = '', out = [];
+        s = s.replace(/[\s=]+/g, '').toUpperCase();
+        for (var i = 0; i < s.length; i++) {
+            var v = this._b32chars.indexOf(s[i]);
+            if (v < 0) continue;
+            bits += ('00000' + v.toString(2)).slice(-5);
+        }
+        for (var i = 0; i + 8 <= bits.length; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
+        return new Uint8Array(out);
+    },
+    generate: function(secret, time) {
+        var T = Math.floor((time || Date.now() / 1000) / 30);
+        var msg = new Uint8Array(8);
+        for (var i = 7; i >= 0; i--) { msg[i] = T & 0xff; T = Math.floor(T / 256); }
+        var key = this._b32decode(secret);
+        return crypto.subtle.importKey('raw', key, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign'])
+            .then(function(ck) { return crypto.subtle.sign('HMAC', ck, msg); })
+            .then(function(sig) {
+                var h = new Uint8Array(sig);
+                var off = h[h.length - 1] & 0xf;
+                var code = ((h[off] & 0x7f) << 24 | h[off+1] << 16 | h[off+2] << 8 | h[off+3]) % 1000000;
+                return ('000000' + code).slice(-6);
+            });
+    },
+    verify: function(secret, code) {
+        var self = this, now = Date.now() / 1000;
+        return Promise.all([-1, 0, 1].map(function(d) { return self.generate(secret, now + d * 30); }))
+            .then(function(codes) { return codes.indexOf(code) !== -1; });
+    },
+    makeSecret: function() {
+        var s = '', arr = new Uint8Array(20);
+        crypto.getRandomValues(arr);
+        for (var i = 0; i < 16; i++) s += this._b32chars[arr[i] % 32];
+        return s;
+    }
 };
 
-// ============================================================
-// CATEGORIES (match tools-data.js)
-// ============================================================
+// ======== CATEGORIES (synced with tools-data.js) ========
 var CATEGORIES = [
-  { id:"crime-evidence", name:"Crime & Evidence Databases", icon:"⚖️" },
-  { id:"osint", name:"Advanced OSINT Tools", icon:"🕵️" },
-  { id:"roadmap", name:"Cybersecurity Roadmap & Resources", icon:"🗺️" },
-  { id:"hardware-hacking", name:"Hardware Hacking", icon:"🔌" },
-  { id:"ai-research", name:"AI Vision-Language Models", icon:"🧠" },
-  { id:"vapt", name:"VAPT Tools", icon:"🛡️" },
-  { id:"ai-hacking", name:"AI-Assisted Hacking", icon:"🤖" },
-  { id:"account-tools", name:"Account Creation Tools", icon:"👤" },
-  { id:"ai-attack", name:"Agentic AI Attack + Report Generation", icon:"⚔️" },
-  { id:"malware-analysis", name:"Malware Analysis", icon:"🦠" },
-  { id:"url-scanning", name:"URL Scanning", icon:"🔗" },
-  { id:"social-engineering", name:"Social Engineering", icon:"🎣" },
-  { id:"exploit-directory", name:"Exploit Directory", icon:"💣" },
-  { id:"malware-courses", name:"Malware Analysis Courses", icon:"🎓" },
-  { id:"digital-forensics", name:"Digital Forensics", icon:"🔍" },
-  { id:"port-scanners", name:"Port Scanners", icon:"🚪" },
-  { id:"detection-tools", name:"Number Plate Detection", icon:"🚗" },
-  { id:"api-gateway", name:"API Gateway", icon:"🌉" },
-  { id:"ethical-hacking", name:"Ethical Hacking Courses", icon:"📘" },
-  { id:"security-learning", name:"Interactive Security Learning", icon:"🎮" },
-  { id:"ai-vuln-scanner", name:"AI Vulnerability Scanner", icon:"👁️" },
-  { id:"pentest-reports", name:"Pentesting Reports", icon:"📄" },
-  { id:"jailbreak-ai", name:"Jailbreak AI", icon:"🔓" },
-  { id:"api-key-scanning", name:"API Key Scanning", icon:"🔑" },
-  { id:"photo-forensics", name:"Photo Forensics", icon:"📸" },
-  { id:"person-osint", name:"Person OSINT", icon:"🧑" },
-  { id:"dark-web-search", name:"Dark Web Search", icon:"🕸️" },
-  { id:"red-team", name:"Red Team Tools", icon:"🔴" },
-  { id:"geo-osint", name:"Geo Location OSINT", icon:"🌍" },
-  { id:"ai-infra-attack", name:"AI Infrastructure Attack", icon:"💥" },
-  { id:"dark-web-osint", name:"Dark Web OSINT", icon:"🦇" },
-  { id:"esp32-offensive", name:"ESP32 Offensive", icon:"📟" },
-  { id:"image-video-osint", name:"Image & Video OSINT", icon:"🎞️" },
-  { id:"breach-lookup", name:"Breach & Leak Lookup", icon:"🚨" }
+    {id:"crime-evidence",name:"Crime & Evidence Databases",icon:"⚖️"},
+    {id:"osint",name:"Advanced OSINT Tools",icon:"🕵️"},
+    {id:"roadmap",name:"Cybersecurity Roadmap & Resources",icon:"🗺️"},
+    {id:"hardware-hacking",name:"Hardware Hacking",icon:"🔌"},
+    {id:"ai-research",name:"AI Vision-Language Models",icon:"🧠"},
+    {id:"vapt",name:"VAPT Tools",icon:"🛡️"},
+    {id:"ai-hacking",name:"AI-Assisted Hacking",icon:"🤖"},
+    {id:"account-tools",name:"Account Creation Tools",icon:"👤"},
+    {id:"ai-attack",name:"Agentic AI Attack + Report Generation",icon:"⚔️"},
+    {id:"malware-analysis",name:"Malware Analysis",icon:"🦠"},
+    {id:"url-scanning",name:"URL Scanning",icon:"🔗"},
+    {id:"social-engineering",name:"Social Engineering",icon:"🎣"},
+    {id:"exploit-directory",name:"Exploit Directory",icon:"💣"},
+    {id:"malware-courses",name:"Malware Analysis Courses",icon:"🎓"},
+    {id:"digital-forensics",name:"Digital Forensics",icon:"🔍"},
+    {id:"port-scanners",name:"Port Scanners",icon:"🚪"},
+    {id:"detection-tools",name:"Number Plate Detection",icon:"🚗"},
+    {id:"api-gateway",name:"API Gateway",icon:"🌉"},
+    {id:"ethical-hacking",name:"Ethical Hacking Courses",icon:"📘"},
+    {id:"security-learning",name:"Interactive Security Learning",icon:"🎮"},
+    {id:"ai-vuln-scanner",name:"AI Vulnerability Scanner",icon:"👁️"},
+    {id:"pentest-reports",name:"Pentesting Reports",icon:"📄"},
+    {id:"jailbreak-ai",name:"Jailbreak AI",icon:"🔓"},
+    {id:"api-key-scanning",name:"API Key Scanning",icon:"🔑"},
+    {id:"photo-forensics",name:"Photo Forensics",icon:"📸"},
+    {id:"person-osint",name:"Person OSINT",icon:"🧑"},
+    {id:"dark-web-search",name:"Dark Web Search",icon:"🕸️"},
+    {id:"red-team",name:"Red Team Tools",icon:"🔴"},
+    {id:"geo-osint",name:"Geo Location OSINT",icon:"🌍"},
+    {id:"ai-infra-attack",name:"AI Infrastructure Attack",icon:"💥"},
+    {id:"dark-web-osint",name:"Dark Web OSINT",icon:"🦇"},
+    {id:"esp32-offensive",name:"ESP32 Offensive",icon:"📟"},
+    {id:"image-video-osint",name:"Image & Video OSINT",icon:"🎞️"},
+    {id:"breach-lookup",name:"Breach & Leak Lookup",icon:"🚨"}
 ];
 
-// ============================================================
-// DOM
-// ============================================================
+// ======== DOM HELPERS ========
 var $ = function(id) { return document.getElementById(id); };
-var authScreen = $('authScreen'), dashboard = $('dashboard');
-var step1 = $('step1'), step1b = $('step1b'), step2 = $('step2'), step3 = $('step3');
-var dots = [$('dot1'), $('dot2'), $('dot3')];
+var currentUser = null, totpSecret = null, allTools = [];
 
-function showStep(n) {
-  [step1, step1b, step2, step3].forEach(function(s) { s.classList.add('hidden'); });
-  dots.forEach(function(d, i) { d.classList.toggle('active', i < n); });
-  if (n === 1) step1.classList.remove('hidden');
-  if (n === 1.5) step1b.classList.remove('hidden');
-  if (n === 2) step2.classList.remove('hidden');
-  if (n === 3) step3.classList.remove('hidden');
+function showErr(msg) { $('alertErr').textContent = msg; $('alertErr').classList.add('show'); $('alertOk').classList.remove('show'); }
+function showOk(msg) { $('alertOk').textContent = msg; $('alertOk').classList.add('show'); $('alertErr').classList.remove('show'); }
+function clearAlerts() { $('alertErr').classList.remove('show'); $('alertOk').classList.remove('show'); }
+
+function setStep(views, dotCount) {
+    ['authLogin','authRegister','authTotpSetup','authTotpVerify'].forEach(function(id) { $(id).classList.add('hidden'); });
+    views.forEach(function(id) { $(id).classList.remove('hidden'); });
+    [1,2,3].forEach(function(i) { $('dot'+i).classList.toggle('active', i <= dotCount); });
 }
 
-function showError(msg) { var el = $('authError'); el.textContent = msg; el.classList.add('show'); $('authSuccess').classList.remove('show'); }
-function showSuccess(msg) { var el = $('authSuccess'); el.textContent = msg; el.classList.add('show'); $('authError').classList.remove('show'); }
-function clearAlerts() { $('authError').classList.remove('show'); $('authSuccess').classList.remove('show'); }
+function btnLoad(btn, loading) {
+    if (loading) { btn.disabled = true; btn._old = btn.innerHTML; btn.innerHTML = '<span class="spinner"></span> Working...'; }
+    else { btn.disabled = false; if (btn._old) btn.innerHTML = btn._old; }
+}
 
-// ============================================================
-// AUTH FLOW
-// ============================================================
-var currentUser = null;
-var totpSecret = null;
+// ======== NAV ========
+$('mobileMenuBtn').addEventListener('click', function() { $('navLinks').classList.toggle('show'); });
 
-$('showRegister').addEventListener('click', function(e) { e.preventDefault(); clearAlerts(); showStep(1.5); });
-$('showLogin').addEventListener('click', function(e) { e.preventDefault(); clearAlerts(); showStep(1); });
+// ======== AUTH TOGGLES ========
+$('toRegister').addEventListener('click', function(e) { e.preventDefault(); clearAlerts(); setStep(['authRegister'], 1); });
+$('toLogin').addEventListener('click', function(e) { e.preventDefault(); clearAlerts(); setStep(['authLogin'], 1); });
 
-// Register
-$('regBtn').addEventListener('click', async function() {
-  clearAlerts();
-  var email = $('regEmail').value.trim(), pw = $('regPassword').value, pw2 = $('regPassword2').value;
-  if (!email || !pw) return showError('Fill all fields');
-  if (pw.length < 8) return showError('Password must be 8+ characters');
-  if (pw !== pw2) return showError('Passwords do not match');
-  this.disabled = true; this.textContent = 'Creating...';
-  try {
-    var cred = await auth.createUserWithEmailAndPassword(email, pw);
-    currentUser = cred.user;
-    // Generate TOTP secret
-    totpSecret = TOTP.generateSecret();
-    // Show QR
-    showStep(2);
-    var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
-    QRCode.toCanvas($('qrCanvas'), uri, { width: 200, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
-    $('totpSecretDisplay').textContent = totpSecret;
-    showSuccess('Account created! Now set up 2FA.');
-  } catch (e) { showError(e.message); }
-  this.disabled = false; this.textContent = 'Create Account →';
+// ======== REGISTER ========
+$('regBtn').addEventListener('click', function() {
+    clearAlerts();
+    var email = $('regEmail').value.trim(), pw = $('regPass').value, pw2 = $('regPass2').value;
+    if (!email || !pw) return showErr('Fill all fields.');
+    if (pw.length < 8) return showErr('Password must be at least 8 characters.');
+    if (pw !== pw2) return showErr('Passwords do not match.');
+    var btn = this; btnLoad(btn, true);
+    auth.createUserWithEmailAndPassword(email, pw)
+        .then(function(cred) {
+            currentUser = cred.user;
+            totpSecret = TOTP.makeSecret();
+            setStep(['authTotpSetup'], 2);
+            var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
+            QRCode.toCanvas($('qrCanvas'), uri, { width: 220, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
+            $('totpSecretShow').textContent = totpSecret;
+            showOk('Account created! Scan QR code with Google Authenticator.');
+            setTimeout(function() { $('totpSetupCode').focus(); }, 300);
+        })
+        .catch(function(e) { showErr(e.message); })
+        .finally(function() { btnLoad(btn, false); });
 });
 
-// Verify TOTP setup
-$('verifySetupBtn').addEventListener('click', async function() {
-  clearAlerts();
-  var code = $('totpSetupCode').value.trim();
-  if (code.length !== 6) return showError('Enter 6-digit code');
-  var ok = await TOTP.verify(totpSecret, code);
-  if (!ok) return showError('Invalid code. Check your authenticator app.');
-  // Save TOTP secret to Firestore
-  await db.collection('admin_config').doc('totp').set({ secret: totpSecret, uid: currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-  showSuccess('2FA activated! Entering dashboard...');
-  setTimeout(enterDashboard, 800);
+// ======== LOGIN ========
+$('loginBtn').addEventListener('click', function() {
+    clearAlerts();
+    var email = $('loginEmail').value.trim(), pw = $('loginPass').value;
+    if (!email || !pw) return showErr('Enter email and password.');
+    var btn = this; btnLoad(btn, true);
+    auth.signInWithEmailAndPassword(email, pw)
+        .then(function(cred) {
+            currentUser = cred.user;
+            return db.collection('admin_config').doc('totp').get();
+        })
+        .then(function(doc) {
+            if (doc.exists && doc.data().uid === currentUser.uid) {
+                totpSecret = doc.data().secret;
+                setStep(['authTotpVerify'], 2);
+                showOk('Password verified. Enter your 2FA code.');
+                setTimeout(function() { $('totpVerifyCode').focus(); }, 200);
+            } else {
+                totpSecret = TOTP.makeSecret();
+                setStep(['authTotpSetup'], 2);
+                var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(currentUser.email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
+                QRCode.toCanvas($('qrCanvas'), uri, { width: 220, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
+                $('totpSecretShow').textContent = totpSecret;
+                showOk('No 2FA set up yet. Scan QR to activate.');
+                setTimeout(function() { $('totpSetupCode').focus(); }, 300);
+            }
+        })
+        .catch(function(e) { showErr(e.message); })
+        .finally(function() { btnLoad(btn, false); });
 });
 
-// Login
-$('loginBtn').addEventListener('click', async function() {
-  clearAlerts();
-  var email = $('loginEmail').value.trim(), pw = $('loginPassword').value;
-  if (!email || !pw) return showError('Fill all fields');
-  this.disabled = true; this.textContent = 'Authenticating...';
-  try {
-    var cred = await auth.signInWithEmailAndPassword(email, pw);
-    currentUser = cred.user;
-    // Check if TOTP is set up
-    var doc = await db.collection('admin_config').doc('totp').get();
-    if (doc.exists && doc.data().uid === currentUser.uid) {
-      totpSecret = doc.data().secret;
-      showStep(3);
-      showSuccess('Password verified. Enter 2FA code.');
-      setTimeout(function() { $('totpVerifyCode').focus(); }, 200);
-    } else {
-      // No TOTP set up yet — set up now
-      totpSecret = TOTP.generateSecret();
-      showStep(2);
-      var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
-      QRCode.toCanvas($('qrCanvas'), uri, { width: 200, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
-      $('totpSecretDisplay').textContent = totpSecret;
-      showSuccess('Set up 2FA to continue.');
-    }
-  } catch (e) { showError(e.message); }
-  this.disabled = false; this.textContent = 'Authenticate →';
+// ======== TOTP SETUP VERIFY ========
+$('totpSetupBtn').addEventListener('click', function() {
+    clearAlerts();
+    var code = $('totpSetupCode').value.trim();
+    if (code.length !== 6) return showErr('Enter the 6-digit code from your authenticator app.');
+    var btn = this; btnLoad(btn, true);
+    TOTP.verify(totpSecret, code)
+        .then(function(ok) {
+            if (!ok) { showErr('Wrong code. Make sure your device time is synced.'); btnLoad(btn, false); return; }
+            return db.collection('admin_config').doc('totp').set({
+                secret: totpSecret, uid: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                showOk('2FA activated! Entering dashboard...');
+                setTimeout(enterDashboard, 600);
+            });
+        })
+        .catch(function(e) { showErr(e.message); })
+        .finally(function() { btnLoad(btn, false); });
 });
 
-// Verify TOTP on login
-$('verifyLoginBtn').addEventListener('click', async function() {
-  clearAlerts();
-  var code = $('totpVerifyCode').value.trim();
-  if (code.length !== 6) return showError('Enter 6-digit code');
-  var ok = await TOTP.verify(totpSecret, code);
-  if (!ok) return showError('Invalid code. Try again.');
-  showSuccess('Access granted.');
-  setTimeout(enterDashboard, 500);
+// ======== TOTP LOGIN VERIFY ========
+$('totpVerifyBtn').addEventListener('click', function() {
+    clearAlerts();
+    var code = $('totpVerifyCode').value.trim();
+    if (code.length !== 6) return showErr('Enter 6-digit code.');
+    var btn = this; btnLoad(btn, true);
+    TOTP.verify(totpSecret, code)
+        .then(function(ok) {
+            if (!ok) { showErr('Invalid code. Try again.'); btnLoad(btn, false); return; }
+            showOk('Access granted.');
+            setTimeout(enterDashboard, 400);
+        })
+        .catch(function(e) { showErr(e.message); btnLoad(btn, false); });
 });
 
-// Enter on TOTP fields
-$('totpVerifyCode').addEventListener('keydown', function(e) { if (e.key === 'Enter') $('verifyLoginBtn').click(); });
-$('totpSetupCode').addEventListener('keydown', function(e) { if (e.key === 'Enter') $('verifySetupBtn').click(); });
-$('loginPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') $('loginBtn').click(); });
+// Enter on fields
+['loginPass','totpSetupCode','totpVerifyCode'].forEach(function(id) {
+    $(id).addEventListener('keydown', function(e) {
+        if (e.key !== 'Enter') return;
+        if (id === 'loginPass') $('loginBtn').click();
+        if (id === 'totpSetupCode') $('totpSetupBtn').click();
+        if (id === 'totpVerifyCode') $('totpVerifyBtn').click();
+    });
+});
 
-// Logout
-$('logoutBtn').addEventListener('click', function() { auth.signOut(); dashboard.style.display = 'none'; authScreen.style.display = 'flex'; showStep(1); clearAlerts(); });
+// ======== LOGOUT ========
+$('navLogout').addEventListener('click', function() {
+    auth.signOut();
+    $('dashboard').style.display = 'none';
+    $('authScreen').style.display = 'flex';
+    $('navUser').classList.add('hidden');
+    $('navLogout').classList.add('hidden');
+    setStep(['authLogin'], 1); clearAlerts();
+    $('loginEmail').value = ''; $('loginPass').value = '';
+});
 
-// ============================================================
-// DASHBOARD
-// ============================================================
-var allTools = [];
-
+// ======== ENTER DASHBOARD ========
 function enterDashboard() {
-  authScreen.style.display = 'none';
-  dashboard.style.display = 'block';
-  $('userBadge').textContent = currentUser.email;
-  populateCategorySelect();
-  loadTools();
+    $('authScreen').style.display = 'none';
+    $('dashboard').style.display = 'block';
+    $('navUser').textContent = currentUser.email;
+    $('navUser').classList.remove('hidden');
+    $('navLogout').classList.remove('hidden');
+    populateCategories();
+    loadTools();
+    lucide.createIcons();
 }
 
-function populateCategorySelect() {
-  var sel = $('fCategory');
-  sel.innerHTML = '<option value="">— Select Category —</option>';
-  CATEGORIES.forEach(function(c) {
-    sel.innerHTML += '<option value="' + c.id + '">' + c.icon + ' ' + c.name + '</option>';
-  });
+function populateCategories() {
+    var sel = $('fCat');
+    sel.innerHTML = '<option value="">— Select Category —</option>';
+    CATEGORIES.forEach(function(c) {
+        var opt = document.createElement('option');
+        opt.value = c.id; opt.textContent = c.icon + ' ' + c.name;
+        sel.appendChild(opt);
+    });
 }
 
-async function loadTools() {
-  var snap = await db.collection('tools').orderBy('name').get();
-  allTools = [];
-  snap.forEach(function(doc) { allTools.push(Object.assign({ _id: doc.id }, doc.data())); });
-  updateStats();
-  renderTable();
+// ======== LOAD TOOLS FROM FIRESTORE ========
+function loadTools() {
+    db.collection('tools').orderBy('name').get()
+        .then(function(snap) {
+            allTools = [];
+            snap.forEach(function(d) { allTools.push(Object.assign({ _id: d.id }, d.data())); });
+            updateStats(); renderTable();
+        })
+        .catch(function(e) { console.error('Load tools error:', e); });
 }
 
 function updateStats() {
-  $('statTotal').textContent = allTools.length;
-  var cats = {}; allTools.forEach(function(t) { cats[t.category] = 1; });
-  $('statCats').textContent = Object.keys(cats).length;
-  $('statPrem').textContent = allTools.filter(function(t) { return t.isPremium; }).length;
-  $('statFree').textContent = allTools.filter(function(t) { return !t.isPremium; }).length;
+    $('sTotal').textContent = allTools.length;
+    var cats = {}; allTools.forEach(function(t) { cats[t.category] = 1; });
+    $('sCats').textContent = Object.keys(cats).length;
+    $('sPrem').textContent = allTools.filter(function(t) { return t.isPremium; }).length;
+    $('sFree').textContent = allTools.filter(function(t) { return !t.isPremium; }).length;
 }
 
 function renderTable(filter) {
-  var tbody = $('tableBody');
-  var q = (filter || '').toLowerCase();
-  var list = allTools.filter(function(t) {
-    if (!q) return true;
-    return (t.name || '').toLowerCase().includes(q) || (t.categoryName || '').toLowerCase().includes(q);
-  });
-
-  $('tableCount').textContent = list.length;
-  if (!list.length) {
-    tbody.innerHTML = '';
-    $('tableEmpty').classList.remove('hidden');
-    return;
-  }
-  $('tableEmpty').classList.add('hidden');
-
-  tbody.innerHTML = list.map(function(t) {
-    var shortUrl = t.url || '';
-    try { shortUrl = new URL(t.url).hostname.replace('www.',''); } catch(e) {}
-    return '<tr>' +
-      '<td><strong>' + (t.name || '—') + '</strong></td>' +
-      '<td><span class="cat-pill">' + (t.categoryName || t.category || '—') + '</span></td>' +
-      '<td style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">' + shortUrl + '</td>' +
-      '<td>' + (t.isPremium ? '<span style="color:var(--gold)">Premium</span>' : '<span style="color:var(--green)">Free</span>') + '</td>' +
-      '<td><div class="actions-cell">' +
-        '<button class="btn btn-ghost btn-sm" onclick="editTool(\'' + t._id + '\')">✏️</button>' +
-        '<button class="btn btn-danger btn-sm" onclick="deleteTool(\'' + t._id + '\',\'' + (t.name || '').replace(/'/g, "\\'") + '\')">🗑️</button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
+    var q = (filter || '').toLowerCase();
+    var list = allTools.filter(function(t) {
+        if (!q) return true;
+        return (t.name||'').toLowerCase().indexOf(q) !== -1 || (t.categoryName||'').toLowerCase().indexOf(q) !== -1 || (t.url||'').toLowerCase().indexOf(q) !== -1;
+    });
+    $('tblCount').textContent = list.length;
+    if (!list.length) { $('tblBody').innerHTML = ''; $('tblEmpty').classList.remove('hidden'); return; }
+    $('tblEmpty').classList.add('hidden');
+    $('tblBody').innerHTML = list.map(function(t) {
+        var host = t.url || '';
+        try { host = new URL(t.url).hostname.replace('www.',''); } catch(e) {}
+        var safeN = (t.name||'').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        return '<tr>' +
+            '<td><strong>' + (t.name||'—') + '</strong></td>' +
+            '<td><span class="cat-pill">' + (t.icon||'') + ' ' + (t.categoryName||t.category||'—') + '</span></td>' +
+            '<td class="url-cell" title="' + (t.url||'') + '">' + host + '</td>' +
+            '<td><span class="prem-badge ' + (t.isPremium ? 'prem-yes' : 'prem-no') + '">' + (t.isPremium ? 'PREMIUM' : 'FREE') + '</span></td>' +
+            '<td><div class="td-actions">' +
+                '<button class="btn btn-ghost btn-sm" onclick="editTool(\'' + t._id + '\')" title="Edit">✏️</button>' +
+                '<button class="btn btn-danger btn-sm" onclick="deleteTool(\'' + t._id + '\',\'' + safeN + '\')" title="Delete">🗑️</button>' +
+            '</div></td></tr>';
+    }).join('');
 }
 
-$('tableSearch').addEventListener('input', function() { renderTable(this.value); });
+$('tblSearch').addEventListener('input', function() { renderTable(this.value); });
 
-// Show/hide form
-$('showAddForm').addEventListener('click', function() {
-  $('formPanel').classList.remove('hidden');
-  $('formTitle').textContent = '➕ Add New Tool';
-  $('editId').value = '';
-  $('fName').value = ''; $('fUrl').value = ''; $('fDesc').value = '';
-  $('fCategory').value = ''; $('fTags').value = ''; $('fPremium').value = 'false'; $('fIcon').value = '';
-  $('fName').focus();
-});
-$('cancelFormBtn').addEventListener('click', function() { $('formPanel').classList.add('hidden'); });
-
-// Save tool
-$('saveToolBtn').addEventListener('click', async function() {
-  var name = $('fName').value.trim();
-  var url = $('fUrl').value.trim();
-  var desc = $('fDesc').value.trim();
-  var catId = $('fCategory').value;
-  var tags = $('fTags').value.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
-  var isPremium = $('fPremium').value === 'true';
-  var icon = $('fIcon').value.trim();
-  var editId = $('editId').value;
-
-  if (!name || !url || !desc || !catId) return alert('Fill all required fields (Name, URL, Description, Category)');
-
-  var cat = CATEGORIES.find(function(c) { return c.id === catId; });
-  if (!icon && cat) icon = cat.icon;
-
-  var toolId = editId || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-
-  var data = {
-    name: name, url: url, desc: desc,
-    category: catId, categoryName: cat ? cat.name : catId,
-    icon: icon || '🔧', tags: tags, isPremium: isPremium,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  this.disabled = true; this.textContent = 'Saving...';
-  try {
-    if (editId) {
-      await db.collection('tools').doc(editId).update(data);
-    } else {
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      await db.collection('tools').doc(toolId).set(data);
-    }
-    $('formPanel').classList.add('hidden');
-    await loadTools();
-  } catch (e) { alert('Error: ' + e.message); }
-  this.disabled = false; this.textContent = 'Save Tool';
+// ======== ADD/EDIT FORM ========
+$('addToolBtn').addEventListener('click', function() {
+    $('formPanel').classList.add('show');
+    $('formTitle').innerHTML = '<i data-lucide="plus-circle" style="width:18px;height:18px;color:var(--cyan)"></i> Add New Tool';
+    $('editDocId').value = '';
+    ['fName','fUrl','fDesc','fTags','fIcon'].forEach(function(id) { $(id).value = ''; });
+    $('fCat').value = ''; $('fPremium').value = 'false';
+    $('fName').focus(); lucide.createIcons();
+    $('formPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-// Edit
+$('cancelBtn').addEventListener('click', function() { $('formPanel').classList.remove('show'); });
+
+// ======== SAVE TOOL ========
+$('saveBtn').addEventListener('click', function() {
+    var name = $('fName').value.trim(), url = $('fUrl').value.trim(), desc = $('fDesc').value.trim(), catId = $('fCat').value;
+    if (!name || !url || !desc || !catId) return alert('Fill all required fields: Name, URL, Description, Category.');
+    var tags = $('fTags').value.split(',').map(function(t) { return t.trim(); }).filter(Boolean);
+    var isPrem = $('fPremium').value === 'true';
+    var icon = $('fIcon').value.trim();
+    var cat = CATEGORIES.find(function(c) { return c.id === catId; });
+    if (!icon && cat) icon = cat.icon;
+    var docId = $('editDocId').value || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/,'');
+    var data = { name: name, url: url, desc: desc, category: catId, categoryName: cat ? cat.name : catId, icon: icon || '🔧', tags: tags, isPremium: isPrem, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+    var btn = this; btnLoad(btn, true);
+    var op = $('editDocId').value ? db.collection('tools').doc(docId).update(data) : (function() { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); return db.collection('tools').doc(docId).set(data); })();
+    op.then(function() { $('formPanel').classList.remove('show'); return loadTools(); })
+      .catch(function(e) { alert('Error: ' + e.message); })
+      .finally(function() { btnLoad(btn, false); lucide.createIcons(); });
+});
+
+// ======== EDIT TOOL ========
 window.editTool = function(id) {
-  var t = allTools.find(function(x) { return x._id === id; });
-  if (!t) return;
-  $('formPanel').classList.remove('hidden');
-  $('formTitle').textContent = '✏️ Edit: ' + t.name;
-  $('editId').value = id;
-  $('fName').value = t.name || '';
-  $('fUrl').value = t.url || '';
-  $('fDesc').value = t.desc || '';
-  $('fCategory').value = t.category || '';
-  $('fTags').value = (t.tags || []).join(', ');
-  $('fPremium').value = t.isPremium ? 'true' : 'false';
-  $('fIcon').value = t.icon || '';
-  $('fName').focus();
-  window.scrollTo({ top: $('formPanel').offsetTop - 80, behavior: 'smooth' });
+    var t = allTools.find(function(x) { return x._id === id; });
+    if (!t) return;
+    $('formPanel').classList.add('show');
+    $('formTitle').innerHTML = '<i data-lucide="edit-3" style="width:18px;height:18px;color:var(--gold)"></i> Edit: ' + t.name;
+    $('editDocId').value = id;
+    $('fName').value = t.name || ''; $('fUrl').value = t.url || ''; $('fDesc').value = t.desc || '';
+    $('fCat').value = t.category || ''; $('fTags').value = (t.tags||[]).join(', ');
+    $('fPremium').value = t.isPremium ? 'true' : 'false'; $('fIcon').value = t.icon || '';
+    $('fName').focus(); lucide.createIcons();
+    $('formPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
-// Delete
-window.deleteTool = async function(id, name) {
-  if (!confirm('Delete "' + name + '"? This cannot be undone.')) return;
-  await db.collection('tools').doc(id).delete();
-  await loadTools();
+// ======== DELETE TOOL ========
+window.deleteTool = function(id, name) {
+    if (!confirm('Delete "' + name + '"? Cannot be undone.')) return;
+    db.collection('tools').doc(id).delete()
+        .then(function() { loadTools(); })
+        .catch(function(e) { alert('Error: ' + e.message); });
 };
 
-// Export as tools-data.js
-$('exportBtn').addEventListener('click', function() {
-  // Build categories from actual tools
-  var catMap = {};
-  allTools.forEach(function(t) {
-    if (!catMap[t.category]) catMap[t.category] = { id: t.category, name: t.categoryName, icon: t.icon, count: 0 };
-    catMap[t.category].count++;
-  });
-  var cats = Object.values(catMap);
-
-  var lines = 'window.ACROVAULT_CATEGORIES = ' + JSON.stringify(cats, null, 2) + ';\n\n';
-  lines += 'window.ACROVAULT_TOOLS = ' + JSON.stringify(allTools.map(function(t) {
-    return { id: t._id, name: t.name, desc: t.desc, url: t.url, category: t.category, categoryName: t.categoryName, icon: t.icon, tags: t.tags || [], isPremium: !!t.isPremium };
-  }), null, 2) + ';\n';
-
-  var blob = new Blob([lines], { type: 'text/javascript' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'tools-data.js';
-  a.click();
+// ======== IMPORT FROM tools-data.js ========
+$('importBtn').addEventListener('click', function() {
+    if (!confirm('This will import all tools from the existing tools-data.js file into Firestore.\n\nExisting Firestore tools with the same ID will be overwritten.\n\nContinue?')) return;
+    var btn = this; btnLoad(btn, true);
+    var script = document.createElement('script');
+    script.src = 'tools-data.js?t=' + Date.now();
+    script.onload = function() {
+        var tools = window.ACROVAULT_TOOLS || [];
+        if (!tools.length) { alert('No tools found in tools-data.js'); btnLoad(btn, false); return; }
+        var batch_size = 400, batches = [];
+        for (var i = 0; i < tools.length; i += batch_size) {
+            batches.push(tools.slice(i, i + batch_size));
+        }
+        var done = 0, total = tools.length;
+        function processBatch(idx) {
+            if (idx >= batches.length) {
+                alert('Imported ' + total + ' tools successfully!');
+                btnLoad(btn, false);
+                loadTools();
+                return;
+            }
+            var batch = db.batch();
+            batches[idx].forEach(function(t) {
+                var id = (t.id || t.name || '').toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/,'');
+                if (!id) return;
+                var ref = db.collection('tools').doc(id);
+                batch.set(ref, {
+                    name: (t.name||'').trim(), desc: (t.desc||'').trim(), url: (t.url||'').trim(),
+                    category: (t.category||'').trim(), categoryName: (t.categoryName||'').trim(),
+                    icon: t.icon || '🔧', tags: t.tags || [], isPremium: !!t.isPremium,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+            batch.commit().then(function() {
+                done += batches[idx].length;
+                btn.innerHTML = '<span class="spinner"></span> ' + done + '/' + total;
+                processBatch(idx + 1);
+            }).catch(function(e) { alert('Batch error: ' + e.message); btnLoad(btn, false); });
+        }
+        processBatch(0);
+    };
+    script.onerror = function() { alert('Could not load tools-data.js'); btnLoad(btn, false); };
+    document.head.appendChild(script);
 });
+
+// ======== EXPORT AS tools-data.js ========
+$('exportBtn').addEventListener('click', function() {
+    if (!allTools.length) return alert('No tools to export.');
+    var catMap = {};
+    allTools.forEach(function(t) {
+        if (!catMap[t.category]) {
+            var c = CATEGORIES.find(function(x) { return x.id === t.category; });
+            catMap[t.category] = { id: t.category, name: t.categoryName || (c ? c.name : t.category), icon: t.icon || (c ? c.icon : '🔧'), desc: c ? c.desc : '', count: 0 };
+        }
+        catMap[t.category].count++;
+    });
+    var output = 'window.ACROVAULT_CATEGORIES = ' + JSON.stringify(Object.values(catMap), null, 4) + ';\n\nwindow.ACROVAULT_TOOLS = ' + JSON.stringify(allTools.map(function(t) {
+        return { id: t._id, name: t.name, desc: t.desc, url: t.url, category: t.category, categoryName: t.categoryName, icon: t.icon, tags: t.tags || [], isPremium: !!t.isPremium };
+    }), null, 4) + ';\n';
+    var blob = new Blob([output], { type: 'text/javascript' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tools-data.js'; a.click();
+});
+
+// ======== INIT ICONS ========
+lucide.createIcons();
+
+})();
 </script>
 </body>
 </html>
