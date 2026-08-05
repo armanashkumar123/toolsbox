@@ -1,118 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms of Service — AcroVault</title>
-<meta name="description" content="The terms governing your use of the AcroVault platform and services.">
-<link rel="stylesheet" href="av.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — AcroVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
+            --border: #262836; --border-active: #00f0ff;
+            --text-main: #f0f0f5; --text-muted: #8b8d98;
+            --cyan: #00f0ff; --purple: #b05bff;
+            --radius-pill: 100px; --radius-card: 16px;
+            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+        }
+        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        
+        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
+        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1100px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
+        .nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
+        .nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+        
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-main); }
+        
+        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
+        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
+        .btn-premium:active { transform: scale(0.95); }
+        
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
+        
+        @media (max-width: 768px) {
+            .nav-wrapper { top: 12px; padding: 0 12px; }
+            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
+            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
+            .nav-links.show { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .btn-premium { text-align: center; }
+        }
+
+        .container { max-width: 900px; margin: 160px auto 80px; padding: 0 24px; }
+        .page-header { text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 40px; margin-bottom: 48px; }
+        h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; }
+        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .legal-layout { display: grid; grid-template-columns: 240px 1fr; gap: 48px; }
+        
+        .sidebar { position: sticky; top: 120px; height: max-content; }
+        .sidebar ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .sidebar a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; display: block; padding-left: 12px; border-left: 2px solid transparent; }
+        .sidebar a:hover, .sidebar a.active { color: var(--cyan); border-left-color: var(--cyan); }
+        
+        .content { color: var(--text-muted); font-size: 1.05rem; }
+        .content section { margin-bottom: 48px; }
+        .content h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-bottom: 24px; letter-spacing: -0.02em; scroll-margin-top: 120px; }
+        .content p { margin-bottom: 16px; }
+        .content ul { margin-bottom: 24px; padding-left: 24px; }
+        .content li { margin-bottom: 8px; }
+        
+        footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); }
+        .footer-links { display: flex; justify-content: center; gap: 32px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
+        .footer-links a:hover { color: var(--text-main); }
+        
+        @media (max-width: 768px) {
+            .legal-layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+    </style>
 </head>
 <body>
-
-<nav class="nav" id="nav">
-  <div class="nav-in">
-    <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span><span class="logo-ver">DIR. v4.0</span></span></a>
-    <div class="nav-links">
-      <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
-      <a href="terms.html" class="active">Terms</a><a href="premium.html">Premium</a>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="/" class="nav-brand">
+                <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <span class="nav-brand-text">AcroVault</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="/">Directory</a>
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html" style="color: var(--text-main);">Terms</a>
+                <a href="premium.html" class="btn-premium">Premium</a>
+            </div>
+        </nav>
     </div>
-    <a href="premium.html" class="btn btn-solid btn-sm">Get Premium <span class="ar">→</span></a>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="m-menu" id="mMenu">
-  <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
-  <a href="terms.html">Terms</a><a href="premium.html">Premium →</a>
-</div>
 
-<header class="page-hero">
-  <div class="hero-bg"></div>
-  <div class="container" style="position:relative">
-    <div class="eyebrow fade-up" data-scramble>[ LEGAL — TERMS OF ENGAGEMENT ]</div>
-    <h1 class="ph-title"><span class="hl"><span style="animation-delay:.1s">TERMS OF SERVICE</span></span></h1>
-    <div class="ph-meta fade-up" style="animation-delay:.35s"><span class="chip chip-acid">EFFECTIVE — OCTOBER 24, 2026</span></div>
-  </div>
-</header>
+    <div class="container">
+        <div class="page-header">
+            <h1><span class="gradient-text">Terms</span> of Service</h1>
+            <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem;">Effective Date: October 24, 2026</p>
+        </div>
 
-<div class="container-narrow legal">
-  <aside class="toc">
-    <div class="toc-title">On this page</div>
-    <a href="#acceptance">01 — Acceptance of Terms</a>
-    <a href="#description">02 — Description of Service</a>
-    <a href="#obligations">03 — User Obligations</a>
-    <a href="#privacy">04 — Data Privacy</a>
-    <a href="#liability">05 — Limitation of Liability</a>
-    <a href="#term">06 — Term &amp; Termination</a>
-  </aside>
+        <div class="legal-layout">
+            <aside class="sidebar">
+                <ul>
+                    <li><a href="#acceptance" class="active">1. Acceptance of Terms</a></li>
+                    <li><a href="#description">2. Description of Service</a></li>
+                    <li><a href="#obligations">3. User Obligations</a></li>
+                    <li><a href="#privacy">4. Data Privacy</a></li>
+                    <li><a href="#liability">5. Limitation of Liability</a></li>
+                    <li><a href="#term">6. Term & Termination</a></li>
+                </ul>
+            </aside>
+            
+            <div class="content">
+                <section id="acceptance">
+                    <h2>1. Acceptance of Terms</h2>
+                    <p>By accessing or using the AcroVault SaaS platform, website, or related services (the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you are entering into these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these Terms. If you do not agree, do not use the Services.</p>
+                </section>
 
-  <div>
-    <section class="lg-sec rv" id="acceptance">
-      <h2 class="lg-h"><span class="n">01</span> Acceptance of Terms</h2>
-      <p>By accessing or using the AcroVault SaaS platform, website, or related services (the <strong>"Services"</strong>), you agree to be bound by these Terms of Service (<strong>"Terms"</strong>). If you are entering into these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these Terms. If you do not agree, do not use the Services.</p>
-    </section>
+                <section id="description">
+                    <h2>2. Description of Service</h2>
+                    <p>AcroVault provides a cloud-based cybersecurity platform designed to monitor, detect, and mitigate cyber threats across your IT infrastructure. The Services are provided on a subscription basis as outlined in your selected pricing tier or Enterprise Agreement. AcroVault reserves the right to modify, update, or discontinue features of the Services, provided such changes do not materially degrade the core security functionality during your active subscription term.</p>
+                </section>
 
-    <section class="lg-sec rv" id="description">
-      <h2 class="lg-h"><span class="n">02</span> Description of Service</h2>
-      <p>AcroVault provides a cloud-based cybersecurity platform designed to monitor, detect, and mitigate cyber threats across your IT infrastructure. The Services are provided on a subscription basis as outlined in your selected pricing tier or Enterprise Agreement. AcroVault reserves the right to modify, update, or discontinue features of the Services, provided such changes do not materially degrade the core security functionality during your active subscription term.</p>
-    </section>
+                <section id="obligations">
+                    <h2>3. User Obligations and Acceptable Use</h2>
+                    <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree not to:</p>
+                    <ul>
+                        <li>Use the Services for any unlawful purpose or in violation of any applicable regulations.</li>
+                        <li>Attempt to reverse engineer, decompile, or bypass the security mechanisms of the AcroVault platform.</li>
+                        <li>Use the Services to conduct unauthorized penetration testing or vulnerability scanning against third-party networks.</li>
+                        <li>Transmit any malicious code, viruses, or illegal content through our platform.</li>
+                    </ul>
+                </section>
 
-    <section class="lg-sec rv" id="obligations">
-      <h2 class="lg-h"><span class="n">03</span> User Obligations and Acceptable Use</h2>
-      <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree not to:</p>
-      <ul class="lg-list">
-        <li>Use the Services for any unlawful purpose or in violation of any applicable regulations.</li>
-        <li>Attempt to reverse engineer, decompile, or bypass the security mechanisms of the AcroVault platform.</li>
-        <li>Use the Services to conduct unauthorized penetration testing or vulnerability scanning against third-party networks.</li>
-        <li>Transmit any malicious code, viruses, or illegal content through our platform.</li>
-      </ul>
-    </section>
+                <section id="privacy">
+                    <h2>4. Data Privacy and Security</h2>
+                    <p>Your privacy is critical to us. Our collection and use of personal data and security telemetry in connection with the Services are governed by the AcroVault Privacy Policy. By using the Services, you grant AcroVault the right to process your telemetry data specifically for the purpose of threat detection, remediation, and improving our threat intelligence network.</p>
+                </section>
 
-    <section class="lg-sec rv" id="privacy">
-      <h2 class="lg-h"><span class="n">04</span> Data Privacy and Security</h2>
-      <p>Your privacy is critical to us. Our collection and use of personal data and security telemetry in connection with the Services are governed by the <a href="privacy.html" style="color:var(--acid);text-decoration:none">AcroVault Privacy Policy</a>. By using the Services, you grant AcroVault the right to process your telemetry data specifically for the purpose of threat detection, remediation, and improving our threat intelligence network.</p>
-    </section>
+                <section id="liability">
+                    <h2>5. Limitation of Liability and Disclaimer of Warranties</h2>
+                    <p><strong>Disclaimer:</strong> THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE." ACROVAULT DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY IMMUNE TO CYBERATTACKS.</p>
+                    <p><strong>Limitation of Liability:</strong> IN NO EVENT SHALL ACROVAULT, ITS AFFILIATES, OR DIRECTORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR BUSINESS INTERRUPTION, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICES. ACROVAULT'S TOTAL CUMULATIVE LIABILITY UNDER THESE TERMS SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO ACROVAULT IN THE TWELVE (12) MONTHS PRECEDING THE EVENT GIVING RISE TO THE LIABILITY.</p>
+                </section>
 
-    <section class="lg-sec rv" id="liability">
-      <h2 class="lg-h"><span class="n">05</span> Limitation of Liability and Disclaimer of Warranties</h2>
-      <div class="callout">
-        <span class="lbl">⚠ Disclaimer</span>
-        <p>THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE." ACROVAULT DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY IMMUNE TO CYBERATTACKS.</p>
-      </div>
-      <p><strong>Limitation of Liability:</strong> IN NO EVENT SHALL ACROVAULT, ITS AFFILIATES, OR DIRECTORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR BUSINESS INTERRUPTION, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICES. ACROVAULT'S TOTAL CUMULATIVE LIABILITY UNDER THESE TERMS SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO ACROVAULT IN THE TWELVE (12) MONTHS PRECEDING THE EVENT GIVING RISE TO THE LIABILITY.</p>
-    </section>
-
-    <section class="lg-sec rv" id="term">
-      <h2 class="lg-h"><span class="n">06</span> Term, Termination, and Modifications</h2>
-      <ul class="lg-list">
-        <li><strong>Term:</strong> These Terms remain in effect until your subscription expires or is terminated.</li>
-        <li><strong>Termination:</strong> We may suspend or terminate your access to the Services immediately, without prior notice, if you breach any provision of these Terms.</li>
-        <li><strong>Modifications:</strong> We reserve the right to modify these Terms at any time. We will notify you of any material changes via email or through an in-app notification. Continued use of the Services after such notification constitutes your acceptance of the updated Terms.</li>
-      </ul>
-    </section>
-  </div>
-</div>
-
-<footer class="footer">
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span></span></a>
-        <p>The centralized command center for offensive security, OSINT and forensics tooling. Built by operators, for operators.</p>
-        <div class="foot-status"><span class="pulse"></span> ALL SYSTEMS OPERATIONAL — INDEX SYNCED</div>
-      </div>
-      <div class="foot-col"><h4>Directory</h4><a href="index.html#directory">All Tools</a><a href="index.html#categories">Categories</a><a href="index.html#directory">Live Search</a><a href="premium.html">Premium Access</a></div>
-      <div class="foot-col"><h4>Company</h4><a href="about.html">About</a><a href="premium.html">Pricing</a><a href="about.html#founder">Founder</a><a href="mailto:support@acrovault.com">Report Dead Link</a></div>
-      <div class="foot-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.xml">Sitemap</a></div>
+                <section id="term">
+                    <h2>6. Term, Termination, and Modifications</h2>
+                    <ul>
+                        <li><strong>Term:</strong> These Terms remain in effect until your subscription expires or is terminated.</li>
+                        <li><strong>Termination:</strong> We may suspend or terminate your access to the Services immediately, without prior notice, if you breach any provision of these Terms.</li>
+                        <li><strong>Modifications:</strong> We reserve the right to modify these Terms at any time. We will notify you of any material changes via email or through an in-app notification. Continued use of the Services after such notification constitutes your acceptance of the updated Terms.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
     </div>
-    <div class="foot-huge" aria-hidden="true">ACROVAULT</div>
-    <div class="foot-bottom">
-      <span>© 2026 ACROVAULT — BUILT FOR SECURITY PROFESSIONALS</span>
-      <span>NODE: IN-DEL-01 · BUILD 4.0.2</span>
-      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">▲ TOP</a>
-    </div>
-  </div>
-</footer>
 
-<script src="av.js"></script>
+    <footer>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="premium.html">Premium</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </div>
+        <p>© 2026 AcroVault. Built for professionals.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('show');
+        });
+        
+        // Simple scrollspy for sidebar
+        const sections = document.querySelectorAll('.content section');
+        const navLinks = document.querySelectorAll('.sidebar a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

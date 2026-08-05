@@ -1,172 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AcroVault Premium — Enterprise-Grade Security Intel</title>
-<meta name="description" content="Unrestricted access to raw intelligence feeds, dark-web telemetry and zero-day databases. Free, Premium and Ultra tiers.">
-<link rel="stylesheet" href="av.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcroVault Premium API</title>
+    <meta name="description" content="Upgrade to AcroVault Premium for zero-day exploits, dark web feeds, and elite intelligence.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
+            --border: #262836; --border-active: #00f0ff;
+            --text-main: #f0f0f5; --text-muted: #8b8d98;
+            --cyan: #00f0ff; --purple: #b05bff;
+            --radius-pill: 100px; --radius-card: 16px;
+            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+        }
+        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
+
+        /* Nav */
+        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
+        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1100px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
+        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
+        .nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
+        .nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+        
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-main); }
+        
+        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
+        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
+        .btn-premium:active { transform: scale(0.95); }
+        
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
+
+        @media (max-width: 768px) {
+            .nav-wrapper { top: 12px; padding: 0 12px; }
+            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
+            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
+            .nav-links.show { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .btn-premium { text-align: center; }
+        }
+
+        .container { max-width: 1100px; margin: 160px auto 80px; padding: 0 24px; flex: 1; width: 100%; }
+        .hero { text-align: center; margin-bottom: 80px; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 24px; text-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
+        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto; }
+        
+        .trust-badges { display: flex; justify-content: center; gap: 40px; margin-bottom: 80px; opacity: 0.5; filter: grayscale(100%); }
+        .trust-badge { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 1.2rem; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 100px; perspective: 1000px; }
+        .pricing-card { background: rgba(21, 22, 31, 0.6); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.3s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.5s; }
+        .pricing-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.3); }
+        .pricing-card.popular { background: rgba(13, 14, 21, 0.9); border: 1px solid rgba(0, 240, 255, 0.4); box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 40px rgba(0, 240, 255, 0.05); transform: scale(1.05); z-index: 10; }
+        .pricing-card.popular::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); box-shadow: 0 0 20px var(--cyan); }
+        .pricing-card.popular:hover { transform: scale(1.07) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 60px rgba(0, 240, 255, 0.4); }
+        .popular-badge { position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
+        .price { font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
+        .price span { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+        .pricing-desc { color: var(--text-muted); margin-bottom: 32px; font-size: 0.95rem; line-height: 1.5; }
+        
+        .features-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; flex-grow: 1; }
+        .feature-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: #d4d4d8; }
+        .feature-item i { color: var(--cyan); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+        .feature-item.muted { color: var(--text-muted); opacity: 0.5; }
+        .feature-item.muted i { color: var(--text-muted); }
+        
+        .btn-pricing { display: block; width: 100%; text-align: center; padding: 16px; border-radius: var(--radius-card); font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: all 0.3s; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .btn-primary { background: linear-gradient(90deg, var(--cyan), var(--purple)); color: #fff; border: none; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.2); }
+        .btn-primary:hover { box-shadow: 0 12px 32px rgba(0, 240, 255, 0.4); }
+
+        .matrix-section { margin-bottom: 120px; }
+        .matrix-title { text-align: center; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 60px; letter-spacing: -0.03em; }
+        
+        .table-responsive { width: 100%; padding-bottom: 24px; }
+        .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
+        
+        .matrix-table thead { position: sticky; top: 80px; z-index: 100; }
+        .matrix-table th { padding: 16px 24px; text-align: center; font-size: 1.25rem; font-weight: 800; color: #fff; background: rgba(13, 14, 21, 0.8); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:first-child { text-align: left; font-size: 1.5rem; border-radius: 12px 0 0 12px; border-left: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:last-child { border-radius: 0 12px 12px 0; border-right: 1px solid rgba(255,255,255,0.1); }
+        .matrix-table th:nth-child(3) { color: var(--cyan); }
+        
+        /* Row Cards (Elementor Style) */
+        .matrix-table tbody tr:not(.category-row) { background: rgba(21, 22, 31, 0.6); box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        .matrix-table tbody tr:not(.category-row):hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 15px 30px rgba(0,0,0,0.5); background: rgba(30, 32, 45, 0.8); }
+        
+        .matrix-table td { padding: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.03); border-style: solid none; }
+        .matrix-table td:first-child { text-align: left; font-weight: 600; color: #fff; font-size: 1.05rem; border-left-style: solid; border-radius: 12px 0 0 12px; }
+        .matrix-table td:last-child { border-right-style: solid; border-radius: 0 12px 12px 0; }
+        
+        .matrix-table td:nth-child(3) { background: rgba(0, 240, 255, 0.02); }
+        
+        .category-row td { background: transparent !important; border: none !important; padding: 40px 16px 8px !important; text-align: left !important; font-weight: 800; color: var(--cyan) !important; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .matrix-icon { display: inline-block; width: 24px; height: 24px; stroke-width: 2.5px; }
+        .matrix-check { color: #fff; opacity: 0.7; }
+        .matrix-table td:nth-child(3) .matrix-check { color: var(--cyan); opacity: 1; filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6)); }
+        .matrix-minus { color: rgba(255,255,255,0.1); stroke-width: 3px; }
+
+        .faq-section { max-width: 800px; margin: 0 auto 100px; }
+        .faq-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 48px; }
+        .faq-item { border: 1px solid var(--border); background: rgba(21, 22, 31, 0.4); margin-bottom: 16px; border-radius: var(--radius-card); }
+        .faq-question { padding: 24px; font-size: 1.1rem; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer { padding: 0 24px 24px; color: var(--text-muted); line-height: 1.6; border-top: 1px solid var(--border); margin-top: 16px; padding-top: 16px; }
+
+        footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); }
+        .footer-links { display: flex; justify-content: center; gap: 32px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
+        .footer-links a:hover { color: var(--text-main); }
+        
+        @media (max-width: 900px) {
+            .pricing-grid { grid-template-columns: 1fr; gap: 40px; }
+            .pricing-card.popular { transform: none; }
+            .pricing-card.popular:hover { transform: translateY(-10px); }
+            
+            /* Convert Elementor Matrix to Mobile Stacked Cards */
+            .table-responsive { overflow: hidden; padding-bottom: 0; }
+            .matrix-table, .matrix-table tbody, .matrix-table tr, .matrix-table td { display: block; width: 100%; }
+            .matrix-table thead { display: none; }
+            .matrix-table tbody tr:not(.category-row) { margin-bottom: 24px; border-radius: 16px; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1) !important; }
+            .matrix-table td { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; text-align: right; border-radius: 0 !important; }
+            .matrix-table td:last-child { border-bottom: none !important; }
+            
+            .matrix-table td:nth-child(2)::before { content: 'Free'; font-weight: 700; color: var(--text-muted); }
+            .matrix-table td:nth-child(3)::before { content: 'Premium'; font-weight: 800; color: var(--cyan); }
+            .matrix-table td:nth-child(4)::before { content: 'Ultra'; font-weight: 700; color: var(--purple); }
+            
+            .matrix-table td:first-child { justify-content: center; font-size: 1.15rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1) !important; margin-bottom: 8px; padding-bottom: 16px !important; }
+            .matrix-table td:first-child::before { display: none; }
+            
+            .category-row { display: none !important; }
+        }
+    </style>
 </head>
 <body>
-
-<nav class="nav" id="nav">
-  <div class="nav-in">
-    <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span><span class="logo-ver">DIR. v4.0</span></span></a>
-    <div class="nav-links">
-      <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a><a href="premium.html" class="active">Premium</a>
-    </div>
-    <a href="#plans" class="btn btn-solid btn-sm">Get Premium <span class="ar">→</span></a>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="m-menu" id="mMenu">
-  <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
-  <a href="terms.html">Terms</a><a href="premium.html">Premium →</a>
-</div>
-
-<!-- HERO -->
-<header class="page-hero">
-  <div class="hero-bg"></div>
-  <div class="container" style="position:relative">
-    <div class="eyebrow fade-up" data-scramble>[ CLEARANCE LEVELS — PREMIUM API ]</div>
-    <h1 class="ph-title">
-      <span class="hl"><span style="animation-delay:.1s">ENTERPRISE-GRADE INTEL<span class="acid">.</span></span></span>
-      <span class="hl"><span style="animation-delay:.24s" class="serif">scaled for your operation</span></span>
-    </h1>
-    <p class="ph-sub fade-up" style="animation-delay:.45s">From independent researchers to global SOC teams — get unrestricted access to raw intelligence feeds, zero-day PoC monitoring and dark-web telemetry before the CVE drops.</p>
-    <div class="ph-meta fade-up" style="animation-delay:.6s">
-      <span class="chip chip-acid">✓ SOC 2 TYPE II</span>
-      <span class="chip chip-acid">✓ ISO 27001</span>
-      <span class="chip chip-acid">✓ GDPR READY</span>
-    </div>
-  </div>
-</header>
-
-<!-- PLANS -->
-<section class="sec" id="plans">
-  <div class="container">
-    <div class="plans">
-
-      <!-- FREE -->
-      <div class="plan rv">
-        <div class="plan-name">Free</div>
-        <p class="plan-for">For security students and independent researchers needing basic OSINT access.</p>
-        <div class="plan-price">₹0<span> /MO</span></div>
-        <ul class="plan-feats">
-          <li>Access to 1,000+ local tools</li>
-          <li>Basic search functionality</li>
-          <li class="off">Premium resources</li>
-          <li class="off">Mentorship &amp; elite support</li>
-        </ul>
-        <a href="index.html" class="btn btn-ghost btn-block">Current Plan</a>
-      </div>
-
-      <!-- PREMIUM -->
-      <div class="plan plan-hot rv" style="transition-delay:.12s">
-        <span class="plan-flag">▲ MOST POPULAR</span>
-        <div class="plan-name acid">Premium</div>
-        <p class="plan-for">For active security professionals requiring real-time vulnerability data.</p>
-        <div class="plan-price acid">₹199<span> /MO</span></div>
-        <ul class="plan-feats">
-          <li>Everything in Free</li>
-          <li>Private Telegram groups</li>
-          <li>Dark-web intel feeds</li>
-          <li>Databases &amp; premium resources</li>
-          <li>Free premium courses</li>
-        </ul>
-        <a href="#" class="btn btn-solid btn-block">Start 14-Day Trial <span class="ar">→</span></a>
-      </div>
-
-      <!-- ULTRA -->
-      <div class="plan plan-gold rv" style="transition-delay:.24s">
-        <span class="plan-flag gf">WHITE-GLOVE</span>
-        <div class="plan-name gold">Ultra</div>
-        <p class="plan-for">For SOC teams requiring custom integrations and dedicated support SLAs.</p>
-        <div class="plan-price custom gold">CUSTOM<span> — CONTACT SALES</span></div>
-        <ul class="plan-feats">
-          <li>Everything in Premium</li>
-          <li>Premium tools access</li>
-          <li>1-on-1 mentorship</li>
-          <li>24/7 priority support</li>
-          <li>Custom threat hunting</li>
-        </ul>
-        <a href="#" class="btn btn-gold btn-block">Contact Sales</a>
-      </div>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="/" class="nav-brand">
+                <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <span class="nav-brand-text">AcroVault</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="/">Directory</a>
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="premium.html" class="btn-premium">Premium</a>
+            </div>
+        </nav>
     </div>
 
-    <div class="perks rv">
-      <span class="perk"><b>✦</b>14-DAY FREE TRIAL</span>
-      <span class="perk"><b>✦</b>CANCEL ANYTIME — ZERO FEES</span>
-      <span class="perk"><b>✦</b>50% ACADEMIC DISCOUNT</span>
-      <span class="perk"><b>✦</b>MONTH-TO-MONTH BILLING</span>
-    </div>
-  </div>
-</section>
+    <div class="container">
+        <section class="hero">
+            <h1>Enterprise-Grade Security,<br><span class="gradient-text">Scaled for Your Business</span></h1>
+            <p>From independent researchers to global SOC teams. Get unrestricted access to our raw intelligence feeds and zero-day databases.</p>
+        </section>
 
-<!-- COMPARISON -->
-<section class="sec sec-line">
-  <div class="container">
-    <div class="sec-head rv">
-      <div><span class="sec-idx"><b>01</b> / FULL BREAKDOWN</span><h2 class="sec-title">Compare plans</h2></div>
-    </div>
-    <div class="tbl-wrap rv">
-      <table class="tbl">
-        <thead><tr><th>Features</th><th>Free</th><th>Premium</th><th>Ultra</th></tr></thead>
-        <tbody>
-          <tr class="grp"><td colspan="4">Core Platform</td></tr>
-          <tr><td class="feat">Local Tool Directory</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Daily Index Updates</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Premium Tools Access</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="ck">✓</span></td></tr>
-          <tr class="grp"><td colspan="4">Threat Intelligence</td></tr>
-          <tr><td class="feat">Dark Web Intel</td><td><span class="no">—</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Private Telegram Groups</td><td><span class="no">—</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Databases &amp; Premium Resources</td><td><span class="no">—</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Free Premium Courses</td><td><span class="no">—</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">Custom Threat Hunting</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="ck">✓</span></td></tr>
-          <tr class="grp"><td colspan="4">Elite Support</td></tr>
-          <tr><td class="feat">1-on-1 Mentorship</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="ck">✓</span></td></tr>
-          <tr><td class="feat">24/7 Priority Support</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="ck">✓</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+        <div class="trust-badges">
+            <div class="trust-badge"><i data-lucide="shield-check"></i> SOC 2 Type II</div>
+            <div class="trust-badge"><i data-lucide="lock"></i> ISO 27001</div>
+            <div class="trust-badge"><i data-lucide="globe"></i> GDPR Ready</div>
+        </div>
 
-<!-- FAQ -->
-<section class="sec sec-line">
-  <div class="container-narrow">
-    <div class="sec-head rv">
-      <div><span class="sec-idx"><b>02</b> / INTEL BRIEFING</span><h2 class="sec-title">Frequently asked</h2></div>
-    </div>
-    <div class="acc rv"><div class="acc-head">How is the Zero-Day Intel sourced?<span class="acc-ico">+</span></div><div class="acc-body"><p>Our proprietary scrapers monitor deep-web forums, private Telegram channels, and GitHub commits to aggregate PoCs before they are assigned CVEs.</p></div></div>
-    <div class="acc rv"><div class="acc-head">How does the 14-day trial work?<span class="acc-ico">+</span></div><div class="acc-body"><p>You get full Premium access for 14 days. You're not charged until day 15, and you can cancel with one click from your dashboard — no emails, no retention flows.</p></div></div>
-    <div class="acc rv"><div class="acc-head">Can I cancel my subscription at any time?<span class="acc-ico">+</span></div><div class="acc-body"><p>Yes, AcroVault Premium is billed month-to-month. You can cancel at any time directly from your dashboard with zero cancellation fees.</p></div></div>
-    <div class="acc rv"><div class="acc-head">Do you offer discounts for academic institutions?<span class="acc-ico">+</span></div><div class="acc-body"><p>Yes, we provide a 50% discount for verified academic email addresses. Please contact sales to apply.</p></div></div>
-  </div>
-</section>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="tier-name">Free</div>
+                <div class="price">₹0<span>/mo</span></div>
+                <p class="pricing-desc">For security students and independent researchers needing basic OSINT access.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item"><i data-lucide="check"></i><span>Access to 1,000+ local tools</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Basic Search Functionality</span></div>
+                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No Premium Resources</span></div>
+                    <div class="feature-item muted"><i data-lucide="minus"></i><span>No Mentorship</span></div>
+                </div>
+                <a href="/" class="btn-pricing btn-outline">Current Plan</a>
+            </div>
 
-<footer class="footer">
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span></span></a>
-        <p>The centralized command center for offensive security, OSINT and forensics tooling. Built by operators, for operators.</p>
-        <div class="foot-status"><span class="pulse"></span> ALL SYSTEMS OPERATIONAL — INDEX SYNCED</div>
-      </div>
-      <div class="foot-col"><h4>Directory</h4><a href="index.html#directory">All Tools</a><a href="index.html#categories">Categories</a><a href="index.html#directory">Live Search</a><a href="premium.html">Premium Access</a></div>
-      <div class="foot-col"><h4>Company</h4><a href="about.html">About</a><a href="premium.html">Pricing</a><a href="about.html#founder">Founder</a><a href="mailto:support@acrovault.com">Report Dead Link</a></div>
-      <div class="foot-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.xml">Sitemap</a></div>
-    </div>
-    <div class="foot-huge" aria-hidden="true">ACROVAULT</div>
-    <div class="foot-bottom">
-      <span>© 2026 ACROVAULT — BUILT FOR SECURITY PROFESSIONALS</span>
-      <span>NODE: IN-DEL-01 · BUILD 4.0.2</span>
-      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">▲ TOP</a>
-    </div>
-  </div>
-</footer>
+            <div class="pricing-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="tier-name">Premium</div>
+                <div class="price">₹199<span>/mo</span></div>
+                <p class="pricing-desc">For active security professionals requiring real-time vulnerability data.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item"><i data-lucide="check"></i><span>Private Telegram Groups</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Dark Web Intel</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Databases & Resources</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Free Premium Courses</span></div>
+                </div>
+                <a href="#" class="btn-pricing btn-primary">Start 14-Day Trial</a>
+            </div>
 
-<script src="av.js"></script>
+            <div class="pricing-card">
+                <div class="tier-name">Ultra</div>
+                <div class="price">Custom</div>
+                <p class="pricing-desc">For SOC teams requiring custom integrations and dedicated support SLAs.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item"><i data-lucide="check"></i><span>Everything in Premium</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Premium Tools Access</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>1-on-1 Mentorship</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>24/7 Priority Support</span></div>
+                    <div class="feature-item"><i data-lucide="check"></i><span>Custom Threat Hunting</span></div>
+                </div>
+                <a href="#" class="btn-pricing btn-outline">Contact Sales</a>
+            </div>
+        </div>
+
+        <section class="matrix-section">
+            <h2 class="matrix-title">Compare Plans</h2>
+            <div class="table-responsive">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Features</th>
+                            <th>Free</th>
+                            <th>Premium</th>
+                            <th>Ultra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="category-row"><td colspan="4">Core Platform</td></tr>
+                        <tr>
+                            <td>Local Tool Directory</td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Premium Tools Access</td>
+                            <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Daily Updates</td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                            <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        </tr>
+                    
+                    <tr class="category-row"><td colspan="4">Premium Resources</td></tr>
+                    <tr>
+                        <td>Private Telegram Groups</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Databases & Premium Resources</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Free Premium Courses</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    
+                    <tr class="category-row"><td colspan="4">Threat Intelligence</td></tr>
+                    <tr>
+                        <td>Dark Web Intel</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+
+                    <tr class="category-row"><td colspan="4">Elite Support</td></tr>
+                    <tr>
+                        <td>1-on-1 Mentorship</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>24/7 Priority Support</td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="minus" class="matrix-icon matrix-minus"></i></td>
+                        <td><i data-lucide="check" class="matrix-icon matrix-check"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">How is the Zero-Day Intel sourced? <i data-lucide="chevron-down"></i></div>
+                <div class="faq-answer">Our proprietary scrapers monitor deep-web forums, private Telegram channels, and GitHub commits to aggregate PoCs before they are assigned CVEs.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I cancel my subscription at any time? <i data-lucide="chevron-down"></i></div>
+                <div class="faq-answer">Yes, AcroVault Premium is billed month-to-month. You can cancel at any time directly from your dashboard with zero cancellation fees.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do you offer discounts for academic institutions? <i data-lucide="chevron-down"></i></div>
+                <div class="faq-answer">Yes, we provide a 50% discount for verified academic email addresses. Please contact sales to apply.</div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="premium.html">Premium</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </div>
+        <p>© 2026 AcroVault. Built for security professionals.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('show');
+        });
+        
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const answer = q.nextElementSibling;
+                const icon = q.querySelector('i');
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    icon.setAttribute('data-lucide', 'chevron-down');
+                } else {
+                    answer.style.display = 'block';
+                    icon.setAttribute('data-lucide', 'chevron-up');
+                }
+                lucide.createIcons();
+            });
+            q.nextElementSibling.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
