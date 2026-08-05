@@ -112,7 +112,7 @@ nav { display: flex; align-items: center; justify-content: space-between; backgr
 
 /* TOTP SETUP */
 .totp-qr { text-align: center; margin: 24px 0; padding: 20px; background: rgba(0,0,0,.3); border-radius: var(--radius-card); border: 1px solid var(--border); }
-.totp-qr canvas { border-radius: 12px; margin: 0 auto 16px; display: block; border: 4px solid var(--surface); box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+.totp-qr img { border-radius: 12px; margin: 0 auto 16px; display: block; border: 4px solid var(--surface); box-shadow: 0 8px 24px rgba(0,0,0,.5); background: white; }
 .totp-secret-box { font-family: var(--font-mono); font-size: .9rem; color: var(--text-main); background: rgba(21,22,31,.8); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); word-break: break-all; margin: 8px 0 0; user-select: all; text-align: center; letter-spacing: .15em; font-weight: 600; }
 
 /* ===== DASHBOARD ===== */
@@ -252,7 +252,7 @@ footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: ce
                 Scan with <strong style="color:var(--text-main)">Google Authenticator</strong>
             </p>
             <div class="totp-qr">
-                <canvas id="qrCanvas"></canvas>
+                <img id="qrImage" width="220" height="220" alt="QR Code">
                 <p style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Or enter this key manually:</p>
                 <div class="totp-secret-box" id="totpSecretShow"></div>
             </div>
@@ -375,8 +375,7 @@ footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: ce
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<!-- QR CODE -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<!-- QR CODE (Removed external JS lib, using API) -->
 
 <script>
 (function() {
@@ -516,7 +515,7 @@ $('regBtn').addEventListener('click', function() {
             totpSecret = TOTP.makeSecret();
             setStep(['authTotpSetup'], 2);
             var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
-            QRCode.toCanvas($('qrCanvas'), uri, { width: 220, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
+            $('qrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=' + encodeURIComponent(uri);
             $('totpSecretShow').textContent = totpSecret;
             showOk('Account created! Scan QR code with Google Authenticator.');
             setTimeout(function() { $('totpSetupCode').focus(); }, 300);
@@ -546,7 +545,7 @@ $('loginBtn').addEventListener('click', function() {
                 totpSecret = TOTP.makeSecret();
                 setStep(['authTotpSetup'], 2);
                 var uri = 'otpauth://totp/AcroVault:' + encodeURIComponent(currentUser.email) + '?secret=' + totpSecret + '&issuer=AcroVault&digits=6&period=30';
-                QRCode.toCanvas($('qrCanvas'), uri, { width: 220, margin: 2, color: { dark: '#00f0ff', light: '#15161f' } });
+                $('qrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=' + encodeURIComponent(uri);
                 $('totpSecretShow').textContent = totpSecret;
                 showOk('No 2FA set up yet. Scan QR to activate.');
                 setTimeout(function() { $('totpSetupCode').focus(); }, 300);
