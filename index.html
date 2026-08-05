@@ -156,9 +156,9 @@
 
     <div class="container">
         <section class="hero">
-            <div class="hero-pill"><div class="hero-dot"></div>1,000+ Tools · Instant-Search · Cyber Security</div>
+            <div class="hero-pill"><div class="hero-dot"></div><span id="hero-count">1,200+</span> Tools · Instant-Search · Cyber Security</div>
             <h1>The <span style="white-space: nowrap"><span style="color: var(--cyan);">Raw</span> <span style="color: var(--purple);">Unfiltered</span></span> Directory for<br>Tools and Cyber Security</h1>
-            <p>1,000+ Instant-Search Tools for Aggressive Cyber Security<br>Built with <span style="font-weight:bold; color:var(--purple)">Zero Bullsh*t</span></p>
+            <p><span id="hero-count-2">1,200+</span> Instant-Search Tools for Aggressive Cyber Security<br>Built with <span style="font-weight:bold; color:var(--purple)">Zero Bullsh*t</span></p>
             
             <div class="search-container">
                 <i data-lucide="search" class="search-icon"></i>
@@ -202,6 +202,8 @@
         let searchQuery = '';
 
         document.getElementById('nav-count').textContent = tools.length + '+';
+        var hc = document.getElementById('hero-count'); if(hc) hc.textContent = tools.length + '+';
+        var hc2 = document.getElementById('hero-count-2'); if(hc2) hc2.textContent = tools.length + '+';
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('show');
         });
