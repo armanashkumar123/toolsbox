@@ -1,208 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy — AcroVault</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
-            --border: #262836; --border-active: #00f0ff;
-            --text-main: #f0f0f5; --text-muted: #8b8d98;
-            --cyan: #00f0ff; --purple: #b05bff;
-            --radius-pill: 100px; --radius-card: 16px;
-            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
-        }
-        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        
-        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
-        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1100px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
-        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
-        .nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
-        .nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
-        
-        .nav-links { display: flex; align-items: center; gap: 28px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--text-main); }
-        
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
-        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
-        .btn-premium:active { transform: scale(0.95); }
-        
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
-        
-        @media (max-width: 768px) {
-            .nav-wrapper { top: 12px; padding: 0 12px; }
-            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
-            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
-            .nav-links.show { display: flex; }
-            .mobile-menu-btn { display: block; }
-            .btn-premium { text-align: center; }
-        }
-
-        .container { max-width: 900px; margin: 160px auto 80px; padding: 0 24px; }
-        .page-header { text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 40px; margin-bottom: 48px; }
-        h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; }
-        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .legal-layout { display: grid; grid-template-columns: 240px 1fr; gap: 48px; }
-        
-        .sidebar { position: sticky; top: 120px; height: max-content; }
-        .sidebar ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-        .sidebar a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; display: block; padding-left: 12px; border-left: 2px solid transparent; }
-        .sidebar a:hover, .sidebar a.active { color: var(--cyan); border-left-color: var(--cyan); }
-        
-        .content { color: var(--text-muted); font-size: 1.05rem; }
-        .content section { margin-bottom: 48px; }
-        .content h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-bottom: 24px; letter-spacing: -0.02em; scroll-margin-top: 120px; }
-        .content p { margin-bottom: 16px; }
-        .content ul { margin-bottom: 24px; padding-left: 24px; }
-        .content li { margin-bottom: 8px; }
-        
-        footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); }
-        .footer-links { display: flex; justify-content: center; gap: 32px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
-        .footer-links a:hover { color: var(--text-main); }
-        
-        @media (max-width: 768px) {
-            .legal-layout { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — AcroVault</title>
+<meta name="description" content="How AcroVault collects, uses and safeguards your information.">
+<link rel="stylesheet" href="av.css">
 </head>
 <body>
-    <div class="nav-wrapper">
-        <nav>
-            <a href="/" class="nav-brand">
-                <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-                <span class="nav-brand-text">AcroVault</span>
-            </a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i data-lucide="menu"></i>
-            </button>
-            <div class="nav-links" id="navLinks">
-                <a href="/">Directory</a>
-                <a href="about.html">About</a>
-                <a href="privacy.html" style="color: var(--text-main);">Privacy</a>
-                <a href="terms.html">Terms</a>
-                <a href="premium.html" class="btn-premium">Premium</a>
-            </div>
-        </nav>
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span><span class="logo-ver">DIR. v4.0</span></span></a>
+    <div class="nav-links">
+      <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html" class="active">Privacy</a>
+      <a href="terms.html">Terms</a><a href="premium.html">Premium</a>
     </div>
+    <a href="premium.html" class="btn btn-solid btn-sm">Get Premium <span class="ar">→</span></a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="m-menu" id="mMenu">
+  <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a><a href="premium.html">Premium →</a>
+</div>
 
-    <div class="container">
-        <div class="page-header">
-            <h1><span class="gradient-text">Privacy</span> Policy</h1>
-            <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem;">Effective Date: October 24, 2026</p>
-        </div>
+<header class="page-hero">
+  <div class="hero-bg"></div>
+  <div class="container" style="position:relative">
+    <div class="eyebrow fade-up" data-scramble>[ LEGAL — DATA PROTECTION ]</div>
+    <h1 class="ph-title"><span class="hl"><span style="animation-delay:.1s">PRIVACY POLICY</span></span></h1>
+    <div class="ph-meta fade-up" style="animation-delay:.35s"><span class="chip chip-acid">EFFECTIVE — OCTOBER 24, 2026</span></div>
+  </div>
+</header>
 
-        <div class="legal-layout">
-            <aside class="sidebar">
-                <ul>
-                    <li><a href="#intro" class="active">1. Introduction & Scope</a></li>
-                    <li><a href="#collection">2. Information We Collect</a></li>
-                    <li><a href="#usage">3. How We Use Your Info</a></li>
-                    <li><a href="#sharing">4. Data Sharing</a></li>
-                    <li><a href="#security">5. Data Security & Retention</a></li>
-                    <li><a href="#rights">6. Your Privacy Rights</a></li>
-                </ul>
-            </aside>
-            
-            <div class="content">
-                <section id="intro">
-                    <h2>1. Introduction and Scope</h2>
-                    <p>Welcome to AcroVault. At AcroVault ("we," "us," or "our"), we understand that in the cybersecurity industry, privacy and data protection are not just regulatory requirements—they are the foundation of our business. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our SaaS platform, and interact with our services (collectively, the "Services").</p>
-                </section>
+<div class="container-narrow legal">
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#intro">01 — Introduction &amp; Scope</a>
+    <a href="#collection">02 — Information We Collect</a>
+    <a href="#usage">03 — How We Use Your Info</a>
+    <a href="#sharing">04 — Data Sharing</a>
+    <a href="#security">05 — Security &amp; Retention</a>
+    <a href="#rights">06 — Your Privacy Rights</a>
+  </aside>
 
-                <section id="collection">
-                    <h2>2. Information We Collect</h2>
-                    <p>To provide our enterprise-grade security services, we collect the following types of information:</p>
-                    <ul>
-                        <li><strong>Account and Contact Information:</strong> Name, email address, company name, phone number, and billing details provided during registration.</li>
-                        <li><strong>System and Usage Data:</strong> IP addresses, browser types, operating systems, and logs of your interactions with our platform.</li>
-                        <li><strong>Security Telemetry Data:</strong> For AcroVault to function, we analyze metadata, network traffic patterns, and security event logs from your connected infrastructure. <em>Note: We do not inspect the payload of your encrypted data unless explicitly configured by you for threat analysis.</em></li>
-                    </ul>
-                </section>
+  <div>
+    <section class="lg-sec rv" id="intro">
+      <h2 class="lg-h"><span class="n">01</span> Introduction and Scope</h2>
+      <p>Welcome to AcroVault. At AcroVault (<strong>"we," "us," or "our"</strong>), we understand that in the cybersecurity industry, privacy and data protection are not just regulatory requirements — they are the foundation of our business. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our SaaS platform, and interact with our services (collectively, the <strong>"Services"</strong>).</p>
+    </section>
 
-                <section id="usage">
-                    <h2>3. How We Use Your Information</h2>
-                    <p>We use the collected information strictly for the following purposes:</p>
-                    <ul>
-                        <li><strong>Service Provisioning:</strong> To operate, maintain, and deliver the AcroVault cybersecurity services.</li>
-                        <li><strong>Threat Detection and Analytics:</strong> To identify anomalies, prevent cyberattacks, and improve our proprietary threat intelligence algorithms.</li>
-                        <li><strong>Communication:</strong> To send administrative notices, security alerts, product updates, and customer support responses.</li>
-                        <li><strong>Compliance:</strong> To fulfill legal obligations and enforce our Terms of Service.</li>
-                    </ul>
-                </section>
+    <section class="lg-sec rv" id="collection">
+      <h2 class="lg-h"><span class="n">02</span> Information We Collect</h2>
+      <p>To provide our enterprise-grade security services, we collect the following types of information:</p>
+      <ul class="lg-list">
+        <li><strong>Account and Contact Information:</strong> Name, email address, company name, phone number, and billing details provided during registration.</li>
+        <li><strong>System and Usage Data:</strong> IP addresses, browser types, operating systems, and logs of your interactions with our platform.</li>
+        <li><strong>Security Telemetry Data:</strong> For AcroVault to function, we analyze metadata, network traffic patterns, and security event logs from your connected infrastructure. Note: We do not inspect the payload of your encrypted data unless explicitly configured by you for threat analysis.</li>
+      </ul>
+    </section>
 
-                <section id="sharing">
-                    <h2>4. Data Sharing and Disclosure</h2>
-                    <p>We do not sell your personal data. We only share information under the following circumstances:</p>
-                    <ul>
-                        <li><strong>Service Providers:</strong> With trusted third-party vendors (e.g., cloud hosting providers, payment processors) who operate under strict confidentiality agreements.</li>
-                        <li><strong>Legal Requirements:</strong> If required to do so by law, or in response to valid requests by public authorities (e.g., a court or government agency).</li>
-                        <li><strong>Business Transfers:</strong> In connection with any merger, sale of company assets, or acquisition of all or a portion of our business.</li>
-                    </ul>
-                </section>
+    <section class="lg-sec rv" id="usage">
+      <h2 class="lg-h"><span class="n">03</span> How We Use Your Information</h2>
+      <p>We use the collected information strictly for the following purposes:</p>
+      <ul class="lg-list">
+        <li><strong>Service Provisioning:</strong> To operate, maintain, and deliver the AcroVault cybersecurity services.</li>
+        <li><strong>Threat Detection and Analytics:</strong> To identify anomalies, prevent cyberattacks, and improve our proprietary threat intelligence algorithms.</li>
+        <li><strong>Communication:</strong> To send administrative notices, security alerts, product updates, and customer support responses.</li>
+        <li><strong>Compliance:</strong> To fulfill legal obligations and enforce our Terms of Service.</li>
+      </ul>
+    </section>
 
-                <section id="security">
-                    <h2>5. Data Security and Retention</h2>
-                    <p>We implement industry-leading technical and organizational measures to secure your data, including end-to-end encryption, regular penetration testing, and strict access controls. We retain your personal and telemetry data only for as long as necessary to fulfill the purposes outlined in this policy or as required by law. Upon account termination, your data is securely wiped from our primary systems within 30 days.</p>
-                </section>
+    <section class="lg-sec rv" id="sharing">
+      <h2 class="lg-h"><span class="n">04</span> Data Sharing and Disclosure</h2>
+      <p><strong>We do not sell your personal data.</strong> We only share information under the following circumstances:</p>
+      <ul class="lg-list">
+        <li><strong>Service Providers:</strong> With trusted third-party vendors (e.g., cloud hosting providers, payment processors) who operate under strict confidentiality agreements.</li>
+        <li><strong>Legal Requirements:</strong> If required to do so by law, or in response to valid requests by public authorities (e.g., a court or government agency).</li>
+        <li><strong>Business Transfers:</strong> In connection with any merger, sale of company assets, or acquisition of all or a portion of our business.</li>
+      </ul>
+    </section>
 
-                <section id="rights">
-                    <h2>6. Your Privacy Rights</h2>
-                    <p>Depending on your jurisdiction (e.g., GDPR, CCPA), you may have the right to access, correct, delete, or restrict the processing of your personal data. To exercise these rights or to contact our Data Protection Officer, please email us at privacy@acrovault.com.</p>
-                </section>
-            </div>
-        </div>
+    <section class="lg-sec rv" id="security">
+      <h2 class="lg-h"><span class="n">05</span> Data Security and Retention</h2>
+      <p>We implement industry-leading technical and organizational measures to secure your data, including <strong>end-to-end encryption, regular penetration testing, and strict access controls</strong>. We retain your personal and telemetry data only for as long as necessary to fulfill the purposes outlined in this policy or as required by law. Upon account termination, your data is securely wiped from our primary systems within <strong>30 days</strong>.</p>
+    </section>
+
+    <section class="lg-sec rv" id="rights">
+      <h2 class="lg-h"><span class="n">06</span> Your Privacy Rights</h2>
+      <p>Depending on your jurisdiction (e.g., GDPR, CCPA), you may have the right to <strong>access, correct, delete, or restrict the processing</strong> of your personal data. To exercise these rights or to contact our Data Protection Officer, please email us at <a href="mailto:privacy@acrovault.com" style="color:var(--acid);text-decoration:none">privacy@acrovault.com</a>.</p>
+    </section>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span></span></a>
+        <p>The centralized command center for offensive security, OSINT and forensics tooling. Built by operators, for operators.</p>
+        <div class="foot-status"><span class="pulse"></span> ALL SYSTEMS OPERATIONAL — INDEX SYNCED</div>
+      </div>
+      <div class="foot-col"><h4>Directory</h4><a href="index.html#directory">All Tools</a><a href="index.html#categories">Categories</a><a href="index.html#directory">Live Search</a><a href="premium.html">Premium Access</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="about.html">About</a><a href="premium.html">Pricing</a><a href="about.html#founder">Founder</a><a href="mailto:support@acrovault.com">Report Dead Link</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.xml">Sitemap</a></div>
     </div>
+    <div class="foot-huge" aria-hidden="true">ACROVAULT</div>
+    <div class="foot-bottom">
+      <span>© 2026 ACROVAULT — BUILT FOR SECURITY PROFESSIONALS</span>
+      <span>NODE: IN-DEL-01 · BUILD 4.0.2</span>
+      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">▲ TOP</a>
+    </div>
+  </div>
+</footer>
 
-    <footer>
-        <div class="footer-links">
-            <a href="/">Home</a>
-            <a href="premium.html">Premium</a>
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-        </div>
-        <p>© 2026 AcroVault. Built for security professionals.</p>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('show');
-        });
-        
-        // Simple scrollspy for sidebar
-        const sections = document.querySelectorAll('.content section');
-        const navLinks = document.querySelectorAll('.sidebar a');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
+<script src="av.js"></script>
 </body>
 </html>

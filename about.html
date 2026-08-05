@@ -1,146 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About AcroVault</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
-            --border: #262836; --border-active: #00f0ff;
-            --text-main: #f0f0f5; --text-muted: #8b8d98;
-            --cyan: #00f0ff; --purple: #b05bff;
-            
-            --radius-pill: 100px; --radius-card: 16px;
-            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        body {
-            font-family: var(--font-main); background-color: var(--bg-color);
-            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 40px 40px; background-position: center center;
-            color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
-        }
-
-        /* Nav */
-        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
-        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1100px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
-        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
-        .nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
-        .nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
-        
-        .nav-links { display: flex; align-items: center; gap: 28px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--text-main); }
-        
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
-        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
-        .btn-premium:active { transform: scale(0.95); }
-        
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
-
-        @media (max-width: 768px) {
-            .nav-wrapper { top: 12px; padding: 0 12px; }
-            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
-            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
-            .nav-links.show { display: flex; }
-            .mobile-menu-btn { display: block; }
-            .btn-premium { text-align: center; }
-        }
-
-        .container { max-width: 800px; margin: 160px auto 80px; padding: 0 24px; }
-        .page-header { text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 40px; margin-bottom: 48px; }
-        h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; }
-        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .content { color: var(--text-muted); font-size: 1.15rem; line-height: 1.8; }
-        .content p { margin-bottom: 24px; }
-        .content h2 { font-size: 1.8rem; font-weight: 700; color: var(--text-main); margin: 48px 0 24px; letter-spacing: -0.02em; }
-        
-        .leadership-card { background: rgba(21, 22, 31, 0.6); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px; display: flex; gap: 32px; align-items: center; margin-top: 48px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
-        .avatar-placeholder { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; color: #fff; flex-shrink: 0; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); }
-        .leader-info h3 { color: var(--text-main); font-size: 1.5rem; margin-bottom: 8px; }
-        .leader-info .title { font-family: var(--font-mono); color: var(--cyan); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; display: block; }
-        .leader-info p { margin-bottom: 0; font-size: 1rem; color: var(--text-muted); }
-
-        footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); }
-        .footer-links { display: flex; justify-content: center; gap: 32px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
-        .footer-links a:hover { color: var(--text-main); }
-        
-        @media (max-width: 600px) {
-            .leadership-card { flex-direction: column; text-align: center; padding: 24px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About AcroVault — The Mission</title>
+<meta name="description" content="AcroVault was engineered to solve one problem: the fragmentation of operational intelligence in cybersecurity.">
+<link rel="stylesheet" href="av.css">
 </head>
 <body>
-    <div class="nav-wrapper">
-        <nav>
-            <a href="/" class="nav-brand">
-                <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-                <span class="nav-brand-text">AcroVault</span>
-            </a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i data-lucide="menu"></i>
-            </button>
-            <div class="nav-links" id="navLinks">
-                <a href="/">Directory</a>
-                <a href="about.html" style="color: var(--text-main);">About</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
-                <a href="premium.html" class="btn-premium">Premium</a>
-            </div>
-        </nav>
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span><span class="logo-ver">DIR. v4.0</span></span></a>
+    <div class="nav-links">
+      <a href="index.html">Directory</a><a href="about.html" class="active">About</a><a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a><a href="premium.html">Premium</a>
     </div>
+    <a href="premium.html" class="btn btn-solid btn-sm">Get Premium <span class="ar">→</span></a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="m-menu" id="mMenu">
+  <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a><a href="premium.html">Premium →</a>
+</div>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>About <span class="gradient-text">AcroVault</span></h1>
-        </div>
-        
-        <div class="content">
-            <p>AcroVault was engineered to solve a singular, critical problem in the cybersecurity landscape: the fragmentation of operational intelligence. Security analysts, red teamers, and incident responders waste countless hours navigating a maze of disjointed repositories, outdated wikis, and dead links to find the right tool for the job.</p>
-            <p>We built a centralized, instantly searchable command center. By aggressively indexing over 1,200+ native client-side tools, OSINT frameworks, and curated open-source applications, AcroVault eliminates friction and accelerates tactical operations.</p>
-            
-            <h2>Our Core Architecture</h2>
-            <p>We believe in performance and zero-trust execution. AcroVault operates primarily as a client-side directory. This architecture ensures that your searches, queries, and operational footprints remain entirely local to your browser. We don't log your operational intent, because we don't need to.</p>
+<!-- HERO -->
+<header class="page-hero">
+  <div class="hero-bg"></div>
+  <div class="container" style="position:relative">
+    <div class="eyebrow fade-up" data-scramble>[ MISSION FILE — ACROVAULT ]</div>
+    <h1 class="ph-title">
+      <span class="hl"><span style="animation-delay:.1s">FRAGMENTATION</span></span>
+      <span class="hl"><span style="animation-delay:.24s" class="serif">kills operations</span><span style="animation-delay:.24s" class="acid">.</span></span>
+    </h1>
+    <p class="ph-sub fade-up" style="animation-delay:.45s">Security analysts, red teamers and incident responders waste countless hours navigating a maze of disjointed repositories, outdated wikis and dead links to find the right tool for the job. AcroVault was engineered to end that.</p>
+  </div>
+</header>
 
-            <div class="leadership-card">
-                <div class="avatar-placeholder">A</div>
-                <div class="leader-info">
-                    <h3>Acro</h3>
-                    <span class="title">Founder & Lead Security Architect</span>
-                    <p>Acro engineered AcroVault from the ground up, drawing on deep expertise in offensive security and threat intelligence. Frustrated by the lack of cohesive tooling platforms in the industry, he built AcroVault to serve as the definitive command center for elite cyber operations worldwide.</p>
-                </div>
-            </div>
-        </div>
+<!-- MANIFESTO -->
+<section class="sec">
+  <div class="container-narrow">
+    <div class="rv" style="border-left:2px solid var(--acid);padding-left:34px">
+      <p style="font-family:var(--fs);font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.45;color:var(--tx)">"We built a centralized, instantly-searchable command center. By aggressively indexing over 1,200 native client-side tools, OSINT frameworks and curated open-source applications — AcroVault eliminates friction and accelerates tactical operations."</p>
+      <span class="mono" style="font-size:11px;letter-spacing:.2em;color:var(--tx3);display:block;margin-top:22px">— THE ACROVAULT DOCTRINE</span>
     </div>
+  </div>
+</section>
 
-    <footer>
-        <div class="footer-links">
-            <a href="/">Home</a>
-            <a href="premium.html">Premium</a>
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
+<!-- ARCHITECTURE -->
+<section class="sec sec-line" id="architecture">
+  <div class="container">
+    <div class="sec-head rv">
+      <div><span class="sec-idx"><b>01</b> / SYSTEM DESIGN</span><h2 class="sec-title">Our core architecture</h2></div>
+      <p class="sec-sub">We believe in performance and zero-trust execution. Your operational footprint is yours alone.</p>
+    </div>
+    <div>
+      <div class="doc-row rv"><div class="doc-num">01</div><div><div class="doc-t">Client-side directory</div><div class="doc-d">AcroVault operates primarily as a client-side directory. Your searches, queries and operational footprints remain entirely local to your browser — nothing touches a backend.</div></div></div>
+      <div class="doc-row rv"><div class="doc-num">02</div><div><div class="doc-t">Zero-log execution</div><div class="doc-d">We don't log your operational intent, because we don't need to. No session stores, no query histories, no third-party analytics.</div></div></div>
+      <div class="doc-row rv"><div class="doc-num">03</div><div><div class="doc-t">Aggressive indexing</div><div class="doc-d">Over 1,200 tools indexed across 34 categories — continuously verified, continuously purged of dead links. The index is an operation, not a scrape.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<section class="band">
+  <div class="container" style="padding:80px 28px">
+    <div class="hero-stats rv" style="border-top:0;margin:0;padding:0;justify-content:space-between">
+      <div><div class="stat-num"><span data-count="1200" data-suffix="+">0</span></div><div class="stat-lbl">Tools Indexed</div></div>
+      <div><div class="stat-num"><span data-count="34">0</span></div><div class="stat-lbl">Categories</div></div>
+      <div><div class="stat-num"><em><span data-count="0">0</span></em></div><div class="stat-lbl">Payloads Logged</div></div>
+      <div><div class="stat-num"><em>1</em></div><div class="stat-lbl">Mission</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="sec sec-line" id="founder">
+  <div class="container-narrow">
+    <div class="sec-head rv">
+      <div><span class="sec-idx"><b>02</b> / OPERATOR PROFILE</span><h2 class="sec-title">Behind the vault</h2></div>
+    </div>
+    <div class="rv" style="display:grid;grid-template-columns:auto 1fr;gap:36px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,var(--panel),var(--bg2));padding:38px;align-items:center">
+      <div style="width:110px;height:110px;border:1px solid var(--acid-line);border-radius:8px;display:grid;place-items:center;background:var(--acid-soft);font-family:var(--fd);font-weight:900;font-size:44px;color:var(--acid)">A</div>
+      <div>
+        <h3 style="font-family:var(--fd);font-size:22px;text-transform:uppercase">Acro</h3>
+        <span class="chip chip-acid" style="margin:12px 0 18px">FOUNDER &amp; LEAD SECURITY ARCHITECT</span>
+        <p style="color:var(--tx2);font-size:15px;line-height:1.75;max-width:640px">Acro engineered AcroVault from the ground up, drawing on deep expertise in offensive security and threat intelligence. Frustrated by the lack of cohesive tooling platforms in the industry, he built AcroVault to serve as the definitive command center for elite cyber operations worldwide.</p>
+        <div class="mono" style="display:flex;gap:34px;flex-wrap:wrap;margin-top:22px;font-size:10px;letter-spacing:.18em;color:var(--tx3)">
+          <span>FOCUS — <span class="acid">OFFENSIVE SEC / THREAT INTEL</span></span>
+          <span>STATUS — <span class="acid">ACTIVE</span></span>
         </div>
-        <p>© 2026 AcroVault. Built for security professionals.</p>
-    </footer>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:70px" class="rv">
+      <a href="index.html" class="btn btn-solid btn-lg">Enter the Directory <span class="ar">↓</span></a>
+    </div>
+  </div>
+</section>
 
-    <script>
-        lucide.createIcons();
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('show');
-        });
-    </script>
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span></span></a>
+        <p>The centralized command center for offensive security, OSINT and forensics tooling. Built by operators, for operators.</p>
+        <div class="foot-status"><span class="pulse"></span> ALL SYSTEMS OPERATIONAL — INDEX SYNCED</div>
+      </div>
+      <div class="foot-col"><h4>Directory</h4><a href="index.html#directory">All Tools</a><a href="index.html#categories">Categories</a><a href="index.html#directory">Live Search</a><a href="premium.html">Premium Access</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="about.html">About</a><a href="premium.html">Pricing</a><a href="about.html#founder">Founder</a><a href="mailto:support@acrovault.com">Report Dead Link</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.xml">Sitemap</a></div>
+    </div>
+    <div class="foot-huge" aria-hidden="true">ACROVAULT</div>
+    <div class="foot-bottom">
+      <span>© 2026 ACROVAULT — BUILT FOR SECURITY PROFESSIONALS</span>
+      <span>NODE: IN-DEL-01 · BUILD 4.0.2</span>
+      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">▲ TOP</a>
+    </div>
+  </div>
+</footer>
+
+<script src="av.js"></script>
 </body>
 </html>

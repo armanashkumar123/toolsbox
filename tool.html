@@ -1,283 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tool Detail — AcroVault</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg-color: #0d0e15; --surface: #15161f; --surface-hover: #1e202d;
-            --border: #262836; --border-active: #00f0ff;
-            --text-main: #f0f0f5; --text-muted: #8b8d98;
-            --cyan: #00f0ff; --purple: #b05bff;
-            --radius-pill: 100px; --radius-card: 16px;
-            --font-main: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
-        }
-        body { font-family: var(--font-main); background-color: var(--bg-color); background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 40px 40px; background-position: center center; color: var(--text-main); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 0% 50%, rgba(0, 240, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
-        body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(circle at 100% 50%, rgba(176, 91, 255, 0.08) 0%, transparent 70%); z-index: -1; pointer-events: none; }
-
-        /* Nav */
-        .nav-wrapper { position: fixed; top: 24px; left: 0; right: 0; display: flex; justify-content: center; z-index: 100; padding: 0 16px; }
-        nav { display: flex; align-items: center; justify-content: space-between; background: rgba(21, 22, 31, 0.7); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 10px 24px; width: 100%; max-width: 1400px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-main); }
-        .nav-brand-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border-radius: 10px; color: #fff; }
-        .nav-brand-icon svg { width: 18px; height: 18px; fill: currentColor; }
-        .nav-brand-text { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
-        
-        .nav-links { display: flex; align-items: center; gap: 28px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--text-main); }
-        
-        .btn-premium { background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 240, 255, 0.3); padding: 8px 20px; border-radius: var(--radius-pill); color: var(--cyan) !important; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent); transform: skewX(-20deg); animation: premiumShine 3s infinite; }
-        @keyframes premiumShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        .btn-premium:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-1px); }
-        .btn-premium:active { transform: scale(0.95); }
-        
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 4px; }
-        
-        @media (max-width: 768px) {
-            .nav-wrapper { top: 12px; padding: 0 12px; }
-            nav { flex-wrap: wrap; border-radius: 20px; padding: 12px 20px; }
-            .nav-links { display: none; flex-direction: column; width: 100%; gap: 16px; padding-top: 20px; padding-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
-            .nav-links.show { display: flex; }
-            .mobile-menu-btn { display: block; }
-            .btn-premium { text-align: center; }
-        }
-
-        /* SaaS Layout Container */
-        .container { max-width: 1400px; margin: 120px auto 80px; padding: 0 24px; }
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-bottom: 32px; transition: color 0.2s; }
-        .back-link:hover { color: var(--text-main); }
-        .back-link i { width: 18px; height: 18px; }
-
-        .layout-grid { display: grid; grid-template-columns: 1fr 340px; gap: 48px; }
-        @media (max-width: 900px) { 
-            .layout-grid { grid-template-columns: 1fr; } 
-            body { padding-bottom: 80px; }
-        }
-        
-        /* Main Content */
-        .header { margin-bottom: 40px; }
-        .title-area h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; text-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
-        .gradient-text { background: linear-gradient(to right, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .category-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); padding: 6px 14px; border-radius: var(--radius-pill); margin-bottom: 24px; box-shadow: 0 0 15px rgba(0,240,255,0.1); }
-        
-        /* Visual Placeholder (Gateway Portal) */
-        .visual-placeholder { width: 100%; height: 320px; background: rgba(13, 14, 21, 0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: 48px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .vp-bg-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(176, 91, 255, 0.15) 0%, transparent 70%); z-index: 1; }
-        .vp-icon-container { position: relative; z-index: 10; width: 72px; height: 72px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
-        .vp-icon-container i { color: var(--purple); width: 32px; height: 32px; }
-        .vp-text { position: relative; z-index: 10; font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
-        .vp-subtext { position: relative; z-index: 10; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 90%; word-break: break-all; text-align: center; }
-        .vp-subtext i { width: 14px; height: 14px; color: var(--cyan); flex-shrink: 0; }
-
-        .content { font-size: 1.15rem; color: var(--text-main); line-height: 1.8; }
-        .content h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 48px 0 24px; letter-spacing: -0.02em; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-        .content p { margin-bottom: 24px; color: var(--text-muted); }
-
-        /* Capabilities List */
-        .capabilities-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px; }
-        .cap-item { display: flex; align-items: flex-start; gap: 12px; background: rgba(21, 22, 31, 0.4); padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
-        .cap-item i { color: var(--cyan); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
-        .cap-item span { font-size: 0.95rem; color: var(--text-main); font-weight: 500; }
-
-        /* Sidebar Metadata */
-        .sidebar { display: flex; flex-direction: column; gap: 24px; }
-        .meta-card { background: rgba(21, 22, 31, 0.4); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; }
-        .meta-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 0.05em; }
-        .meta-value { font-size: 1.05rem; font-weight: 500; word-break: break-all; }
-        .meta-value a { color: var(--cyan); text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        .meta-value a:hover { text-shadow: 0 0 15px rgba(0,240,255,0.5); }
-        
-        /* Specs Matrix */
-        .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
-        .spec-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .spec-key { color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-        .spec-key i { width: 14px; height: 14px; }
-        .spec-val { color: var(--text-main); font-family: var(--font-mono); font-weight: 500; }
-
-        .btn-launch { position: relative; overflow: hidden; display: inline-flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 18px; border-radius: var(--radius-card); font-weight: 700; font-size: 1.15rem; background: rgba(255, 255, 255, 0.03); color: #fff; text-decoration: none; box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 0 20px rgba(0, 240, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.25); border-left: 1px solid rgba(255,255,255,0.25); z-index: 1; }
-        .btn-launch::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(176, 91, 255, 0.15) 0%, transparent 70%); opacity: 0; transition: opacity 0.4s; z-index: -1; }
-        .btn-launch:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.08); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(176, 91, 255, 0.3), inset 0 0 30px rgba(0, 240, 255, 0.2); border-color: rgba(255,255,255,0.4); }
-        .btn-launch:hover::before { opacity: 1; }
-        .btn-launch:active { transform: translateY(0) scale(0.98); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
-        .btn-launch::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent); transform: skewX(-20deg); animation: shine 3s infinite; z-index: 2; }
-        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        @media (max-width: 900px) {
-            .btn-launch { position: fixed !important; bottom: 16px !important; left: 16px !important; right: 16px !important; width: calc(100% - 32px) !important; z-index: 1000 !important; margin-bottom: 0 !important; box-shadow: 0 12px 40px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 240, 255, 0.2) !important; border-radius: var(--radius-card) !important; }
-        }
-        
-        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 6px 12px; border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
-
-        footer { border-top: 1px solid var(--border); padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 16px; background: rgba(13, 14, 21, 0.9); grid-column: 1 / -1; }
-        .footer-links { display: flex; justify-content: center; gap: 32px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
-        .footer-links a:hover { color: var(--text-main); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Detail — AcroVault</title>
+<link rel="stylesheet" href="av.css">
 </head>
 <body>
-    <div class="nav-wrapper">
-        <nav>
-            <a href="/" class="nav-brand">
-                <div class="nav-brand-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-                <span class="nav-brand-text">AcroVault</span>
-            </a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i data-lucide="menu"></i>
-            </button>
-            <div class="nav-links" id="navLinks">
-                <a href="/">Directory</a>
-                <a href="about.html">About</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
-                <a href="premium.html" class="btn-premium">Premium</a>
-            </div>
-        </nav>
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span><span class="logo-ver">DIR. v4.0</span></span></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a><a href="premium.html">Premium</a>
     </div>
+    <a href="premium.html" class="btn btn-solid btn-sm">Get Premium <span class="ar">→</span></a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="m-menu" id="mMenu">
+  <a href="index.html">Directory</a><a href="about.html">About</a><a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a><a href="premium.html">Premium →</a>
+</div>
 
-    <div class="container">
-        <a href="/" class="back-link"><i data-lucide="arrow-left"></i> Back to Directory</a>
-        <div class="layout-grid">
-            <main>
-                <div class="header">
-                    <div class="category-badge" id="toolCategory"><i data-lucide="box" style="width:14px;height:14px;"></i> <span>Loading...</span></div>
-                    <h1 id="toolName" class="gradient-text">Loading...</h1>
-                </div>
-                
-                <div class="visual-placeholder">
-                    <div class="vp-bg-glow"></div>
-                    <div class="vp-icon-container">
-                        <i id="toolIconLarge" data-lucide="external-link"></i>
-                    </div>
-                    <div class="vp-text">External Resource Gateway</div>
-                    <div class="vp-subtext"><i data-lucide="shield-check"></i> <span id="vpTargetUrl">Ready for secure redirection</span></div>
-                </div>
-
-                <div class="content" id="toolDesc">
-                    Loading intelligence data...
-                </div>
-            </main>
-
-            <aside class="sidebar" id="sidebar">
-                <a href="#" id="toolUrlBtn" class="btn-launch" target="_blank" rel="noopener">
-                    Launch Platform <i data-lucide="external-link" style="width:18px;height:18px;"></i>
-                </a>
-                
-                <div class="meta-card">
-                    <span class="meta-label">Technical Specifications</span>
-                    <div class="spec-row">
-                        <div class="spec-key"><i data-lucide="server"></i> Host</div>
-                        <div class="spec-val">External</div>
-                    </div>
-                    <div class="spec-row">
-                        <div class="spec-key"><i data-lucide="check-circle"></i> Status</div>
-                        <div class="spec-val" style="color: #27c93f;">Operational</div>
-                    </div>
-                </div>
-
-                <div class="meta-card">
-                    <span class="meta-label">Source URL</span>
-                    <span class="meta-value" id="toolUrlDisplay"><a href="#" target="_blank">Loading...</a></span>
-                </div>
-                <div class="meta-card">
-                    <span class="meta-label">Tags</span>
-                    <div class="tag-list" id="toolTags">
-                        <span class="tag">INTEL</span>
-                    </div>
-                </div>
-            </aside>
-        </div>
+<header class="page-hero" style="padding-bottom:0;border-bottom:0">
+  <div class="hero-bg"></div>
+  <div class="container" style="position:relative;padding-bottom:70px">
+    <div class="crumb fade-up">
+      <a href="index.html">DIRECTORY</a> <span>/</span>
+      <a href="index.html" id="crumbCat">CATEGORY</a> <span>/</span>
+      <b id="crumbTool">TOOL</b>
     </div>
+    <div id="toolHero"></div>
+  </div>
+</header>
 
-    <footer>
-        <div class="footer-links">
-            <a href="/">Home</a>
-            <a href="premium.html">Premium</a>
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-        </div>
-        <p>© 2026 AcroVault. Built for security professionals.</p>
-    </footer>
+<section class="sec" style="padding-top:60px">
+  <div class="container">
+    <div id="toolBody"></div>
 
-    <script src="tools-data.js"></script>
-    <script>
-        const CAT_ICONS = {
-            'crime-evidence': 'scale', 'osint': 'radar', 'roadmap': 'map',
-            'hardware-hacking': 'cpu', 'ai-research': 'brain', 'vapt': 'shield-alert',
-            'ai-hacking': 'bot', 'account-tools': 'user-plus', 'ai-attack': 'swords',
-            'malware-analysis': 'bug', 'url-scanning': 'link-2', 'social-engineering': 'fish',
-            'exploit-directory': 'bomb', 'malware-courses': 'graduation-cap',
-            'digital-forensics': 'scan-search', 'port-scanners': 'network',
-            'detection-tools': 'car', 'api-gateway': 'server', 'ethical-hacking': 'book-open',
-            'breach-lookup': 'alert-triangle'
-        };
+    <!-- RELATED -->
+    <div id="relatedWrap" style="display:none;margin-top:90px">
+      <div class="sec-head rv">
+        <div><span class="sec-idx"><b>+</b> / SAME SECTOR</span><h2 class="sec-title" style="font-size:clamp(22px,2.6vw,32px)">Related tools</h2></div>
+      </div>
+      <div class="tools-grid" id="relatedGrid"></div>
+    </div>
+  </div>
+</section>
 
-        // Mobile Nav Logic
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('show');
-        });
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html"><span class="logo-box">&gt;_</span><span><span class="logo-word">ACROVAULT</span></span></a>
+        <p>The centralized command center for offensive security, OSINT and forensics tooling. Built by operators, for operators.</p>
+        <div class="foot-status"><span class="pulse"></span> ALL SYSTEMS OPERATIONAL — INDEX SYNCED</div>
+      </div>
+      <div class="foot-col"><h4>Directory</h4><a href="index.html#directory">All Tools</a><a href="index.html#categories">Categories</a><a href="index.html#directory">Live Search</a><a href="premium.html">Premium Access</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="about.html">About</a><a href="premium.html">Pricing</a><a href="about.html#founder">Founder</a><a href="mailto:support@acrovault.com">Report Dead Link</a></div>
+      <div class="foot-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.xml">Sitemap</a></div>
+    </div>
+    <div class="foot-huge" aria-hidden="true">ACROVAULT</div>
+    <div class="foot-bottom">
+      <span>© 2026 ACROVAULT — BUILT FOR SECURITY PROFESSIONALS</span>
+      <span>NODE: IN-DEL-01 · BUILD 4.0.2</span>
+      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">▲ TOP</a>
+    </div>
+  </div>
+</footer>
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const toolId = urlParams.get('id');
-        const tools = window.ACROVAULT_TOOLS || [];
-        
-        const tool = tools.find(t => t.id === toolId);
-        
-        if (tool) {
-            document.title = `${tool.name || 'Unnamed Tool'} — AcroVault`;
-            document.getElementById('toolName').textContent = tool.name || 'Unnamed Tool';
-            document.getElementById('vpTargetUrl').textContent = `Target: ${tool.url}`;
-            
-            const icon = CAT_ICONS[tool.category] || 'box';
-            document.getElementById('toolCategory').innerHTML = `<i data-lucide="${icon}" style="width:14px;height:14px;"></i> <span>${tool.categoryName}</span>`;
-            document.getElementById('toolIconLarge').setAttribute('data-lucide', icon);
-            
-            document.getElementById('toolUrlBtn').href = tool.url;
-            
-            const urlDisplay = document.getElementById('toolUrlDisplay');
-            let shortUrl = tool.url;
-            try { shortUrl = new URL(tool.url).hostname.replace('www.',''); } catch(e) {}
-            urlDisplay.innerHTML = `<a href="${tool.url}" target="_blank" rel="noopener"><i data-lucide="link" style="width:14px;height:14px;"></i> ${shortUrl}</a>`;
-            
-            // Build SaaS Description
-            let descHtml = `<p style="font-size: 1.25rem; color: #fff; margin-bottom: 40px; font-weight: 500;">${tool.desc || ''}</p>`;
-            
-            descHtml += `<h2>Overview</h2><p>This resource has been curated as part of the ${tool.categoryName} category. It provides essential functionality for security professionals and researchers. Please note that this is an external resource and operates independently of the AcroVault platform.</p>`;
-            
-            if (tool.nativePath) {
-                document.getElementById('toolUrlBtn').href = tool.nativePath;
-                document.getElementById('toolUrlBtn').innerHTML = `Execute Locally <i data-lucide="play-circle" style="width:18px;height:18px;"></i>`;
-                descHtml += `<h2>Execution Environment</h2><p><strong>Strict Local Sandboxing:</strong> This tool executes securely within the local browser sandbox. No telemetry, payload data, or queries are transmitted to AcroVault servers during its operation. Zero server-side footprint.</p>`;
-            }
+<script src="tools-data.js"></script>
+<script src="av.js"></script>
+<script>
+(function () {
+  var T = function (s) { return (s || '').trim(); };
+  var TOOLS = (window.ACROVAULT_TOOLS || []).map(function (t) {
+    return { id: T(t.id), name: T(t.name), desc: T(t.desc), url: T(t.url), category: T(t.category),
+             categoryName: T(t.categoryName), icon: T(t.icon), isPremium: !!t.isPremium, tags: (t.tags || []).map(T) };
+  });
+  var id = (new URLSearchParams(location.search).get('id') || '').trim();
+  var t = TOOLS.find(function (x) { return x.id === id; });
+  var hero = document.getElementById('toolHero'), body = document.getElementById('toolBody');
 
-            document.getElementById('toolDesc').innerHTML = descHtml;
+  if (!t) {
+    document.title = 'NOT FOUND — AcroVault';
+    hero.innerHTML = '';
+    body.innerHTML = '<div class="notfound rv in"><h2>▸ SIGNAL LOST</h2><p>The requested tool does not exist in the index.</p>' +
+      '<a href="index.html" class="btn btn-solid">Return to Directory <span class="ar">→</span></a></div>';
+    return;
+  }
 
-            let tagsHtml = '';
-            if (tool.tags && tool.tags.length > 0) {
-                tagsHtml = tool.tags.map(t => `<span class="tag">${t}</span>`).join('');
-            } else {
-                tagsHtml = `<span class="tag">${tool.category}</span><span class="tag">INTEL</span>`;
-            }
-            document.getElementById('toolTags').innerHTML = tagsHtml;
-            
-            // No visual latency needed
-        } else {
-            document.getElementById('toolName').textContent = "404 Not Found";
-            document.getElementById('toolDesc').innerHTML = "<p>The requested intelligence module could not be located in the vault. Please verify the transmission ID.</p>";
-            document.getElementById('toolUrlBtn').style.display = 'none';
-        }
+  var host = '—';
+  try { host = new URL(t.url).hostname; } catch (e) {}
+  document.title = t.name + ' — AcroVault';
+  document.getElementById('crumbCat').textContent = t.categoryName.toUpperCase();
+  document.getElementById('crumbTool').textContent = t.name.toUpperCase();
 
-        lucide.createIcons();
-    </script>
+  hero.innerHTML =
+    '<div class="fade-up"><span class="chip ' + (t.isPremium ? 'chip-gold' : 'chip-acid') + '">' +
+    (t.isPremium ? '◆ PREMIUM CLEARANCE' : '✓ FREE ACCESS') + '</span></div>' +
+    '<h1 class="tool-title fade-up" style="animation-delay:.12s">' + t.name + '<span class="acid">.</span></h1>' +
+    '<div class="tag-row fade-up" style="animation-delay:.24s">' +
+    t.tags.map(function (tag) { return '<span class="chip">#' + tag + '</span>'; }).join('') + '</div>';
+
+  body.innerHTML =
+    '<div class="tool-head">' +
+      '<div class="rv in">' +
+        '<p class="tool-desc-lg">' + t.desc + '</p>' +
+        '<div class="gateway"><span class="gi">⚠</span><div><div class="gt">External Resource Gateway</div>' +
+        '<p>You are leaving the AcroVault client-side environment. Verify the destination before submitting credentials or executing binaries. AcroVault does not control third-party endpoints.</p></div></div>' +
+        '<a class="btn btn-solid btn-lg" href="' + t.url + '" target="_blank" rel="noopener noreferrer">Launch Platform <span class="ar">↗</span></a>' +
+        '<a class="btn btn-ghost btn-lg" style="margin-left:12px" href="index.html?cat=' + encodeURIComponent(t.category) + '">← Back to Directory</a>' +
+      '</div>' +
+      '<div class="rv in" style="transition-delay:.15s">' +
+        '<div class="spec">' +
+          '<div class="spec-row"><span class="spec-k">Host</span><span class="spec-v">' + host + '</span></div>' +
+          '<div class="spec-row"><span class="spec-k">Status</span><span class="spec-v"><span class="pulse"></span> OPERATIONAL</span></div>' +
+          '<div class="spec-row"><span class="spec-k">Source URL</span><span class="spec-v"><a href="' + t.url + '" target="_blank" rel="noopener noreferrer">' + host + ' ↗</a></span></div>' +
+          '<div class="spec-row"><span class="spec-k">Category</span><span class="spec-v">' + t.categoryName + '</span></div>' +
+          '<div class="spec-row"><span class="spec-k">Tool ID</span><span class="spec-v acid">' + t.id + '</span></div>' +
+          '<div class="spec-row"><span class="spec-k">Access</span><span class="spec-v">' + (t.isPremium ? 'PREMIUM' : 'FREE') + '</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  /* Related tools */
+  var rel = TOOLS.filter(function (x) { return x.category === t.category && x.id !== t.id; }).slice(0, 4);
+  if (rel.length) {
+    document.getElementById('relatedWrap').style.display = 'block';
+    var g = document.getElementById('relatedGrid');
+    rel.forEach(function (r, i) {
+      var el = document.createElement('article');
+      el.className = 'tool-card rv';
+      el.style.transitionDelay = (i * 70) + 'ms';
+      el.innerHTML =
+        '<span class="tool-top"><span class="icon-box">' + r.icon + '</span>' +
+        (r.isPremium ? '<span class="prem-badge">PREMIUM</span>' : '<span></span>') + '</span>' +
+        '<h3 class="tool-name">' + r.name + '</h3><p class="tool-desc">' + r.desc + '</p>' +
+        '<span class="tool-foot"><span>' + t.categoryName + '</span><span class="tool-open">OPEN ↗</span></span>';
+      el.addEventListener('click', function () { location.href = 'tool.html?id=' + encodeURIComponent(r.id); });
+      g.appendChild(el);
+    });
+    requestAnimationFrame(function () {
+      setTimeout(function () { g.querySelectorAll('.rv').forEach(function (x) { x.classList.add('in'); }); }, 100);
+    });
+  }
+})();
+</script>
 </body>
 </html>
