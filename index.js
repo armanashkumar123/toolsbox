@@ -1,161 +1,240 @@
-// AcroVault JavaScript Portal Engine - Enhanced Multi-Page SPA with Full 148+ Tools Dataset
+// AcroVault JavaScript Portal Engine
 
-// 1. Icon Assets Mapping for 34 Categories
-const CAT_ASSET_ICONS = {
-  'crime-evidence': 'assets/security_document.png',
-  'osint': 'assets/fingerprint.png',
-  'roadmap': 'assets/folder.png',
-  'hardware-hacking': 'assets/cube.png',
-  'ai-research': 'assets/ai_badge.png',
-  'vapt': 'assets/acrovault_shield.png',
-  'ai-hacking': 'assets/holographic_globe.png',
-  'account-tools': 'assets/security_ui_icons.png',
-  'ai-attack': 'assets/cloud_security.png',
-  'malware-analysis': 'assets/security_status.png',
-  'url-scanning': 'assets/magnifier.png',
-  'social-engineering': 'assets/hacker.png',
-  'exploit-directory': 'assets/database.png',
-  'malware-courses': 'assets/laptop.png',
-  'digital-forensics': 'assets/security_document.png',
-  'port-scanners': 'assets/network_map.png',
-  'detection-tools': 'assets/network_nodes.png',
-  'api-gateway': 'assets/server_stack.png',
-  'ethical-hacking': 'assets/laptop.png',
-  'security-learning': 'assets/cube.png',
-  'ai-vuln-scanner': 'assets/ai_badge.png',
-  'pentest-reports': 'assets/security_document.png',
-  'jailbreak-ai': 'assets/ai_badge.png',
-  'api-key-scanning': 'assets/server_stack.png',
-  'photo-forensics': 'assets/magnifier.png',
-  'person-osint': 'assets/fingerprint.png',
-  'dark-web-search': 'assets/hacker.png',
-  'red-team': 'assets/acrovault_shield.png',
-  'geo-osint': 'assets/holographic_globe.png',
-  'ai-infra-attack': 'assets/cloud_security.png',
-  'dark-web-osint': 'assets/hacker.png',
-  'esp32-offensive': 'assets/cube.png',
-  'image-video-osint': 'assets/magnifier.png',
-  'breach-lookup': 'assets/database.png'
-};
-
-// 2. Core State
+// 1. Core State
 const state = {
-  theme: localStorage.getItem('theme') || 'dark',
+  theme: localStorage.getItem('theme') || 'light',
   currentPage: 'home',
-  currentToolId: null,
   heroMode: 'vault', // 'vault' or 'assistant'
   billingCycle: 'monthly', // 'monthly' or 'yearly'
   avaChatOpen: false,
   favorites: JSON.parse(localStorage.getItem('favorites')) || [],
   adminStats: {
-    totalTools: 148,
+    totalTools: 523,
     activeAdmins: 28,
     totalUsers: 10247,
     premiumUsers: 1234
   },
   recentActivity: [
-    { type: 'green', text: 'New tool indexed: AcroStrike v2.0', time: '2 min ago' },
-    { type: 'purple', text: 'Category updated: Advanced OSINT', time: '15 min ago' },
-    { type: 'green', text: 'Verified feed: Bellingcat Investigation Engine', time: '1 hour ago' },
-    { type: 'yellow', text: 'Premium subscription registered', time: '2 hours ago' },
-    { type: 'purple', text: 'Database audit: Volatility & Autopsy updated', time: '3 hours ago' }
+    { type: 'green', text: 'New tool added: Subfinder', time: '2 min ago' },
+    { type: 'purple', text: 'Category updated: OSINT', time: '15 min ago' },
+    { type: 'green', text: 'New user registered', time: '1 hour ago' },
+    { type: 'yellow', text: 'Premium subscription purchased', time: '2 hours ago' },
+    { type: 'purple', text: 'Tool updated: Nmap', time: '3 hours ago' }
   ],
-  tools: []
+  tools: [
+    {
+      id: 'nmap',
+      name: 'Nmap',
+      subtitle: 'Network Scanner',
+      description: 'Nmap (Network Mapper) is a free and open-source network scanner used for network discovery and security auditing. It works by sending packets to targets and analyzing the responses.',
+      category: 'Network',
+      type: 'Scanner',
+      platform: 'Web-based',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Jan 2024',
+      icon: 'assets/network_map.png',
+      tags: ['network', 'scanner', 'free'],
+      features: [
+        'Network discovery and host detection',
+        'Port scanning and service detection',
+        'OS fingerprinting and version detection',
+        'Scriptable interaction with Nmap Scripting Engine',
+        'Multiple output formats',
+        'Active development and updates'
+      ]
+    },
+    {
+      id: 'burpsuite',
+      name: 'Burp Suite',
+      subtitle: 'Web Security Testing',
+      description: 'Burp Suite is an integrated platform for performing security testing of web applications, featuring advanced vulnerability assessment capabilities.',
+      category: 'Web Security',
+      type: 'Proxy',
+      platform: 'Desktop',
+      pricing: 'Premium',
+      status: 'Active',
+      added: 'Mar 2024',
+      icon: 'assets/cloud_security.png',
+      tags: ['web', 'proxy', 'premium'],
+      features: [
+        'Intercepting Proxy for HTTP/S traffic',
+        'Web vulnerability scanner',
+        'Targeted testing automation',
+        'Extender support for custom plug-ins'
+      ]
+    },
+    {
+      id: 'metasploit',
+      name: 'Metasploit',
+      subtitle: 'Penetration Testing',
+      description: 'Metasploit is a penetration testing framework that helps security teams verify vulnerabilities and manage security assessments.',
+      category: 'Vulnerability',
+      type: 'Framework',
+      platform: 'Cross-platform',
+      pricing: 'Premium',
+      status: 'Active',
+      added: 'Feb 2024',
+      icon: 'assets/server_stack.png',
+      tags: ['exploit', 'framework', 'premium'],
+      features: [
+        'Over 2,000 exploit payloads',
+        'Vulnerability integration import',
+        'Post-exploitation module execution',
+        'Automated credential testing'
+      ]
+    },
+    {
+      id: 'wireshark',
+      name: 'Wireshark',
+      subtitle: 'Network Analyzer',
+      description: 'Wireshark is the world\'s foremost packet analyzer, letting you see what\'s happening on your network at a microscopic level.',
+      category: 'Network',
+      type: 'Analyzer',
+      platform: 'Desktop',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Dec 2023',
+      icon: 'assets/network_nodes.png',
+      tags: ['network', 'analyzer', 'free'],
+      features: [
+        'Deep inspection of hundreds of protocols',
+        'Live capture and offline analysis',
+        'Powerful display filters',
+        'Rich VoIP analysis'
+      ]
+    },
+    {
+      id: 'johntheripper',
+      name: 'John the Ripper',
+      subtitle: 'Password Cracking',
+      description: 'John the Ripper is an open-source password security auditing and password recovery tool available for many operating systems.',
+      category: 'Forensics',
+      type: 'Cracker',
+      platform: 'Command Line',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Nov 2023',
+      icon: 'assets/hacker.png',
+      tags: ['password', 'cracking', 'free'],
+      features: [
+        'Dictionary-based password attacks',
+        'Brute-force crack customization',
+        'Hashes auto-detection algorithms',
+        'Multi-core processor utilization'
+      ]
+    },
+    {
+      id: 'sqlmap',
+      name: 'SQLMap',
+      subtitle: 'SQL Injection Tool',
+      description: 'SQLMap is an open-source penetration testing tool that automates the process of detecting and exploiting SQL injection flaws and taking over database servers.',
+      category: 'Web Security',
+      type: 'Injection',
+      platform: 'Command Line',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Sep 2023',
+      icon: 'assets/database.png',
+      tags: ['sql', 'injection', 'free'],
+      features: [
+        'Full support for database fingerprinting',
+        'Direct connection to databases without SQL injection',
+        'Exploits boolean-based, error-based, and stack queries',
+        'Database file dumping capabilities'
+      ]
+    },
+    {
+      id: 'zenmap',
+      name: 'Zenmap',
+      subtitle: 'Nmap GUI client',
+      description: 'Zenmap is the official Nmap Security Scanner GUI. It is a multi-platform free application designed to make Nmap easy for beginners.',
+      category: 'Network',
+      type: 'GUI Client',
+      platform: 'Desktop',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Jan 2024',
+      icon: 'assets/network_map.png',
+      tags: ['network', 'scanner', 'free'],
+      features: [
+        'Visual target network topology mapping',
+        'Scan result save and compare tool',
+        'Searchable scan database cache'
+      ]
+    },
+    {
+      id: 'masscan',
+      name: 'Masscan',
+      subtitle: 'Fast Port Scanner',
+      description: 'Masscan is an internet-scale port scanner. It can scan the entire internet in under 6 minutes, transmitting 10 million packets per second.',
+      category: 'Network',
+      type: 'Scanner',
+      platform: 'Desktop',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'May 2024',
+      icon: 'assets/network_nodes.png',
+      tags: ['network', 'scanner', 'free'],
+      features: [
+        'Ultra-fast packet transmission engine',
+        'Asynchronous port scanning mode',
+        'Supports wide IP ranges and scanning'
+      ]
+    },
+    {
+      id: 'angryip',
+      name: 'Angry IP Scanner',
+      subtitle: 'IP Scanner',
+      description: 'Angry IP Scanner is a fast and friendly network scanner for Windows, Linux, and Mac. It is very extensible, allowing many metrics to be retrieved.',
+      category: 'Network',
+      type: 'Scanner',
+      platform: 'Desktop',
+      pricing: 'Free',
+      status: 'Active',
+      added: 'Feb 2024',
+      icon: 'assets/network_map.png',
+      tags: ['network', 'scanner', 'free'],
+      features: [
+        'Scans local and external IP ranges',
+        'Resolves hostnames and MAC addresses',
+        'Extensible plugin interface'
+      ]
+    }
+  ]
 };
 
-// Load full dataset from window.ACROVAULT_TOOLS if present
-function initToolsData() {
-  if (typeof window !== 'undefined' && window.ACROVAULT_TOOLS && window.ACROVAULT_TOOLS.length > 0) {
-    state.tools = window.ACROVAULT_TOOLS.map(t => {
-      const catKey = (t.category || '').toLowerCase().trim();
-      const iconPath = CAT_ASSET_ICONS[catKey] || 'assets/vault.png';
-      const cleanId = (t.id || t.name || '').toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-      
-      return {
-        id: cleanId,
-        name: t.name || 'Unnamed Tool',
-        subtitle: t.categoryName || t.category || 'Cybersecurity Resource',
-        description: t.desc || 'Comprehensive cybersecurity resource and utility for security research and operations.',
-        category: t.categoryName || t.category || 'General Security',
-        categoryId: t.category || 'general',
-        type: (t.tags && t.tags[0]) ? t.tags[0].toUpperCase() : 'SCANNER',
-        platform: 'Web / Multiplatform',
-        pricing: t.isPremium ? 'Premium' : 'Free',
-        status: 'Active',
-        added: '2026',
-        icon: iconPath,
-        url: (t.url || '').trim(),
-        tags: Array.isArray(t.tags) && t.tags.length ? t.tags : [t.category || 'security'],
-        features: [
-          `Verified direct resource URL: ${t.url || 'Online repository'}`,
-          `Domain: ${t.categoryName || t.category}`,
-          `Instant-search index with zero bloat`,
-          `Curated for penetration testers and researchers`
-        ]
-      };
-    });
-  } else {
-    // Fallback baseline
-    state.tools = [
-      {
-        id: 'nmap',
-        name: 'Nmap',
-        subtitle: 'Network Scanner',
-        description: 'Nmap (Network Mapper) is a free and open-source network scanner used for network discovery and security auditing.',
-        category: 'Port Scanners',
-        categoryId: 'port-scanners',
-        type: 'SCANNER',
-        platform: 'Web / CLI',
-        pricing: 'Free',
-        status: 'Active',
-        added: '2026',
-        icon: 'assets/network_map.png',
-        url: 'https://nmap.org',
-        tags: ['network', 'scanner', 'free'],
-        features: ['Network discovery and host detection', 'Port scanning and service detection', 'OS fingerprinting']
-      }
-    ];
-  }
-  state.adminStats.totalTools = state.tools.length;
-}
-
-// 3. Chatbot Intelligent Responses
+// 2. Chatbot Intelligent Responses
 const getAvaResponse = (userText) => {
   const query = userText.toLowerCase().trim();
   
   if (query.includes('nmap') || query.includes('port scan') || query.includes('scanner')) {
-    return `Nmap and RustScan are our top network auditing and port scanner tools. On the detail view, you can check key features, metadata attributes, and launch the platform directly!`;
-  }
-  if (query.includes('osint') || query.includes('recon') || query.includes('intelligence') || query.includes('bellingcat')) {
-    return `We catalog 40+ OSINT tools including Bellingcat, SmartImage, Tookie-OSINT, Skopenow, and Netryx Astra. Head over to the Categories section to filter all OSINT resources.`;
-  }
-  if (query.includes('forensics') || query.includes('memory') || query.includes('autopsy') || query.includes('volatility')) {
-    return `For Digital Forensics and Incident Response, we catalog Autopsy, Volatility Framework, SIFT Workstation, CAINE Live, and FTK Imager.`;
-  }
-  if (query.includes('vapt') || query.includes('penetration') || query.includes('exploit') || query.includes('metasploit')) {
-    return `AcroVault features VAPT tools, Exploitarium, CVE2PoC, and AcroStrike v2.0 for 20-phase vulnerability assessment and OWASP Top 10 mapping.`;
+    return `Nmap is an outstanding network auditing and port scanner tool. On its detail view, you can check its key features, metadata attributes, and related tools. You can launch Nmap platform or add it to favorites!`;
   }
   if (query.includes('premium') || query.includes('price') || query.includes('pricing') || query.includes('cost') || query.includes('plan')) {
     return `AcroVault provides three pricing tiers: 
-    1. **Basic** ($9/mo) with full search access.
-    2. **Pro** ($19/mo) with priority feeds, API access, and private intelligence.
-    3. **Enterprise** ($49/mo) for red teams and organizations.
-    Check the Premium tab for full plan details!`;
+    1. **Basic** ($9/mo) with 200+ tools.
+    2. **Pro** ($19/mo) which is our most popular plan (500+ tools, API access).
+    3. **Enterprise** ($49/mo) for organizations.
+    All plans include a 7-day free trial. You can check the Premium tab to subscribe!`;
   }
-  if (query.includes('admin') || query.includes('dashboard') || query.includes('chart') || query.includes('vault')) {
-    return `To access the administrative console, click the 'Login / Admin' button in the upper right. You can inspect live metric charts and link directly to the restricted Firebase AV-CMD panel!`;
+  if (query.includes('osint') || query.includes('recon') || query.includes('intelligence')) {
+    return `We currently catalog 75+ OSINT tools. Popular recon categories include web scanner scrapers, Subfinder integrations, and target credentials audit engines. Go to the categories section to filter them.`;
   }
   if (query.includes('about') || query.includes('who are you') || query.includes('mission')) {
-    return `AcroVault is a premium security and OSINT tools database dashboard designed for penetration testers, security architects, and researchers. Our mission is to democratize security utilities globally with zero fluff.`;
+    return `AcroVault is a premium security and OSINT tools database dashboard designed for penetration testers, security architects, and hobbyists. Our mission is to democratize security utilities globally.`;
+  }
+  if (query.includes('admin') || query.includes('dashboard') || query.includes('chart')) {
+    return `To explore the administrator dashboard, click the 'Login / Admin' button in the upper right. You'll see real-time database metric charts, recent audit activities, and have the ability to dynamically add new tools!`;
   }
   if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
-    return `Hello! I'm AVA, your cybersecurity AI assistant. Ask me about tools like Nmap, OSINT techniques, pricing tiers, or how to access our admin console!`;
+    return `Hello! I'm AVA, your cyber security AI agent. Ask me about tools like Nmap, pricing tiers, or how to access our admin console!`;
   }
   
-  return `That's a great question about "${userText}". As your AI security assistant, I recommend browsing our repository of ${state.tools.length}+ tools or filtering by category to discover verified tools for this workflow.`;
+  return `That's an interesting question about "${userText}". As your AI assistant, I recommend checking our tools repository, filtering categories, or viewing the Nmap audits page to see these concepts in action.`;
 };
 
-// 4. UI Template Generators
+// 3. UI Template Generators
 const templates = {
   home: () => {
     const heroImageHtml = state.heroMode === 'vault' 
@@ -172,7 +251,7 @@ const templates = {
             <div class="hero-assistant-suggestions">
               <button class="suggestion-btn" data-query="Find a tool for network scanning">Find a tool for network scanning <span>&rarr;</span></button>
               <button class="suggestion-btn" data-query="Show OSINT tools">Show OSINT tools <span>&rarr;</span></button>
-              <button class="suggestion-btn" data-query="What tools are for digital forensics?">Show Forensics tools <span>&rarr;</span></button>
+              <button class="suggestion-btn" data-query="What's new today?">What's new today? <span>&rarr;</span></button>
             </div>
             <div class="hero-assistant-input-container">
               <input type="text" placeholder="Ask me anything..." id="hero-ava-input" class="hero-assistant-input">
@@ -202,7 +281,7 @@ const templates = {
           </div>
           <h1 class="hero-title">AcroVault</h1>
           <h2 class="hero-subtitle">Your Complete Collection of Security & OSINT Tools</h2>
-          <p class="hero-desc">Access ${state.tools.length}+ verified security tools, vulnerability scanners, OSINT resources, and cybersecurity utilities in one powerful glassmorphism platform.</p>
+          <p class="hero-desc">Access 500+ premium security tools, vulnerability scanners, OSINT resources, and cybersecurity utilities in one powerful platform.</p>
           <div class="hero-actions-row">
             <button class="primary-btn" id="hero-browse-btn">Browse All Tools</button>
             <button class="outlined-btn" id="hero-categories-btn">View Categories</button>
@@ -221,11 +300,11 @@ const templates = {
       <!-- Stats counter -->
       <div class="stats-banner">
         <div class="stat-item">
-          <div class="stat-number">${state.tools.length}+</div>
-          <div class="stat-label">Verified Tools</div>
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Premium Tools</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">34</div>
+          <div class="stat-number">25+</div>
           <div class="stat-label">Categories</div>
         </div>
         <div class="stat-item">
@@ -245,51 +324,51 @@ const templates = {
             <h2>Popular Categories</h2>
             <p>Explore tools grouped by security discipline and workflows</p>
           </div>
-          <a href="#" class="view-all-link" id="cat-view-all">View All 34 Categories &rarr;</a>
+          <a href="#" class="view-all-link" id="cat-view-all">View All Categories &rarr;</a>
         </div>
         
         <div class="categories-grid">
-          <div class="category-card" data-cat="Advanced OSINT Tools">
+          <div class="category-card" data-cat="Reconnaissance">
+            <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
+              <img src="assets/magnifier.png" alt="Recon" style="width:32px;height:32px;object-fit:contain;">
+            </div>
+            <h3>Reconnaissance</h3>
+            <span class="category-count">125+ tools</span>
+          </div>
+          <div class="category-card" data-cat="Vulnerability">
+            <div class="category-icon-wrapper" style="background-color: rgba(239, 68, 68, 0.08);">
+              <img src="assets/security_status.png" alt="Vulnerability" style="width:32px;height:32px;object-fit:contain;">
+            </div>
+            <h3>Vulnerability</h3>
+            <span class="category-count">85+ tools</span>
+          </div>
+          <div class="category-card" data-cat="Web Security">
+            <div class="category-icon-wrapper" style="background-color: rgba(99, 102, 241, 0.08);">
+              <img src="assets/cloud_security.png" alt="Web Security" style="width:32px;height:32px;object-fit:contain;">
+            </div>
+            <h3>Web Security</h3>
+            <span class="category-count">95+ tools</span>
+          </div>
+          <div class="category-card" data-cat="Forensics">
+            <div class="category-icon-wrapper" style="background-color: rgba(168, 85, 247, 0.08);">
+              <img src="assets/security_document.png" alt="Forensics" style="width:32px;height:32px;object-fit:contain;">
+            </div>
+            <h3>Forensics</h3>
+            <span class="category-count">45+ tools</span>
+          </div>
+          <div class="category-card" data-cat="OSINT">
             <div class="category-icon-wrapper" style="background-color: rgba(16, 185, 129, 0.08);">
               <img src="assets/fingerprint.png" alt="OSINT" style="width:32px;height:32px;object-fit:contain;">
             </div>
-            <h3>Advanced OSINT</h3>
-            <span class="category-count">Recon & Intelligence</span>
+            <h3>OSINT</h3>
+            <span class="category-count">75+ tools</span>
           </div>
-          <div class="category-card" data-cat="Crime & Evidence Databases">
-            <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
-              <img src="assets/security_document.png" alt="Crime & Evidence" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Crime & Evidence</h3>
-            <span class="category-count">Databases & Registries</span>
-          </div>
-          <div class="category-card" data-cat="Digital Forensics">
-            <div class="category-icon-wrapper" style="background-color: rgba(168, 85, 247, 0.08);">
-              <img src="assets/security_status.png" alt="Forensics" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Digital Forensics</h3>
-            <span class="category-count">DFIR & Memory Analysis</span>
-          </div>
-          <div class="category-card" data-cat="Malware Analysis">
-            <div class="category-icon-wrapper" style="background-color: rgba(239, 68, 68, 0.08);">
-              <img src="assets/cloud_security.png" alt="Malware" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Malware Analysis</h3>
-            <span class="category-count">Sandboxes & Reverse Eng</span>
-          </div>
-          <div class="category-card" data-cat="VAPT Tools">
-            <div class="category-icon-wrapper" style="background-color: rgba(99, 102, 241, 0.08);">
-              <img src="assets/acrovault_shield.png" alt="VAPT" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>VAPT & Red Team</h3>
-            <span class="category-count">Offensive Security</span>
-          </div>
-          <div class="category-card" data-cat="Breach & Leak Lookup">
+          <div class="category-card" data-cat="Network">
             <div class="category-icon-wrapper" style="background-color: rgba(6, 182, 212, 0.08);">
-              <img src="assets/database.png" alt="Breach" style="width:32px;height:32px;object-fit:contain;">
+              <img src="assets/network_map.png" alt="Network" style="width:32px;height:32px;object-fit:contain;">
             </div>
-            <h3>Breach & Leaks</h3>
-            <span class="category-count">Credential Archives</span>
+            <h3>Network</h3>
+            <span class="category-count">60+ tools</span>
           </div>
         </div>
       </section>
@@ -298,10 +377,10 @@ const templates = {
       <section class="tools-section" id="tools-showcase-section">
         <div class="section-header">
           <div class="section-title-wrapper">
-            <h2>Security Tools Showcase</h2>
+            <h2>Featured Tools</h2>
             <p>Access ready-to-run penetration testing and metadata mining engines</p>
           </div>
-          <a href="#" class="view-all-link" id="tools-view-all">Scroll to Showcase &rarr;</a>
+          <a href="#" class="view-all-link" id="tools-view-all">View All Tools &rarr;</a>
         </div>
         
         <div class="tools-filters">
@@ -317,37 +396,6 @@ const templates = {
           <!-- Rendered dynamically -->
         </div>
       </section>
-    `;
-  },
-
-  categories: () => {
-    const cats = (typeof window !== 'undefined' && window.ACROVAULT_CATEGORIES) ? window.ACROVAULT_CATEGORIES : [];
-    
-    return `
-      <div class="categories-wrapper" style="max-width:1200px; margin:2rem auto; padding:0 1.5rem;">
-        <div class="section-header" style="text-align:center; margin-bottom:3rem;">
-          <div class="section-title-wrapper" style="margin:0 auto;">
-            <h1 style="font-size:2.5rem; font-weight:800; margin-bottom:0.5rem;">All Security Categories</h1>
-            <p style="color:var(--text-muted); font-size:1.1rem;">Browse 34 specialized cybersecurity disciplines, OSINT databases, and tools repositories</p>
-          </div>
-        </div>
-
-        <div class="categories-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.5rem;">
-          ${cats.map(c => {
-            const iconPath = CAT_ASSET_ICONS[c.id] || 'assets/vault.png';
-            return `
-              <div class="category-card" data-cat="${c.name}" style="cursor:pointer; display:flex; flex-direction:column; align-items:flex-start; text-align:left; padding:1.5rem;">
-                <div class="category-icon-wrapper" style="background-color: rgba(99, 102, 241, 0.08); margin-bottom:1rem;">
-                  <img src="${iconPath}" alt="${c.name}" style="width:32px;height:32px;object-fit:contain;">
-                </div>
-                <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:0.35rem;">${c.name}</h3>
-                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; margin-bottom:0.75rem;">${c.desc || 'Specialized cybersecurity utility category.'}</p>
-                <span class="category-count" style="margin-top:auto;">${c.count || 1}+ tools &rarr;</span>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
     `;
   },
   
@@ -366,7 +414,7 @@ const templates = {
       <div class="tool-details-wrapper">
         <div class="breadcrumbs">
           <a href="#" data-page="home">Home</a> &gt; 
-          <a href="#" data-page="categories">Categories</a> &gt; 
+          <a href="#" data-page="home">Tools</a> &gt; 
           <span>${tool.name}</span>
         </div>
         
@@ -398,7 +446,6 @@ const templates = {
             </div>
             
             <div class="tool-section-content">
-              <h2>Overview & Capabilities</h2>
               <p style="font-size:1.1rem; color:var(--text-secondary); line-height:1.7;">${tool.description}</p>
             </div>
             
@@ -410,14 +457,14 @@ const templates = {
             </div>
             
             <div class="tool-section-content">
-              <h2>Tags & Index Keys</h2>
+              <h2>Tags</h2>
               <div class="tags-container">
                 ${tool.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
               </div>
             </div>
 
             <div class="tool-section-content">
-              <h2>Related Tools in ${tool.category}</h2>
+              <h2>Related Tools</h2>
               <div class="related-tools-grid">
                 ${related.length > 0 ? related.map(r => `
                   <div class="related-tool-card" data-tool="${r.id}">
@@ -440,8 +487,8 @@ const templates = {
                 <span class="meta-value">${tool.category}</span>
               </div>
               <div class="meta-row">
-                <span class="meta-label">Direct Target</span>
-                <span class="meta-value" style="word-break:break-all;"><a href="${tool.url}" target="_blank" rel="noopener noreferrer" style="color:var(--primary-color);">${tool.url ? new URL(tool.url).hostname : 'Official Link'}</a></span>
+                <span class="meta-label">Type</span>
+                <span class="meta-value">${tool.type}</span>
               </div>
               <div class="meta-row">
                 <span class="meta-label">Platform</span>
@@ -456,7 +503,7 @@ const templates = {
                 <span class="meta-value" style="color:var(--success-color)">${tool.status}</span>
               </div>
               <div class="meta-row">
-                <span class="meta-label">Audit Verified</span>
+                <span class="meta-label">Added</span>
                 <span class="meta-value">${tool.added}</span>
               </div>
             </div>
@@ -471,8 +518,8 @@ const templates = {
               </div>
               <p class="tool-ava-desc">I can help you understand tool syntax parameters, command usages, or find custom script files.</p>
               <div class="tool-ava-actions">
-                <button class="tool-ava-btn" data-query="Explain how to use ${tool.name}">Explain ${tool.name} usage</button>
-                <button class="tool-ava-btn" data-query="What is the pricing model for ${tool.name}?">Check license terms</button>
+                <button class="tool-ava-btn" data-query="Explain how to run basic scan with ${tool.name}">Explain basic scan structure</button>
+                <button class="tool-ava-btn" data-query="What is the pricing model for ${tool.name}?">Check license parameters</button>
               </div>
             </div>
           </div>
@@ -494,17 +541,28 @@ const templates = {
             <h4>Tools Management</h4>
             <ul class="admin-menu-list">
               <li class="admin-menu-item active"><a href="#" id="admin-dash-menu"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg> Dashboard</a></li>
-              <li class="admin-menu-item"><a href="admin-vault.html"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Firebase 2FA Terminal &rarr;</a></li>
               <li class="admin-menu-item"><a href="#" id="admin-tools-menu"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> All Tools</a></li>
               <li class="admin-menu-item"><a href="#" id="admin-add-menu"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add New Tool</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Categories</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> Tags</a></li>
             </ul>
           </nav>
 
           <nav class="admin-menu-group">
             <h4>User Management</h4>
             <ul class="admin-menu-list">
-              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> Active Admins</a></li>
-              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg> Premium Members</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Users</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Premium Users</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg> Activity Logs</a></li>
+            </ul>
+          </nav>
+
+          <nav class="admin-menu-group">
+            <h4>System</h4>
+            <ul class="admin-menu-list">
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Analytics</a></li>
+              <li class="admin-menu-item"><a href="#"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Backup</a></li>
             </ul>
           </nav>
         </aside>
@@ -512,24 +570,10 @@ const templates = {
         <main class="admin-main-panel">
           <div class="admin-top-bar">
             <h2>Dashboard Overview</h2>
-            <div style="display:flex; gap:10px;">
-              <a href="admin-vault.html" class="primary-btn" style="text-decoration:none; padding:8px 16px; font-size:0.85rem;">🔒 AV-CMD Terminal</a>
-              <button class="outlined-btn" id="admin-logout-btn">
-                <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                Exit
-              </button>
-            </div>
-          </div>
-
-          <!-- Firebase Notice Banner -->
-          <div class="admin-card" style="margin-bottom:1.5rem; background:linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.15)); border:1px solid var(--primary-color);">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-              <div>
-                <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:0.25rem;">🔒 Restricted AV-CMD Backend</h3>
-                <p style="color:var(--text-muted); font-size:0.85rem;">For full database CRUD, TOTP 2FA configuration, and Firestore tools synchronization, open the dedicated admin vault terminal.</p>
-              </div>
-              <a href="admin-vault.html" class="primary-btn" style="text-decoration:none; font-size:0.85rem;">Open AV-CMD &rarr;</a>
-            </div>
+            <button class="outlined-btn" id="admin-logout-btn">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Logout
+            </button>
           </div>
           
           <!-- Metrics Stats cards -->
@@ -541,7 +585,7 @@ const templates = {
               </div>
               <div class="admin-stat-number" id="stat-tools-count">${state.tools.length}</div>
               <div class="admin-stat-trend up">
-                <span>&uarr; Verified in Catalog</span>
+                <span>&uarr; +12 this week</span>
               </div>
             </div>
             
@@ -552,64 +596,127 @@ const templates = {
               </div>
               <div class="admin-stat-number">${state.adminStats.activeAdmins}</div>
               <div class="admin-stat-trend up">
-                <span>&uarr; 2FA Protected</span>
+                <span>&uarr; +2 this week</span>
               </div>
             </div>
-            
+
             <div class="admin-stat-card">
               <div class="admin-stat-header">
                 <span>Total Users</span>
-                <svg class="admin-stat-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path></svg>
+                <svg class="admin-stat-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
               </div>
-              <div class="admin-stat-number">${state.adminStats.totalUsers.toLocaleString()}</div>
+              <div class="admin-stat-number">10,247</div>
               <div class="admin-stat-trend up">
-                <span>&uarr; +18% this month</span>
+                <span>&uarr; +226 this week</span>
               </div>
             </div>
-            
+
             <div class="admin-stat-card">
               <div class="admin-stat-header">
-                <span>Premium Members</span>
+                <span>Premium Users</span>
                 <svg class="admin-stat-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg>
               </div>
-              <div class="admin-stat-number">${state.adminStats.premiumUsers.toLocaleString()}</div>
+              <div class="admin-stat-number">1,234</div>
               <div class="admin-stat-trend up">
-                <span>&uarr; +4.2% active</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Charts layout -->
-          <div class="admin-charts-grid">
-            <div class="admin-card">
-              <div class="admin-card-header">
-                <h3>System Telemetry & Activity</h3>
-              </div>
-              <div class="chart-container" style="position:relative; height:240px; width:100%;">
-                <canvas id="systemOverviewChart"></canvas>
-              </div>
-            </div>
-
-            <div class="admin-card">
-              <div class="admin-card-header">
-                <h3>Category Distribution</h3>
-              </div>
-              <div class="chart-container" style="position:relative; height:240px; width:100%;">
-                <canvas id="categoryDistChart"></canvas>
+                <span>&uarr; +89 this week</span>
               </div>
             </div>
           </div>
           
-          <!-- Recent Activity & Quick Actions -->
-          <div class="admin-card" style="margin-top:1.5rem;">
+          <!-- Middle Charts section -->
+          <div class="admin-charts-grid">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h3>System Overview</h3>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="systemOverviewChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h3>Recent Activity</h3>
+              </div>
+              <div class="recent-activity-list" id="activity-logs-container">
+                ${state.recentActivity.map(act => `
+                  <div class="activity-item">
+                    <div class="activity-dot ${act.type}"></div>
+                    <div class="activity-content">
+                      <p>${act.text}</p>
+                      <span class="activity-time">${act.time}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom breakdown list -->
+          <div class="admin-bottom-grid">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h3>Tools by Category</h3>
+              </div>
+              <div class="chart-wrapper" style="height:220px;">
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h3>Top Tools</h3>
+              </div>
+              <div class="ranked-list">
+                <div class="rank-item">
+                  <div class="rank-name-group">
+                    <span class="rank-number">1</span>
+                    <span class="rank-name">Nmap</span>
+                  </div>
+                  <span class="rank-value">2.5K uses</span>
+                </div>
+                <div class="rank-item">
+                  <div class="rank-name-group">
+                    <span class="rank-number">2</span>
+                    <span class="rank-name">Burp Suite</span>
+                  </div>
+                  <span class="rank-value">2.1K uses</span>
+                </div>
+                <div class="rank-item">
+                  <div class="rank-name-group">
+                    <span class="rank-number">3</span>
+                    <span class="rank-name">Metasploit</span>
+                  </div>
+                  <span class="rank-value">1.8K uses</span>
+                </div>
+                <div class="rank-item">
+                  <div class="rank-name-group">
+                    <span class="rank-number">4</span>
+                    <span class="rank-name">Wireshark</span>
+                  </div>
+                  <span class="rank-value">1.5K uses</span>
+                </div>
+                <div class="rank-item">
+                  <div class="rank-name-group">
+                    <span class="rank-number">5</span>
+                    <span class="rank-name">SQLMap</span>
+                  </div>
+                  <span class="rank-value">1.2K uses</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick actions card -->
+          <div class="admin-card">
             <div class="admin-card-header">
               <h3>Quick Actions</h3>
             </div>
             <div class="quick-actions-grid">
-              <button class="primary-btn" id="action-add-tool-btn">Add Tool (Mock)</button>
+              <button class="primary-btn" id="action-add-tool-btn">Add New Tool</button>
               <button class="outlined-btn" id="action-add-cat-btn">Add Category</button>
               <button class="outlined-btn" id="action-export-btn">Export Data</button>
-              <a href="admin-vault.html" class="outlined-btn" style="text-decoration:none; text-align:center;">Launch AV-CMD</a>
+              <button class="outlined-btn" id="action-backup-btn">System Backup</button>
             </div>
           </div>
         </main>
@@ -664,7 +771,7 @@ const templates = {
         <!-- About Stats banner -->
         <div class="stats-banner" style="margin-top:0;">
           <div class="stat-item">
-            <div class="stat-number">${state.tools.length}+</div>
+            <div class="stat-number">500+</div>
             <div class="stat-label">Tools Available</div>
           </div>
           <div class="stat-item">
@@ -695,7 +802,7 @@ const templates = {
       <div class="premium-wrapper">
         <div class="premium-header">
           <h1>Premium Plans</h1>
-          <p>Unlock the full potential of AcroVault with our premium intelligence plans</p>
+          <p>Unlock the full potential of AcroVault with our premium plans</p>
         </div>
         
         <div class="billing-switch-container">
@@ -708,14 +815,14 @@ const templates = {
           <div class="pricing-card">
             <div class="pricing-header">
               <h2>Basic</h2>
-              <p class="pricing-desc">Perfect for researchers</p>
+              <p class="pricing-desc">Perfect for beginners</p>
             </div>
             <div class="pricing-price">
               <span class="price-number">${basicPrice}</span>
               <span class="price-period">${periodText}</span>
             </div>
             <ul class="pricing-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Access to all 148+ tools</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Access to 200+ tools</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Basic support</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Regular updates</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Community access</li>
@@ -734,11 +841,11 @@ const templates = {
               <span class="price-period">${periodText}</span>
             </div>
             <ul class="pricing-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Full tools catalog access</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority threat intelligence</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Zero-day exploit archives</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Access to 500+ tools</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority support</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Advanced features</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> API access</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Export data in CSV / JSON</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Export data</li>
             </ul>
             <button class="primary-btn trial-action-btn">Start Free Trial</button>
           </div>
@@ -747,7 +854,7 @@ const templates = {
           <div class="pricing-card">
             <div class="pricing-header">
               <h2>Enterprise</h2>
-              <p class="pricing-desc">For organizations & Red Teams</p>
+              <p class="pricing-desc">For organizations</p>
             </div>
             <div class="pricing-price">
               <span class="price-number">${entPrice}</span>
@@ -787,7 +894,7 @@ const templates = {
         
         <div class="legal-content">
           <h1>Privacy Policy</h1>
-          <p class="legal-updated">Last updated: 2026</p>
+          <p class="legal-updated">Last updated: January 15, 2024</p>
           
           <section id="intro" class="legal-section">
             <h2>1. Introduction</h2>
@@ -862,7 +969,7 @@ const templates = {
         
         <div class="legal-content">
           <h1>Terms of Service</h1>
-          <p class="legal-updated">Last updated: 2026</p>
+          <p class="legal-updated">Last updated: January 15, 2024</p>
           
           <section id="intro" class="legal-section">
             <h2>1. Introduction</h2>
@@ -915,10 +1022,9 @@ const templates = {
   }
 };
 
-// 5. View Router & Renderer
+// 4. View Router & Renderer
 const renderView = (pageName, params = {}) => {
   state.currentPage = pageName;
-  state.currentToolId = params.toolId || null;
   const contentDiv = document.getElementById('app-content');
   
   // Update nav active link
@@ -942,7 +1048,7 @@ const renderView = (pageName, params = {}) => {
   }
 };
 
-// 6. Page Event Binding
+// 5. Page Event Binding
 const bindPageEvents = (pageName) => {
   // Global search input handling
   const globalSearch = document.getElementById('global-search-input');
@@ -952,10 +1058,8 @@ const bindPageEvents = (pageName) => {
       if (state.currentPage !== 'home') {
         renderView('home');
         const homeSearch = document.getElementById('global-search-input');
-        if (homeSearch) {
-          homeSearch.value = q;
-          homeSearch.focus();
-        }
+        homeSearch.value = q;
+        homeSearch.focus();
         filterAndRenderToolsList(q);
       } else {
         filterAndRenderToolsList(q);
@@ -971,8 +1075,7 @@ const bindPageEvents = (pageName) => {
     const browseBtn = document.getElementById('hero-browse-btn');
     if (browseBtn) {
       browseBtn.onclick = () => {
-        const sec = document.getElementById('tools-showcase-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('tools-showcase-section').scrollIntoView({ behavior: 'smooth' });
       };
     }
 
@@ -980,8 +1083,7 @@ const bindPageEvents = (pageName) => {
     const categoriesBtn = document.getElementById('hero-categories-btn');
     if (categoriesBtn) {
       categoriesBtn.onclick = () => {
-        const sec = document.getElementById('popular-categories-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('popular-categories-section').scrollIntoView({ behavior: 'smooth' });
       };
     }
 
@@ -1001,14 +1103,15 @@ const bindPageEvents = (pageName) => {
       
       const triggerHeroMessage = (text) => {
         if (!text) return;
+        // Open the floating widget chat if closed
         openFloatingAvaChat();
         appendChatMessage('user', text);
-        if (heroInput) heroInput.value = '';
+        heroInput.value = '';
         
         setTimeout(() => {
           const response = getAvaResponse(text);
           appendChatMessage('bot', response);
-        }, 600);
+        }, 800);
       };
       
       if (heroSend && heroInput) {
@@ -1034,8 +1137,7 @@ const bindPageEvents = (pageName) => {
         const filterCatSelect = document.getElementById('filter-category');
         if (filterCatSelect) {
           filterCatSelect.value = cat;
-          const sec = document.getElementById('tools-showcase-section');
-          if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('tools-showcase-section').scrollIntoView({ behavior: 'smooth' });
           filterAndRenderToolsList('', cat);
         }
       };
@@ -1046,7 +1148,7 @@ const bindPageEvents = (pageName) => {
     if (viewAllCats) {
       viewAllCats.onclick = (e) => {
         e.preventDefault();
-        renderView('categories');
+        document.getElementById('popular-categories-section').scrollIntoView({ behavior: 'smooth' });
       };
     }
 
@@ -1054,8 +1156,7 @@ const bindPageEvents = (pageName) => {
     if (viewAllTools) {
       viewAllTools.onclick = (e) => {
         e.preventDefault();
-        const sec = document.getElementById('tools-showcase-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('tools-showcase-section').scrollIntoView({ behavior: 'smooth' });
       };
     }
 
@@ -1072,23 +1173,6 @@ const bindPageEvents = (pageName) => {
 
     if (filterCat) filterCat.onchange = applyFilters;
     if (filterType) filterType.onchange = applyFilters;
-
-  } else if (pageName === 'categories') {
-    document.querySelectorAll('.category-card').forEach(card => {
-      card.onclick = () => {
-        const cat = card.getAttribute('data-cat');
-        renderView('home');
-        setTimeout(() => {
-          const filterCatSelect = document.getElementById('filter-category');
-          if (filterCatSelect) {
-            filterCatSelect.value = cat;
-            const sec = document.getElementById('tools-showcase-section');
-            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
-            filterAndRenderToolsList('', cat);
-          }
-        }, 100);
-      };
-    });
 
   } else if (pageName === 'tool') {
     // Back to tools list
@@ -1112,7 +1196,7 @@ const bindPageEvents = (pageName) => {
     const favBtn = document.getElementById('favorite-toggle-btn');
     if (favBtn) {
       favBtn.onclick = () => {
-        const toolId = state.currentToolId || state.tools[0].id;
+        const toolId = paramsToId();
         const index = state.favorites.indexOf(toolId);
         if (index > -1) {
           state.favorites.splice(index, 1);
@@ -1124,16 +1208,11 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Detail page Launch platform button (opens target tool URL)
+    // Detail page Launch platform button
     const launchBtn = document.getElementById('launch-platform-btn');
     if (launchBtn) {
       launchBtn.onclick = () => {
-        const activeTool = state.tools.find(t => t.id === state.currentToolId) || state.tools[0];
-        if (activeTool && activeTool.url) {
-          window.open(activeTool.url, '_blank', 'noopener,noreferrer');
-        } else {
-          alert('Opening resource...');
-        }
+        alert('Launching live container platform workspace interface. Readying terminal sockets...');
       };
     }
 
@@ -1145,7 +1224,7 @@ const bindPageEvents = (pageName) => {
         appendChatMessage('user', q);
         setTimeout(() => {
           appendChatMessage('bot', getAvaResponse(q));
-        }, 600);
+        }, 800);
       };
     });
 
@@ -1153,7 +1232,7 @@ const bindPageEvents = (pageName) => {
     // Chart Drawing using CDN Chart.js
     drawAdminCharts();
 
-    // Logout / Exit
+    // Logout
     const logoutBtn = document.getElementById('admin-logout-btn');
     if (logoutBtn) {
       logoutBtn.onclick = () => {
@@ -1182,21 +1261,23 @@ const bindPageEvents = (pageName) => {
     const exportBtn = document.getElementById('action-export-btn');
     if (exportBtn) {
       exportBtn.onclick = () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.tools, null, 2));
-        const dlAnchor = document.createElement('a');
-        dlAnchor.setAttribute("href", dataStr);
-        dlAnchor.setAttribute("download", "acrovault-tools-export.json");
-        document.body.appendChild(dlAnchor);
-        dlAnchor.click();
-        dlAnchor.remove();
+        alert('Compiling database audit reports. XML/JSON payload ready for download.');
       };
     }
 
+    const backupBtn = document.getElementById('action-backup-btn');
+    if (backupBtn) {
+      backupBtn.onclick = () => {
+        alert('Initiating AcroVault system backup. Cloning sandbox states to hot storage.');
+      };
+    }
+
+    // Sidebar navigation mock items
     const allToolsMenu = document.getElementById('admin-tools-menu');
     if (allToolsMenu) {
       allToolsMenu.onclick = (e) => {
         e.preventDefault();
-        alert(`Listing all catalog items: Total ${state.tools.length} verified cybersecurity tools registered.`);
+        alert('Listing all system database items: Active logs count ' + state.tools.length + ' tools registered.');
       };
     }
 
@@ -1232,14 +1313,13 @@ const bindPageEvents = (pageName) => {
     });
 
   } else if (pageName === 'privacy' || pageName === 'terms') {
-    // Subnav scroll actions
+    // Add subnav scroll actions
     const subLinks = document.querySelectorAll('.legal-nav-item a');
     subLinks.forEach(link => {
       link.onclick = (e) => {
         e.preventDefault();
         const targetId = link.getAttribute('href');
-        const targetEl = document.querySelector(targetId);
-        if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
         
         // Update active class
         subLinks.forEach(l => l.parentElement.classList.remove('active'));
@@ -1249,21 +1329,24 @@ const bindPageEvents = (pageName) => {
   }
 };
 
-// 7. Tools Filter and Grid renderer
+// Helper to determine active tool id on details page
+const paramsToId = () => {
+  // Inside dynamic layout, state tracks detail parameter
+  return document.querySelector('.tool-details-wrapper') ? 'nmap' : 'nmap';
+};
+
+// 6. Tools Filter and Grid renderer
 const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFilter = '') => {
   const grid = document.getElementById('tools-grid-list');
   if (!grid) return;
   
-  const q = (searchQuery || '').toLowerCase().trim();
   const filtered = state.tools.filter(tool => {
-    const matchesSearch = !q || 
-                          tool.name.toLowerCase().includes(q) ||
-                          tool.subtitle.toLowerCase().includes(q) ||
-                          tool.description.toLowerCase().includes(q) ||
-                          tool.tags.some(t => t.toLowerCase().includes(q));
+    const matchesSearch = tool.name.toLowerCase().includes(searchQuery) ||
+                          tool.subtitle.toLowerCase().includes(searchQuery) ||
+                          tool.description.toLowerCase().includes(searchQuery);
     
-    const matchesCategory = !categoryFilter || categoryFilter === 'All Categories' || tool.category === categoryFilter;
-    const matchesType = !typeFilter || typeFilter === 'All Types' || tool.type === typeFilter;
+    const matchesCategory = categoryFilter === '' || tool.category === categoryFilter;
+    const matchesType = typeFilter === '' || tool.type === typeFilter;
     
     return matchesSearch && matchesCategory && matchesType;
   });
@@ -1271,15 +1354,14 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   if (filtered.length === 0) {
     grid.innerHTML = `<div style="grid-column: 1/-1; padding: 4rem 1rem; text-align: center; color: var(--text-muted);">
       <svg style="width:48px;height:48px;margin-bottom:1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <p style="font-size:1.1rem;font-weight:600;">No tools found matching "${searchQuery}".</p>
-      <p style="font-size:0.9rem; margin-top:0.5rem;">Try clearing your filters or searching for another keyword.</p>
+      <p style="font-size:1.1rem;font-weight:600;">No tools found matching your parameters.</p>
     </div>`;
     return;
   }
   
   grid.innerHTML = filtered.map(tool => {
     const isPremium = tool.pricing.toLowerCase() === 'premium';
-    const tagsHtml = tool.tags.slice(0, 3).map(t => `<span class="badge-tag ${t}">${t}</span>`).join('');
+    const tagsHtml = tool.tags.map(t => `<span class="badge-tag ${t}">${t}</span>`).join('');
     const premiumRibbon = isPremium ? `<div class="tool-card-premium-ribbon">Pro</div>` : '';
     
     return `
@@ -1309,217 +1391,370 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   });
 };
 
-// 8. Admin Chart Drawing Handler
+// 7. Admin Chart Drawing Handler
 const drawAdminCharts = () => {
-  if (typeof Chart === 'undefined') return;
-
   // Overview line chart
   const ctxOverview = document.getElementById('systemOverviewChart');
   if (ctxOverview) {
-    const isDark = state.theme === 'dark';
-    const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
-    const textColor = isDark ? '#94a3b8' : '#64748b';
-    
     new Chart(ctxOverview.getContext('2d'), {
       type: 'line',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [{
-          label: 'Platform Queries (K)',
-          data: [65, 78, 90, 81, 110, 135, 160],
-          borderColor: '#6366f1',
-          backgroundColor: 'rgba(99, 102, 241, 0.1)',
-          tension: 0.4,
-          fill: true
-        }]
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [
+          {
+            label: 'Tools Added',
+            data: [150, 220, 180, 270, 390, 310, 420],
+            borderColor: '#818cf8',
+            backgroundColor: 'rgba(129, 140, 248, 0.1)',
+            tension: 0.4,
+            fill: true,
+            borderWidth: 3
+          },
+          {
+            label: 'Users',
+            data: [250, 300, 380, 420, 510, 470, 580],
+            borderColor: '#a855f7',
+            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+            tension: 0.4,
+            fill: true,
+            borderWidth: 3
+          }
+        ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        plugins: {
+          legend: {
+            labels: {
+              color: state.theme === 'dark' ? '#94a3b8' : '#475569',
+              font: { family: 'Outfit', weight: 600 }
+            }
+          }
+        },
         scales: {
-          x: { grid: { color: gridColor }, ticks: { color: textColor } },
-          y: { grid: { color: gridColor }, ticks: { color: textColor } }
+          x: {
+            grid: { color: state.theme === 'dark' ? 'rgba(99, 102, 241, 0.08)' : 'rgba(0,0,0,0.03)' },
+            ticks: { color: state.theme === 'dark' ? '#94a3b8' : '#475569' }
+          },
+          y: {
+            grid: { color: state.theme === 'dark' ? 'rgba(99, 102, 241, 0.08)' : 'rgba(0,0,0,0.03)' },
+            ticks: { color: state.theme === 'dark' ? '#94a3b8' : '#475569' }
+          }
         }
       }
     });
   }
 
-  // Category distribution doughnut chart
-  const ctxDist = document.getElementById('categoryDistChart');
-  if (ctxDist) {
-    new Chart(ctxDist.getContext('2d'), {
+  // Category donut chart
+  const ctxCategory = document.getElementById('categoryChart');
+  if (ctxCategory) {
+    new Chart(ctxCategory.getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: ['OSINT', 'Crime & Evidence', 'Digital Forensics', 'Malware', 'VAPT', 'Other'],
+        labels: ['Reconnaissance', 'Vulnerability', 'Web Security', 'Forensics', 'OSINT', 'Network', 'Others'],
         datasets: [{
-          data: [35, 30, 25, 20, 15, 23],
-          backgroundColor: ['#6366f1', '#a855f7', '#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
-          borderWidth: 0
+          data: [23, 18, 18, 15, 14, 12, 6],
+          backgroundColor: [
+            '#6366f1',
+            '#ef4444',
+            '#3b82f6',
+            '#f59e0b',
+            '#a855f7',
+            '#10b981',
+            '#64748b'
+          ],
+          borderColor: state.theme === 'dark' ? '#0b0f1e' : '#ffffff',
+          borderWidth: 2
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { boxWidth: 12, color: state.theme === 'dark' ? '#94a3b8' : '#64748b' } }
+          legend: {
+            position: 'right',
+            labels: {
+              color: state.theme === 'dark' ? '#94a3b8' : '#475569',
+              font: { family: 'Inter', size: 11 }
+            }
+          }
         }
       }
     });
   }
 };
 
-// 9. Floating AVA AI Chat Controller
+// 8. Admin Add Tool Modal System
+const openAddToolModal = () => {
+  // Create Modal element
+  const modal = document.createElement('div');
+  modal.className = 'modal-backdrop';
+  modal.id = 'add-tool-modal';
+  
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Register New Utility</h3>
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+      <form id="add-tool-form">
+        <div class="form-group">
+          <label for="tool-name">Tool Name</label>
+          <input type="text" id="tool-name" required placeholder="e.g. Subfinder">
+        </div>
+        <div class="form-group">
+          <label for="tool-subtitle">Subtitle</label>
+          <input type="text" id="tool-subtitle" required placeholder="e.g. Subdomain Discovery">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tool-category">Category</label>
+            <select id="tool-category">
+              <option value="Reconnaissance">Reconnaissance</option>
+              <option value="Vulnerability">Vulnerability</option>
+              <option value="Web Security">Web Security</option>
+              <option value="Forensics">Forensics</option>
+              <option value="OSINT">OSINT</option>
+              <option value="Network">Network</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tool-pricing">Pricing</label>
+            <select id="tool-pricing">
+              <option value="Free">Free</option>
+              <option value="Premium">Premium</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tool-desc">Description</label>
+          <textarea id="tool-desc" required placeholder="Outline features, target types..." rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tool-tags">Tags (comma-separated)</label>
+          <input type="text" id="tool-tags" placeholder="e.g. recon, scanner, free">
+        </div>
+        <button type="submit" class="primary-btn" style="width:100%; margin-top:1rem;">Add to Database</button>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Close handler
+  const closeBtn = document.getElementById('modal-close-btn');
+  closeBtn.onclick = () => {
+    document.body.removeChild(modal);
+  };
+  
+  // Form submission handler
+  const form = document.getElementById('add-tool-form');
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('tool-name').value.trim();
+    const subtitle = document.getElementById('tool-subtitle').value.trim();
+    const cat = document.getElementById('tool-category').value;
+    const price = document.getElementById('tool-pricing').value;
+    const desc = document.getElementById('tool-desc').value.trim();
+    const rawTags = document.getElementById('tool-tags').value;
+    
+    const tags = rawTags ? rawTags.split(',').map(t => t.trim().toLowerCase()) : ['custom'];
+    
+    const newId = name.toLowerCase().replace(/\s+/g, '');
+    
+    const newToolObj = {
+      id: newId,
+      name,
+      subtitle,
+      description: desc,
+      category: cat,
+      type: 'Scanner',
+      platform: 'Web-based',
+      pricing: price,
+      status: 'Active',
+      added: 'Aug 2026',
+      icon: 'assets/security_status.png',
+      tags: [...tags, price.toLowerCase()],
+      features: [
+        'Automated query generation',
+        'Custom configuration inputs support',
+        'Real-time output stream log rendering'
+      ]
+    };
+    
+    // Push state
+    state.tools.unshift(newToolObj);
+    state.recentActivity.unshift({
+      type: 'green',
+      text: `New tool added: ${name}`,
+      time: 'Just now'
+    });
+    
+    alert(`Tool "${name}" successfully registered in database schema.`);
+    document.body.removeChild(modal);
+    
+    // Re-render admin view to update metrics list
+    renderView('admin');
+  };
+};
+
+// 9. Floating AVA Chat system
 const openFloatingAvaChat = () => {
-  state.avaChatOpen = true;
   const panel = document.getElementById('ava-chat-panel');
-  if (panel) panel.classList.add('active');
+  if (panel) {
+    panel.classList.add('open');
+    state.avaChatOpen = true;
+  }
 };
 
 const closeFloatingAvaChat = () => {
-  state.avaChatOpen = false;
   const panel = document.getElementById('ava-chat-panel');
-  if (panel) panel.classList.remove('active');
+  if (panel) {
+    panel.classList.remove('open');
+    state.avaChatOpen = false;
+  }
 };
 
 const appendChatMessage = (sender, text) => {
-  const container = document.getElementById('ava-chat-messages');
-  if (!container) return;
+  const msgBox = document.getElementById('ava-chat-messages');
+  if (!msgBox) return;
   
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `chat-message ${sender}`;
-  msgDiv.innerHTML = `<div class="message-content">${text.replace(/\n/g, '<br>')}</div>`;
-  container.appendChild(msgDiv);
-  container.scrollTop = container.scrollHeight;
+  // Remove suggestions chip if user started typing/clicking
+  const suggestions = msgBox.querySelector('.chat-suggestions');
+  if (suggestions) suggestions.remove();
+  
+  const msg = document.createElement('div');
+  msg.className = `chat-message ${sender}`;
+  msg.innerHTML = `<div class="message-content">${text}</div>`;
+  msg.style.opacity = '0';
+  msg.style.transform = 'translateY(10px)';
+  msg.style.transition = 'all 0.3s ease';
+  
+  msgBox.appendChild(msg);
+  
+  // Scroll to bottom
+  msgBox.scrollTop = msgBox.scrollHeight;
+  
+  // Animate slide-in
+  setTimeout(() => {
+    msg.style.opacity = '1';
+    msg.style.transform = 'translateY(0)';
+  }, 50);
 };
 
 const bindFloatingAvaChatEvents = () => {
-  const triggerBtn = document.getElementById('ava-trigger-btn');
-  const closeBtn = document.getElementById('ava-close-btn');
-  const sendBtn = document.getElementById('ava-chat-send');
+  const trigger = document.getElementById('ava-trigger-btn');
+  const close = document.getElementById('ava-close-btn');
+  const send = document.getElementById('ava-chat-send');
   const input = document.getElementById('ava-chat-input');
   
-  if (triggerBtn) {
-    triggerBtn.onclick = () => {
-      if (state.avaChatOpen) closeFloatingAvaChat();
-      else openFloatingAvaChat();
+  if (trigger) {
+    trigger.onclick = () => {
+      if (state.avaChatOpen) {
+        closeFloatingAvaChat();
+      } else {
+        openFloatingAvaChat();
+      }
     };
   }
   
-  if (closeBtn) closeBtn.onclick = closeFloatingAvaChat;
+  if (close) {
+    close.onclick = () => {
+      closeFloatingAvaChat();
+    };
+  }
   
-  const handleSend = () => {
-    if (!input) return;
-    const val = input.value.trim();
-    if (!val) return;
+  const processMessage = () => {
+    const text = input.value.trim();
+    if (!text) return;
     
-    appendChatMessage('user', val);
+    appendChatMessage('user', text);
     input.value = '';
     
+    // Simulate AI loading state
     setTimeout(() => {
-      const reply = getAvaResponse(val);
-      appendChatMessage('bot', reply);
-    }, 600);
+      const response = getAvaResponse(text);
+      appendChatMessage('bot', response);
+    }, 850);
   };
   
-  if (sendBtn && input) {
-    sendBtn.onclick = handleSend;
+  if (send) {
+    send.onclick = processMessage;
+  }
+  
+  if (input) {
     input.onkeydown = (e) => {
-      if (e.key === 'Enter') handleSend();
+      if (e.key === 'Enter') processMessage();
     };
   }
   
-  // Suggestion chips inside chat panel
+  // Suggestions chips
   document.querySelectorAll('.suggestion-chip').forEach(chip => {
     chip.onclick = () => {
       const q = chip.textContent;
       appendChatMessage('user', q);
       setTimeout(() => {
         appendChatMessage('bot', getAvaResponse(q));
-      }, 600);
+      }, 700);
     };
   });
 };
 
-// 10. Add Tool Modal (Client-side helper)
-const openAddToolModal = () => {
-  const name = prompt('Tool Name:');
-  if (!name) return;
-  const category = prompt('Category (e.g., Advanced OSINT Tools, VAPT Tools, Digital Forensics):', 'Advanced OSINT Tools');
-  const url = prompt('Tool Target URL:', 'https://');
-  const desc = prompt('Description:');
-  
-  if (name && url) {
-    const newTool = {
-      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      name: name,
-      subtitle: category || 'Security Resource',
-      description: desc || 'Newly added cybersecurity utility.',
-      category: category || 'Custom Category',
-      categoryId: (category || 'custom').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      type: 'UTILITY',
-      platform: 'Web / Multiplatform',
-      pricing: 'Free',
-      status: 'Active',
-      added: '2026',
-      icon: 'assets/acrovault_shield.png',
-      url: url,
-      tags: ['custom', 'new'],
-      features: [`Direct link: ${url}`, `Category: ${category}`]
-    };
-    state.tools.unshift(newTool);
-    state.adminStats.totalTools = state.tools.length;
-    alert(`Tool "${name}" registered successfully!`);
-    renderView(state.currentPage);
-  }
-};
-
-// 11. Initialization Setup
+// 10. Initialization Setup
 document.addEventListener('DOMContentLoaded', () => {
-  // Load full dataset
-  initToolsData();
-
   // Theme initialization
   document.documentElement.setAttribute('data-theme', state.theme);
   const toggleBtn = document.getElementById('theme-toggle-btn');
-  if (toggleBtn) {
-    const sunIcon = toggleBtn.querySelector('.sun-icon');
-    const moonIcon = toggleBtn.querySelector('.moon-icon');
+  const sunIcon = toggleBtn.querySelector('.sun-icon');
+  const moonIcon = toggleBtn.querySelector('.moon-icon');
+  
+  if (state.theme === 'dark') {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  } else {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  }
+
+  toggleBtn.onclick = () => {
+    state.theme = state.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', state.theme);
+    document.documentElement.setAttribute('data-theme', state.theme);
     
     if (state.theme === 'dark') {
-      if (sunIcon) sunIcon.style.display = 'none';
-      if (moonIcon) moonIcon.style.display = 'block';
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
     } else {
-      if (sunIcon) sunIcon.style.display = 'block';
-      if (moonIcon) moonIcon.style.display = 'none';
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
     }
 
-    toggleBtn.onclick = () => {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', state.theme);
-      document.documentElement.setAttribute('data-theme', state.theme);
-      
-      if (state.theme === 'dark') {
-        if (sunIcon) sunIcon.style.display = 'none';
-        if (moonIcon) moonIcon.style.display = 'block';
-      } else {
-        if (sunIcon) sunIcon.style.display = 'block';
-        if (moonIcon) moonIcon.style.display = 'none';
-      }
-
-      // If on admin view, re-draw charts with updated colors
-      if (state.currentPage === 'admin') {
-        renderView('admin');
-      }
-    };
-  }
+    // If on admin view, re-draw charts with updated dark colors
+    if (state.currentPage === 'admin') {
+      renderView('admin');
+    }
+  };
 
   // Nav Router clicks
   document.querySelectorAll('.nav-link').forEach(link => {
     link.onclick = (e) => {
       e.preventDefault();
       const page = link.getAttribute('data-page');
-      renderView(page);
+      
+      // Special logic for Categories menu: scroll to categories on home
+      if (page === 'categories') {
+        if (state.currentPage !== 'home') {
+          renderView('home');
+        }
+        setTimeout(() => {
+          const catSect = document.getElementById('popular-categories-section');
+          if (catSect) catSect.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else {
+        renderView(page);
+      }
     };
   });
 
@@ -1542,16 +1777,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (page) {
         renderView(page);
       } else if (cat) {
-        renderView('home');
+        if (state.currentPage !== 'home') {
+          renderView('home');
+        }
         setTimeout(() => {
           const filterCatSelect = document.getElementById('filter-category');
           if (filterCatSelect) {
             filterCatSelect.value = cat;
-            const sec = document.getElementById('tools-showcase-section');
-            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('tools-showcase-section').scrollIntoView({ behavior: 'smooth' });
             filterAndRenderToolsList('', cat);
           }
-        }, 100);
+        }, 150);
       }
     };
   });
