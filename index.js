@@ -150,14 +150,24 @@ const getAvaResponse = (userText) => {
   return `I analyzed your query: **"${rawQuery}"**. You can explore our catalog of 148+ tools across 34 categories, or ask me about *OSINT*, *Forensics*, *Scanners*, or *Malware* for instant intelligence!`;
 };
 
+// Markdown & Rich Text Formatter
+const renderMarkdown = (text) => {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^[•\-\*]\s+(.*)$/gm, '<li class="chat-bullet">$1</li>')
+    .replace(/(<li.*<\/li>)+/s, '<ul class="chat-list">$&</ul>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+};
+
 // 3. UI Template Generators
 const templates = {
   home: () => {
     let heroImageHtml = '';
-    let toggleText = 'Switch to AI Assistant';
 
     if (state.heroMode === 'assistant') {
-      toggleText = 'Switch to 3D Cyber Agent';
       heroImageHtml = `
         <div class="hero-assistant-container">
           <div class="hero-assistant-box">
@@ -189,11 +199,9 @@ const templates = {
           </div>
         </div>`;
     } else if (state.heroMode === 'robot') {
-      toggleText = 'Switch to Vault Graphic';
-      heroImageHtml = `<img src="assets/ava_waving.png" alt="AVA 3D Cyber Agent" class="hero-image ava-robot-graphic">`;
+      heroImageHtml = `<img src="assets/ava_cyber_agent.png" alt="AVA 3D Cyber Agent" class="hero-image ava-robot-graphic">`;
     } else {
       // Default: 'vault'
-      toggleText = 'Switch to AI Assistant';
       heroImageHtml = `<img src="assets/vault.png" alt="AcroVault 3D Vault" class="hero-image">`;
     }
     
@@ -222,9 +230,19 @@ const templates = {
         
         <div class="hero-image-container">
           ${heroImageHtml}
-          <div class="assistant-toggle-overlay" id="hero-toggle-btn" title="Click to cycle views">
-            <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12a10 10 0 0 1 10-10z"></path></svg>
-            <span>${toggleText}</span>
+          <div class="hero-mode-switch" id="hero-mode-switch">
+            <button class="hero-mode-btn ${state.heroMode === 'vault' ? 'active' : ''}" data-mode="vault" title="Safe Vault">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Safe Vault</span>
+            </button>
+            <button class="hero-mode-btn ${state.heroMode === 'robot' ? 'active' : ''}" data-mode="robot" title="3D Cyber Agent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><circle cx="15" cy="9" r="2"></circle><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+              <span>3D Cyber Agent</span>
+            </button>
+            <button class="hero-mode-btn ${state.heroMode === 'assistant' ? 'active' : ''}" data-mode="assistant" title="AI Assistant">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span>AI Assistant</span>
+            </button>
           </div>
         </div>
       </section>
@@ -991,20 +1009,16 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Hero graphics / AVA 3-mode cycle toggle
-    const toggleHero = document.getElementById('hero-toggle-btn');
-    if (toggleHero) {
-      toggleHero.onclick = () => {
-        if (state.heroMode === 'vault') {
-          state.heroMode = 'assistant';
-        } else if (state.heroMode === 'assistant') {
-          state.heroMode = 'robot';
-        } else {
-          state.heroMode = 'vault';
+    // Hero mode segmented buttons
+    document.querySelectorAll('.hero-mode-btn').forEach(btn => {
+      btn.onclick = () => {
+        const mode = btn.getAttribute('data-mode');
+        if (mode && state.heroMode !== mode) {
+          state.heroMode = mode;
+          renderView('home');
         }
-        renderView('home');
       };
-    }
+    });
 
     // Bind Hero Assistant box events if visible
     if (state.heroMode === 'assistant') {
@@ -1020,7 +1034,7 @@ const bindPageEvents = (pageName) => {
         if (chatPreview) {
           chatPreview.style.display = 'block';
           chatPreview.innerHTML = `
-            <div style="margin-bottom:0.35rem; color:var(--text-muted);"><strong>You:</strong> ${text}</div>
+            <div style="margin-bottom:0.35rem; color:var(--text-muted); font-size:0.825rem;"><strong>You:</strong> ${text}</div>
             <div style="color:var(--primary-color);"><strong>AVA:</strong> <em>Analyzing security data...</em></div>
           `;
         }
@@ -1033,7 +1047,7 @@ const bindPageEvents = (pageName) => {
           if (chatPreview) {
             chatPreview.innerHTML = `
               <div style="margin-bottom:0.35rem; color:var(--text-muted); font-size:0.8rem;"><strong>You:</strong> ${text}</div>
-              <div style="line-height:1.45;"><strong>AVA:</strong> ${response}</div>
+              <div style="line-height:1.45; font-size:0.85rem;">${renderMarkdown(response)}</div>
             `;
           }
           appendChatMessage('bot', response);
@@ -1292,11 +1306,7 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   }
   
   grid.innerHTML = filtered.map(tool => {
-    const isPremium = tool.pricing.toLowerCase() === 'premium';
-    const getTagClasses = (tag) => {
-      return (tag || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean).join(' ');
-    };
-    const tagsHtml = (tool.tags || []).map(t => `<span class="badge-tag ${getTagClasses(t)}">${t}</span>`).join('');
+    const tagsHtml = (tool.tags || []).map(t => `<span class="badge-tag">${t}</span>`).join('');
     const premiumRibbon = isPremium ? `<div class="tool-card-premium-ribbon">Pro</div>` : '';
     
     return `
@@ -1569,7 +1579,8 @@ const appendChatMessage = (sender, text) => {
   
   const msg = document.createElement('div');
   msg.className = `chat-message ${sender}`;
-  msg.innerHTML = `<div class="message-content">${text}</div>`;
+  const formattedContent = sender === 'bot' ? renderMarkdown(text) : text;
+  msg.innerHTML = `<div class="message-content">${formattedContent}</div>`;
   msg.style.opacity = '0';
   msg.style.transform = 'translateY(10px)';
   msg.style.transition = 'all 0.3s ease';
