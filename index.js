@@ -228,7 +228,7 @@ const templates = {
         
         <div class="categories-wrapper">
           <!-- Left & Right Flank Floating Long Arrow Buttons -->
-          <button class="carousel-flank-btn prev-btn" id="cat-prev-btn" title="Slide Left" aria-label="Previous Categories" style="${state.categoriesExpanded ? 'display: none;' : ''}">
+          <button class="carousel-flank-btn prev-btn is-hidden" id="cat-prev-btn" title="Slide Left" aria-label="Previous Categories" style="${state.categoriesExpanded ? 'display: none;' : ''}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
@@ -980,10 +980,37 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Categories Carousel left/right navigation arrows
+    // Categories Carousel left/right navigation arrows with dynamic start/end visibility
     const catPrev = document.getElementById('cat-prev-btn');
     const catNext = document.getElementById('cat-next-btn');
     const catTrack = document.getElementById('categories-track');
+    
+    const updateCarouselArrows = () => {
+      if (!catTrack) return;
+      const isAtStart = catTrack.scrollLeft <= 10;
+      const isAtEnd = catTrack.scrollLeft + catTrack.clientWidth >= catTrack.scrollWidth - 15;
+      
+      if (catPrev) {
+        if (isAtStart) {
+          catPrev.classList.add('is-hidden');
+        } else {
+          catPrev.classList.remove('is-hidden');
+        }
+      }
+      
+      if (catNext) {
+        if (isAtEnd) {
+          catNext.classList.add('is-hidden');
+        } else {
+          catNext.classList.remove('is-hidden');
+        }
+      }
+    };
+
+    if (catTrack) {
+      catTrack.addEventListener('scroll', updateCarouselArrows, { passive: true });
+      setTimeout(updateCarouselArrows, 50);
+    }
     
     if (catPrev && catTrack) {
       catPrev.onclick = () => {
@@ -1042,32 +1069,13 @@ const bindPageEvents = (pageName) => {
       const cat = filterCat ? filterCat.value : '';
       const type = filterType ? filterType.value : '';
       const searchVal = document.getElementById('global-search-input') ? document.getElementById('global-search-input').value : '';
-      filterAndRenderToolsList(searchVal, cat, type);
+      filterAndRenderToolsList(searchVal.toLowerCase().trim(), cat, type);
     };
 
     if (filterCat) filterCat.onchange = applyFilters;
     if (filterType) filterType.onchange = applyFilters;
 
   } else if (pageName === 'tool') {
-    // Back to tools list
-    const backBtn = document.getElementById('detail-back-btn');
-    if (backBtn) {
-      backBtn.onclick = (e) => {
-        e.preventDefault();
-        renderView('home');
-      };
-    }
-
-    // Related tool card clicks
-    document.querySelectorAll('.related-tool-card').forEach(card => {
-      card.onclick = () => {
-        const toolId = card.getAttribute('data-tool');
-        renderView('tool', { toolId });
-      };
-    });
-
-    // Add to favorites toggle
-    const favBtn = document.getElementById('favorite-toggle-btn');
     if (favBtn) {
       favBtn.onclick = () => {
         const toolId = paramsToId();
@@ -1191,19 +1199,75 @@ const bindPageEvents = (pageName) => {
     });
 
   } else if (pageName === 'privacy' || pageName === 'terms') {
-    // Add subnav scroll actions
-    const subLinks = document.querySelectorAll('.legal-nav-item a');
-    subLinks.forEach(link => {
-      link.onclick = (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
-        
-        // Update active class
-        subLinks.forEach(l => l.parentElement.classList.remove('active'));
-        link.parentElement.classList.add('active');
-      };
+    const navItems = document.querySelectorAll('.legal-nav-item');
+    const sections = document.querySelectorAll('.legal-section');
+    
+    // 1. Smooth click scrolling with proper header offset
+    navItems.forEach(item => {
+      const link = item.querySelector('a');
+      if (link) {
+        link.onclick = (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').replace('#', '');
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            const headerOffset = 90;
+            const elementPosition = targetEl.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+            
+            navItems.forEach(ni => ni.classList.remove('active'));
+            item.classList.add('active');
+          }
+        };
+      }
     });
+
+    // 2. Real-time ScrollSpy on scroll
+    const onScrollSpy = () => {
+      if (state.currentPage !== 'privacy' && state.currentPage !== 'terms') {
+        window.removeEventListener('scroll', onScrollSpy);
+        return;
+      }
+      
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+      const headerOffset = 130;
+      
+      let currentSectionId = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - headerOffset;
+        const height = section.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+      
+      // If user scrolled to near bottom of page, highlight the last item
+      if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 60) {
+        if (sections.length > 0) {
+          currentSectionId = sections[sections.length - 1].getAttribute('id');
+        }
+      }
+      
+      if (currentSectionId) {
+        navItems.forEach(item => {
+          const link = item.querySelector('a');
+          const href = link ? link.getAttribute('href').replace('#', '') : '';
+          if (href === currentSectionId) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }
+    };
+
+    window.addEventListener('scroll', onScrollSpy, { passive: true });
+    setTimeout(onScrollSpy, 100);
   }
 };
 
