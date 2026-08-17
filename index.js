@@ -279,6 +279,7 @@ const templates = {
               </svg>
               <input type="text" placeholder="Search tools, OSINT, categories, tags..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}" autocomplete="off">
               <button class="tools-search-clear" id="tools-search-clear" style="${state.searchQuery ? 'display:flex;' : 'display:none;'}" title="Clear search">✕</button>
+              <div class="search-suggestions-dropdown" id="tools-search-dropdown" style="display: none;"></div>
             </div>
             
             <div class="tools-dropdowns">
@@ -1161,6 +1162,7 @@ const bindPageEvents = (pageName) => {
     // Featured Tools Search Box & Filter Dropdowns
     const toolsSearchInput = document.getElementById('tools-search-input');
     const toolsSearchClear = document.getElementById('tools-search-clear');
+    const toolsSearchDropdown = document.getElementById('tools-search-dropdown');
     const globalSearchInput = document.getElementById('global-search-input');
     const filterCat = document.getElementById('filter-category');
     const filterType = document.getElementById('filter-type');
@@ -1177,6 +1179,131 @@ const bindPageEvents = (pageName) => {
       filterAndRenderToolsList(searchVal.toLowerCase(), cat, type);
     };
 
+    // YouTube-style guided suggestions renderer (PC / Desktop)
+    const renderSuggestions = (query = '') => {
+      if (window.innerWidth <= 768) return; // Keep mobile completely clean
+      if (!toolsSearchDropdown) return;
+      const q = query.toLowerCase().trim();
+
+      if (!q) {
+        // Quick Trending Chips
+        const popularTags = ['OSINT', 'Nmap', 'Port Scanners', 'Malware Analysis', 'Wireshark', 'Forensics', 'Exploit', 'Network'];
+        toolsSearchDropdown.innerHTML = `
+          <div class="suggestions-header">Quick Category & Trending Searches</div>
+          <div class="suggestions-chips-grid">
+            ${popularTags.map(tag => `
+              <button type="button" class="suggestion-chip-btn" data-query="${tag}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>${tag}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        toolsSearchDropdown.style.display = 'block';
+        bindSuggestionItemEvents();
+        return;
+      }
+
+      // Matching tools
+      const matchingTools = state.tools.filter(t => {
+        const tagsStr = (t.tags || []).join(' ').toLowerCase();
+        const catStr = (t.category || '').toLowerCase();
+        return t.name.toLowerCase().includes(q) ||
+               t.subtitle.toLowerCase().includes(q) ||
+               catStr.includes(q) ||
+               tagsStr.includes(q);
+      }).slice(0, 6);
+
+      // Matching categories
+      const matchingCats = (window.ACROVAULT_CATEGORIES || []).filter(c => c.name.toLowerCase().includes(q)).slice(0, 3);
+
+      if (matchingTools.length === 0 && matchingCats.length === 0) {
+        toolsSearchDropdown.innerHTML = `
+          <div class="suggestions-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>No tools matching "<strong>${escapeHtml(query)}</strong>"</span>
+          </div>
+        `;
+        toolsSearchDropdown.style.display = 'block';
+        return;
+      }
+
+      let html = '';
+
+      if (matchingCats.length > 0) {
+        html += `
+          <div class="suggestions-section-title">Matching Categories</div>
+          <div class="suggestions-cats-list">
+            ${matchingCats.map(c => `
+              <div class="suggestion-cat-item" data-cat="${escapeHtml(c.name)}">
+                <span class="suggestion-cat-icon">📁</span>
+                <span class="suggestion-cat-name">${highlightMatch(c.name, query)}</span>
+                <span class="suggestion-arrow">→</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      if (matchingTools.length > 0) {
+        html += `
+          <div class="suggestions-section-title">Matching Tools (${matchingTools.length})</div>
+          <div class="suggestions-tools-list">
+            ${matchingTools.map(tool => `
+              <div class="suggestion-tool-item" data-id="${tool.id}">
+                <img src="${tool.icon}" alt="" class="suggestion-tool-icon">
+                <div class="suggestion-tool-info">
+                  <span class="suggestion-tool-name">${highlightMatch(tool.name, query)}</span>
+                  <span class="suggestion-tool-cat">${tool.category}</span>
+                </div>
+                <span class="suggestion-jump-btn">Open ↗</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      toolsSearchDropdown.innerHTML = html;
+      toolsSearchDropdown.style.display = 'block';
+      bindSuggestionItemEvents();
+    };
+
+    const bindSuggestionItemEvents = () => {
+      if (!toolsSearchDropdown) return;
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-tool-item').forEach(item => {
+        item.onclick = (e) => {
+          e.stopPropagation();
+          const toolId = item.getAttribute('data-id');
+          toolsSearchDropdown.style.display = 'none';
+          renderView('tool', { toolId });
+        };
+      });
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-cat-item').forEach(item => {
+        item.onclick = (e) => {
+          e.stopPropagation();
+          const cat = item.getAttribute('data-cat');
+          if (filterCat) filterCat.value = cat;
+          if (toolsSearchInput) toolsSearchInput.value = '';
+          if (globalSearchInput) globalSearchInput.value = '';
+          toolsSearchDropdown.style.display = 'none';
+          applyFilters();
+        };
+      });
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-chip-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const q = btn.getAttribute('data-query');
+          if (toolsSearchInput) toolsSearchInput.value = q;
+          if (globalSearchInput) globalSearchInput.value = q;
+          toolsSearchDropdown.style.display = 'none';
+          applyFilters();
+        };
+      });
+    };
+
     // Quick Category & Trending Searches Clicks (In-Flow, No Overlapping)
     document.querySelectorAll('.trending-chip').forEach(chip => {
       chip.onclick = (e) => {
@@ -1184,6 +1311,7 @@ const bindPageEvents = (pageName) => {
         const query = chip.getAttribute('data-query');
         if (toolsSearchInput) toolsSearchInput.value = query;
         if (globalSearchInput) globalSearchInput.value = query;
+        if (toolsSearchDropdown) toolsSearchDropdown.style.display = 'none';
         applyFilters();
       };
     });
@@ -1192,6 +1320,11 @@ const bindPageEvents = (pageName) => {
       toolsSearchInput.addEventListener('input', (e) => {
         if (globalSearchInput) globalSearchInput.value = e.target.value;
         applyFilters();
+        if (window.innerWidth > 768) renderSuggestions(e.target.value);
+      });
+
+      toolsSearchInput.addEventListener('focus', () => {
+        if (window.innerWidth > 768) renderSuggestions(toolsSearchInput.value);
       });
     }
 
@@ -1206,10 +1339,19 @@ const bindPageEvents = (pageName) => {
       toolsSearchClear.onclick = () => {
         if (toolsSearchInput) toolsSearchInput.value = '';
         if (globalSearchInput) globalSearchInput.value = '';
+        if (toolsSearchDropdown) toolsSearchDropdown.style.display = 'none';
         toolsSearchInput.focus();
         applyFilters();
       };
     }
+
+    // Hide dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const wrap = document.getElementById('tools-search-box-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        if (toolsSearchDropdown) toolsSearchDropdown.style.display = 'none';
+      }
+    });
 
     if (filterCat) filterCat.onchange = applyFilters;
     if (filterType) filterType.onchange = applyFilters;
