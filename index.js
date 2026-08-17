@@ -1,13 +1,20 @@
-// AcroVault JavaScript Portal Engine
+const getStoredFavorites = () => {
+  try {
+    const raw = localStorage.getItem('favorites');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+};
 
 // 1. Core State
 const state = {
   theme: localStorage.getItem('theme') || 'light',
   currentPage: 'home',
-  heroMode: 'vault', // 'vault' or 'assistant'
+  heroMode: 'vault', // 'vault', 'assistant', or 'robot'
   billingCycle: 'monthly', // 'monthly' or 'yearly'
   avaChatOpen: false,
-  favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+  favorites: getStoredFavorites(),
   adminStats: {
     totalTools: 523,
     activeAdmins: 28,
@@ -87,66 +94,108 @@ const initToolsData = () => {
   }
 };
 
-// 2. Chatbot Intelligent Responses
+// 2. Chatbot Intelligent Responses with Real Dataset Integration
 const getAvaResponse = (userText) => {
-  const query = userText.toLowerCase().trim();
+  const rawQuery = (userText || '').trim();
+  const query = rawQuery.toLowerCase();
   
-  if (query.includes('nmap') || query.includes('port scan') || query.includes('scanner')) {
-    return `Nmap is an outstanding network auditing and port scanner tool. On its detail view, you can check its key features, metadata attributes, and related tools. You can launch Nmap platform or add it to favorites!`;
+  if (!query) return "How can I assist you with AcroVault's security tools today?";
+
+  // 1. Dynamic search across the real 148+ tools dataset
+  if (state.tools && state.tools.length > 0 && query.length >= 3) {
+    const matchedTools = state.tools.filter(t => 
+      t.name.toLowerCase().includes(query) || 
+      t.category.toLowerCase().includes(query) || 
+      t.description.toLowerCase().includes(query) ||
+      (t.tags && t.tags.some(tag => tag.toLowerCase().includes(query)))
+    );
+
+    if (matchedTools.length > 0 && !['hello', 'hi', 'hey', 'help', 'what', 'who', 'about', 'admin', 'plan', 'plans', 'price', 'pricing'].includes(query)) {
+      const topMatches = matchedTools.slice(0, 3);
+      const toolList = topMatches.map(t => `• **${t.name}** [${t.category}] — ${t.description}`).join('<br>');
+      const moreCount = matchedTools.length > 3 ? `<br><em>...and ${matchedTools.length - 3} more matching tools in the vault!</em>` : '';
+      return `I found **${matchedTools.length} security tool${matchedTools.length > 1 ? 's' : ''}** for **"${rawQuery}"**:<br><br>${toolList}${moreCount}<br><br>💡 <em>Tip: You can search "${rawQuery}" in the search bar to inspect all of them!</em>`;
+    }
+  }
+
+  // 2. Specific domain intelligence
+  if (query.includes('nmap') || query.includes('port scan') || query.includes('scanner') || query.includes('rustscan')) {
+    return `**Network Scanners & Recon:**<br>Explore **RustScan** (fastest port scanner) and our network auditing collection. Filter by "Port Scanners" in the directory to launch them directly!`;
+  }
+  if (query.includes('osint') || query.includes('recon') || query.includes('intelligence') || query.includes('person') || query.includes('phone') || query.includes('dox')) {
+    return `**OSINT Intelligence Suite:**<br>AcroVault catalogs 75+ OSINT engines covering Social Media analysis (tookie-osint, SmartImage, bbot), Dark Web OSINT (Robin, VoidAccess), and Person lookups (IDCrawl, Skopenow).`;
+  }
+  if (query.includes('forensic') || query.includes('evidence') || query.includes('memory') || query.includes('autopsy') || query.includes('volatility')) {
+    return `**Digital Forensics:**<br>Explore industry standards like **Autopsy**, **Volatility Framework**, **Sleuth Kit (TSK)**, and **SIFT Workstation** for disk, memory, and mobile evidence analysis.`;
+  }
+  if (query.includes('malware') || query.includes('reverse') || query.includes('disassembler') || query.includes('ida') || query.includes('ghidra') || query.includes('sandbox')) {
+    return `**Malware Analysis & Reversing:**<br>Check out **Hybrid Analysis**, **VirusTotal**, **Malware Unicorn RE101/102**, and **Exploit Reversing** tutorials for binary reversing and payload detection.`;
+  }
+  if (query.includes('crime') || query.includes('police') || query.includes('murder') || query.includes('case')) {
+    return `**Crime & Evidence Databases:**<br>Access archives like **Gun Violence Archive**, **Murderpedia**, **Bellingcat**, and **The Doe Network** for investigative research and evidence tracking.`;
   }
   if (query.includes('premium') || query.includes('price') || query.includes('pricing') || query.includes('cost') || query.includes('plan')) {
-    return `AcroVault provides three pricing tiers: 
-    1. **Basic** ($9/mo) with 200+ tools.
-    2. **Pro** ($19/mo) which is our most popular plan (500+ tools, API access).
-    3. **Enterprise** ($49/mo) for organizations.
-    All plans include a 7-day free trial. You can check the Premium tab to subscribe!`;
+    return `**AcroVault Pricing Plans:**<br>• **Basic ($9/mo)**: 200+ Tools & Standard Filters<br>• **Pro ($19/mo)**: 500+ Advanced Tools, API Access & Live Reports (Most Popular)<br>• **Enterprise ($49/mo)**: Unlimited API, Dedicated Vault & Priority Support<br><br>All tiers include a 7-day free trial. Head to the **Premium** tab to compare!`;
   }
-  if (query.includes('osint') || query.includes('recon') || query.includes('intelligence')) {
-    return `We currently catalog 75+ OSINT tools. Popular recon categories include web scanner scrapers, Subfinder integrations, and target credentials audit engines. Go to the categories section to filter them.`;
+  if (query.includes('admin') || query.includes('dashboard') || query.includes('metric') || query.includes('analytics')) {
+    return `**Admin Intelligence Console:**<br>Click **Login / Admin** in the header to view real-time database metric charts, category distribution analytics, and audit logs!`;
   }
   if (query.includes('about') || query.includes('who are you') || query.includes('mission')) {
-    return `AcroVault is a premium security and OSINT tools database dashboard designed for penetration testers, security architects, and hobbyists. Our mission is to democratize security utilities globally.`;
+    return `**About AcroVault:**<br>AcroVault is a premier cybersecurity directory and OSINT intelligence dashboard built for penetration testers, security architects, investigators, and ethical hackers worldwide.`;
   }
-  if (query.includes('admin') || query.includes('dashboard') || query.includes('chart')) {
-    return `To explore the administrator dashboard, click the 'Login / Admin' button in the upper right. You'll see real-time database metric charts, recent audit activities, and have the ability to dynamically add new tools!`;
-  }
-  if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
-    return `Hello! I'm AVA, your cyber security AI agent. Ask me about tools like Nmap, pricing tiers, or how to access our admin console!`;
+  if (query.includes('hello') || query.includes('hi') || query.includes('hey') || query.includes('greetings')) {
+    return `Hello! I'm **AVA**, your AI cyber security assistant. Ask me about any tool (e.g. *RustScan*, *Bellingcat*, *Autopsy*), OSINT techniques, or pricing plans!`;
   }
   
-  return `That's an interesting question about "${userText}". As your AI assistant, I recommend checking our tools repository, filtering categories, or viewing the Nmap audits page to see these concepts in action.`;
+  return `I analyzed your query: **"${rawQuery}"**. You can explore our catalog of 148+ tools across 34 categories, or ask me about *OSINT*, *Forensics*, *Scanners*, or *Malware* for instant intelligence!`;
 };
 
 // 3. UI Template Generators
 const templates = {
   home: () => {
-    const heroImageHtml = state.heroMode === 'vault' 
-      ? `<img src="assets/vault.png" alt="AcroVault Safe" class="hero-image">`
-      : `<div class="hero-assistant-container" style="position:relative; width:100%; display:flex; flex-direction:column; align-items:center; gap:1.5rem; justify-content:center;">
-          <div class="hero-assistant-box" style="position:relative; z-index:5; width:100%;">
+    let heroImageHtml = '';
+    let toggleText = 'Switch to AI Assistant';
+
+    if (state.heroMode === 'assistant') {
+      toggleText = 'Switch to 3D Cyber Agent';
+      heroImageHtml = `
+        <div class="hero-assistant-container">
+          <div class="hero-assistant-box">
             <div class="hero-assistant-header">
-              <img src="assets/ava_floating_happy.png" alt="AVA Assistant" class="hero-assistant-img">
+              <div class="hero-assistant-avatar-wrapper">
+                <img src="assets/ava_floating_happy.png" alt="AVA Assistant" class="hero-assistant-img">
+                <span class="hero-ava-status-pulse"></span>
+              </div>
               <div class="hero-assistant-info">
-                <h4>Hello! I'm AVA</h4>
-                <p>Your AI security assistant. How can I help you?</p>
+                <div class="hero-assistant-title-row">
+                  <h4>AVA 2.0</h4>
+                  <span class="hero-assistant-badge">AI Assistant</span>
+                </div>
+                <p>Your cyber security intelligence co-pilot. Ask me anything!</p>
               </div>
             </div>
+            <div class="hero-assistant-chat-preview" id="hero-ava-chat-preview" style="display:none;"></div>
             <div class="hero-assistant-suggestions">
-              <button class="suggestion-btn" data-query="Find a tool for network scanning">Find a tool for network scanning <span>&rarr;</span></button>
-              <button class="suggestion-btn" data-query="Show OSINT tools">Show OSINT tools <span>&rarr;</span></button>
-              <button class="suggestion-btn" data-query="What's new today?">What's new today? <span>&rarr;</span></button>
+              <button class="suggestion-btn" data-query="Find a tool for network scanning"><span>⚡ Find network scanner</span> <span>&rarr;</span></button>
+              <button class="suggestion-btn" data-query="Show OSINT tools"><span>🔍 Show OSINT tools</span> <span>&rarr;</span></button>
+              <button class="suggestion-btn" data-query="What tools are for digital forensics?"><span>🛡️ Digital forensics tools</span> <span>&rarr;</span></button>
             </div>
             <div class="hero-assistant-input-container">
-              <input type="text" placeholder="Ask me anything..." id="hero-ava-input" class="hero-assistant-input">
-              <button class="hero-assistant-send-btn" id="hero-ava-send">
+              <input type="text" placeholder="Ask AVA about tools, recon, forensics..." id="hero-ava-input" class="hero-assistant-input">
+              <button class="hero-assistant-send-btn" id="hero-ava-send" title="Send query">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
               </button>
             </div>
           </div>
-          <img src="assets/ava_waving.png" alt="AVA Waving" class="hero-image" style="width:240px; height:auto; margin-top:-10px; filter:drop-shadow(0 15px 30px var(--primary-glow));">
-         </div>`;
-
-    const toggleText = state.heroMode === 'vault' ? 'Switch to AI Assistant' : 'Switch to Vault Graphic';
+        </div>`;
+    } else if (state.heroMode === 'robot') {
+      toggleText = 'Switch to Vault Graphic';
+      heroImageHtml = `<img src="assets/ava_waving.png" alt="AVA 3D Cyber Agent" class="hero-image ava-robot-graphic">`;
+    } else {
+      // Default: 'vault'
+      toggleText = 'Switch to AI Assistant';
+      heroImageHtml = `<img src="assets/vault.png" alt="AcroVault 3D Vault" class="hero-image">`;
+    }
     
     // Tools filtering options
     const categoryOptions = ['All Categories', ...new Set(state.tools.map(t => t.category))];
@@ -173,7 +222,7 @@ const templates = {
         
         <div class="hero-image-container">
           ${heroImageHtml}
-          <div class="assistant-toggle-overlay" id="hero-toggle-btn">
+          <div class="assistant-toggle-overlay" id="hero-toggle-btn" title="Click to cycle views">
             <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12a10 10 0 0 1 10-10z"></path></svg>
             <span>${toggleText}</span>
           </div>
@@ -942,11 +991,17 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Hero graphics / AVA toggle
+    // Hero graphics / AVA 3-mode cycle toggle
     const toggleHero = document.getElementById('hero-toggle-btn');
     if (toggleHero) {
       toggleHero.onclick = () => {
-        state.heroMode = state.heroMode === 'vault' ? 'assistant' : 'vault';
+        if (state.heroMode === 'vault') {
+          state.heroMode = 'assistant';
+        } else if (state.heroMode === 'assistant') {
+          state.heroMode = 'robot';
+        } else {
+          state.heroMode = 'vault';
+        }
         renderView('home');
       };
     }
@@ -955,18 +1010,34 @@ const bindPageEvents = (pageName) => {
     if (state.heroMode === 'assistant') {
       const heroSend = document.getElementById('hero-ava-send');
       const heroInput = document.getElementById('hero-ava-input');
+      const chatPreview = document.getElementById('hero-ava-chat-preview');
       
       const triggerHeroMessage = (text) => {
         if (!text) return;
-        // Open the floating widget chat if closed
-        openFloatingAvaChat();
+        if (heroInput) heroInput.value = '';
+
+        // Show live in hero chat card
+        if (chatPreview) {
+          chatPreview.style.display = 'block';
+          chatPreview.innerHTML = `
+            <div style="margin-bottom:0.35rem; color:var(--text-muted);"><strong>You:</strong> ${text}</div>
+            <div style="color:var(--primary-color);"><strong>AVA:</strong> <em>Analyzing security data...</em></div>
+          `;
+        }
+
+        // Also log to floating chat
         appendChatMessage('user', text);
-        heroInput.value = '';
         
         setTimeout(() => {
           const response = getAvaResponse(text);
+          if (chatPreview) {
+            chatPreview.innerHTML = `
+              <div style="margin-bottom:0.35rem; color:var(--text-muted); font-size:0.8rem;"><strong>You:</strong> ${text}</div>
+              <div style="line-height:1.45;"><strong>AVA:</strong> ${response}</div>
+            `;
+          }
           appendChatMessage('bot', response);
-        }, 800);
+        }, 400);
       };
       
       if (heroSend && heroInput) {
@@ -1222,7 +1293,10 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   
   grid.innerHTML = filtered.map(tool => {
     const isPremium = tool.pricing.toLowerCase() === 'premium';
-    const tagsHtml = tool.tags.map(t => `<span class="badge-tag ${t}">${t}</span>`).join('');
+    const getTagClasses = (tag) => {
+      return (tag || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean).join(' ');
+    };
+    const tagsHtml = (tool.tags || []).map(t => `<span class="badge-tag ${getTagClasses(t)}">${t}</span>`).join('');
     const premiumRibbon = isPremium ? `<div class="tool-card-premium-ribbon">Pro</div>` : '';
     
     return `
