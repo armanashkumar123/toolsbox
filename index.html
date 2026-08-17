@@ -72,8 +72,32 @@
 
         <button id="login-admin-btn" class="primary-btn">Login / Admin</button>
       </div>
+      <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </header>
+
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <div class="mobile-nav-panel">
+      <div class="mobile-nav-header">
+        <div class="logo">
+          <img src="assets/acrovault_shield.png" alt="AcroVault" class="logo-img">
+          <span class="logo-text">AcroVault</span>
+        </div>
+        <button class="mobile-nav-close" id="mobile-nav-close">&times;</button>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#" class="mobile-nav-link active" data-page="home">Home</a>
+        <a href="#" class="mobile-nav-link" data-page="categories">Categories</a>
+        <a href="#" class="mobile-nav-link" data-page="premium">Premium</a>
+        <a href="#" class="mobile-nav-link" data-page="about">About</a>
+        <a href="#" class="mobile-nav-link" data-page="admin">Admin Panel</a>
+      </nav>
+    </div>
+  </div>
 
   <!-- App Main Content Area -->
   <main id="app-content">
@@ -131,8 +155,8 @@
         </div>
         <div class="footer-column">
           <h3>Stats</h3>
-          <span>500+ Tools</span>
-          <span>25+ Categories</span>
+          <span id="footer-tool-count">500+ Tools</span>
+          <span id="footer-cat-count">25+ Categories</span>
           <span>10K+ Users</span>
           <span>99.9% Uptime</span>
         </div>
@@ -194,6 +218,7 @@
   </div>
 
   <!-- Javascript Modules -->
+  <script src="tools-data.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

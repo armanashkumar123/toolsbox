@@ -21,187 +21,70 @@ const state = {
     { type: 'yellow', text: 'Premium subscription purchased', time: '2 hours ago' },
     { type: 'purple', text: 'Tool updated: Nmap', time: '3 hours ago' }
   ],
-  tools: [
-    {
-      id: 'nmap',
-      name: 'Nmap',
-      subtitle: 'Network Scanner',
-      description: 'Nmap (Network Mapper) is a free and open-source network scanner used for network discovery and security auditing. It works by sending packets to targets and analyzing the responses.',
-      category: 'Network',
-      type: 'Scanner',
+  tools: []
+};
+
+const CAT_ASSET_MAP = {
+  'crime-evidence': 'assets/security_document.png',
+  'osint': 'assets/fingerprint.png',
+  'roadmap': 'assets/folder.png',
+  'hardware-hacking': 'assets/laptop.png',
+  'ai-research': 'assets/holographic_globe.png',
+  'vapt': 'assets/acrovault_shield.png',
+  'ai-hacking': 'assets/hacker.png',
+  'account-tools': 'assets/phone.png',
+  'ai-attack': 'assets/security_status.png',
+  'malware-analysis': 'assets/security_ui_icons.png',
+  'url-scanning': 'assets/magnifier.png',
+  'social-engineering': 'assets/hacker.png',
+  'exploit-directory': 'assets/server_stack.png',
+  'malware-courses': 'assets/folder.png',
+  'digital-forensics': 'assets/security_document.png',
+  'port-scanners': 'assets/network_nodes.png',
+  'detection-tools': 'assets/magnifier.png',
+  'api-gateway': 'assets/cloud_security.png',
+  'ethical-hacking': 'assets/hacker.png',
+  'security-learning': 'assets/laptop.png',
+  'ai-vuln-scanner': 'assets/security_status.png',
+  'pentest-reports': 'assets/security_document.png',
+  'jailbreak-ai': 'assets/holographic_globe.png',
+  'api-key-scanning': 'assets/magnifier.png',
+  'photo-forensics': 'assets/magnifier.png',
+  'person-osint': 'assets/fingerprint.png',
+  'dark-web-search': 'assets/network_nodes.png',
+  'red-team': 'assets/acrovault_shield.png',
+  'geo-osint': 'assets/holographic_globe.png',
+  'ai-infra-attack': 'assets/server_stack.png',
+  'dark-web-osint': 'assets/network_nodes.png',
+  'esp32-offensive': 'assets/laptop.png',
+  'image-video-osint': 'assets/magnifier.png',
+  'breach-lookup': 'assets/database.png'
+};
+
+const initToolsData = () => {
+  if (window.ACROVAULT_TOOLS && window.ACROVAULT_TOOLS.length > 0) {
+    state.tools = window.ACROVAULT_TOOLS.map(t => ({
+      id: t.id,
+      name: t.name,
+      subtitle: t.categoryName || t.desc.substring(0, 40),
+      description: t.desc,
+      category: t.categoryName || t.category,
+      type: t.categoryName || 'Security Tool',
       platform: 'Web-based',
-      pricing: 'Free',
+      pricing: t.isPremium ? 'Premium' : 'Free',
       status: 'Active',
-      added: 'Jan 2024',
-      icon: 'assets/network_map.png',
-      tags: ['network', 'scanner', 'free'],
+      added: '2026',
+      icon: CAT_ASSET_MAP[t.category] || 'assets/security_status.png',
+      tags: t.tags || [],
       features: [
-        'Network discovery and host detection',
-        'Port scanning and service detection',
-        'OS fingerprinting and version detection',
-        'Scriptable interaction with Nmap Scripting Engine',
-        'Multiple output formats',
-        'Active development and updates'
-      ]
-    },
-    {
-      id: 'burpsuite',
-      name: 'Burp Suite',
-      subtitle: 'Web Security Testing',
-      description: 'Burp Suite is an integrated platform for performing security testing of web applications, featuring advanced vulnerability assessment capabilities.',
-      category: 'Web Security',
-      type: 'Proxy',
-      platform: 'Desktop',
-      pricing: 'Premium',
-      status: 'Active',
-      added: 'Mar 2024',
-      icon: 'assets/cloud_security.png',
-      tags: ['web', 'proxy', 'premium'],
-      features: [
-        'Intercepting Proxy for HTTP/S traffic',
-        'Web vulnerability scanner',
-        'Targeted testing automation',
-        'Extender support for custom plug-ins'
-      ]
-    },
-    {
-      id: 'metasploit',
-      name: 'Metasploit',
-      subtitle: 'Penetration Testing',
-      description: 'Metasploit is a penetration testing framework that helps security teams verify vulnerabilities and manage security assessments.',
-      category: 'Vulnerability',
-      type: 'Framework',
-      platform: 'Cross-platform',
-      pricing: 'Premium',
-      status: 'Active',
-      added: 'Feb 2024',
-      icon: 'assets/server_stack.png',
-      tags: ['exploit', 'framework', 'premium'],
-      features: [
-        'Over 2,000 exploit payloads',
-        'Vulnerability integration import',
-        'Post-exploitation module execution',
-        'Automated credential testing'
-      ]
-    },
-    {
-      id: 'wireshark',
-      name: 'Wireshark',
-      subtitle: 'Network Analyzer',
-      description: 'Wireshark is the world\'s foremost packet analyzer, letting you see what\'s happening on your network at a microscopic level.',
-      category: 'Network',
-      type: 'Analyzer',
-      platform: 'Desktop',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'Dec 2023',
-      icon: 'assets/network_nodes.png',
-      tags: ['network', 'analyzer', 'free'],
-      features: [
-        'Deep inspection of hundreds of protocols',
-        'Live capture and offline analysis',
-        'Powerful display filters',
-        'Rich VoIP analysis'
-      ]
-    },
-    {
-      id: 'johntheripper',
-      name: 'John the Ripper',
-      subtitle: 'Password Cracking',
-      description: 'John the Ripper is an open-source password security auditing and password recovery tool available for many operating systems.',
-      category: 'Forensics',
-      type: 'Cracker',
-      platform: 'Command Line',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'Nov 2023',
-      icon: 'assets/hacker.png',
-      tags: ['password', 'cracking', 'free'],
-      features: [
-        'Dictionary-based password attacks',
-        'Brute-force crack customization',
-        'Hashes auto-detection algorithms',
-        'Multi-core processor utilization'
-      ]
-    },
-    {
-      id: 'sqlmap',
-      name: 'SQLMap',
-      subtitle: 'SQL Injection Tool',
-      description: 'SQLMap is an open-source penetration testing tool that automates the process of detecting and exploiting SQL injection flaws and taking over database servers.',
-      category: 'Web Security',
-      type: 'Injection',
-      platform: 'Command Line',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'Sep 2023',
-      icon: 'assets/database.png',
-      tags: ['sql', 'injection', 'free'],
-      features: [
-        'Full support for database fingerprinting',
-        'Direct connection to databases without SQL injection',
-        'Exploits boolean-based, error-based, and stack queries',
-        'Database file dumping capabilities'
-      ]
-    },
-    {
-      id: 'zenmap',
-      name: 'Zenmap',
-      subtitle: 'Nmap GUI client',
-      description: 'Zenmap is the official Nmap Security Scanner GUI. It is a multi-platform free application designed to make Nmap easy for beginners.',
-      category: 'Network',
-      type: 'GUI Client',
-      platform: 'Desktop',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'Jan 2024',
-      icon: 'assets/network_map.png',
-      tags: ['network', 'scanner', 'free'],
-      features: [
-        'Visual target network topology mapping',
-        'Scan result save and compare tool',
-        'Searchable scan database cache'
-      ]
-    },
-    {
-      id: 'masscan',
-      name: 'Masscan',
-      subtitle: 'Fast Port Scanner',
-      description: 'Masscan is an internet-scale port scanner. It can scan the entire internet in under 6 minutes, transmitting 10 million packets per second.',
-      category: 'Network',
-      type: 'Scanner',
-      platform: 'Desktop',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'May 2024',
-      icon: 'assets/network_nodes.png',
-      tags: ['network', 'scanner', 'free'],
-      features: [
-        'Ultra-fast packet transmission engine',
-        'Asynchronous port scanning mode',
-        'Supports wide IP ranges and scanning'
-      ]
-    },
-    {
-      id: 'angryip',
-      name: 'Angry IP Scanner',
-      subtitle: 'IP Scanner',
-      description: 'Angry IP Scanner is a fast and friendly network scanner for Windows, Linux, and Mac. It is very extensible, allowing many metrics to be retrieved.',
-      category: 'Network',
-      type: 'Scanner',
-      platform: 'Desktop',
-      pricing: 'Free',
-      status: 'Active',
-      added: 'Feb 2024',
-      icon: 'assets/network_map.png',
-      tags: ['network', 'scanner', 'free'],
-      features: [
-        'Scans local and external IP ranges',
-        'Resolves hostnames and MAC addresses',
-        'Extensible plugin interface'
-      ]
-    }
-  ]
+        t.desc,
+        'Security auditing capabilities',
+        'Active community support'
+      ],
+      url: t.url || '#'
+    }));
+    state.adminStats.totalTools = state.tools.length;
+  }
 };
 
 // 2. Chatbot Intelligent Responses
@@ -300,11 +183,11 @@ const templates = {
       <!-- Stats counter -->
       <div class="stats-banner">
         <div class="stat-item">
-          <div class="stat-number">500+</div>
+          <div class="stat-number">${state.tools.length}+</div>
           <div class="stat-label">Premium Tools</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">25+</div>
+          <div class="stat-number">${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 25}+</div>
           <div class="stat-label">Categories</div>
         </div>
         <div class="stat-item">
@@ -328,48 +211,19 @@ const templates = {
         </div>
         
         <div class="categories-grid">
-          <div class="category-card" data-cat="Reconnaissance">
-            <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
-              <img src="assets/magnifier.png" alt="Recon" style="width:32px;height:32px;object-fit:contain;">
+          ${(window.ACROVAULT_CATEGORIES || []).map(cat => {
+            const count = state.tools.filter(t => t.category === cat.name || t.category === cat.id).length;
+            const iconPath = CAT_ASSET_MAP[cat.id] || 'assets/security_status.png';
+            return `
+            <div class="category-card" data-cat="${cat.name}">
+              <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
+                <img src="${iconPath}" alt="${cat.name}" style="width:32px;height:32px;object-fit:contain;">
+              </div>
+              <h3>${cat.name}</h3>
+              <span class="category-count">${count} tools</span>
             </div>
-            <h3>Reconnaissance</h3>
-            <span class="category-count">125+ tools</span>
-          </div>
-          <div class="category-card" data-cat="Vulnerability">
-            <div class="category-icon-wrapper" style="background-color: rgba(239, 68, 68, 0.08);">
-              <img src="assets/security_status.png" alt="Vulnerability" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Vulnerability</h3>
-            <span class="category-count">85+ tools</span>
-          </div>
-          <div class="category-card" data-cat="Web Security">
-            <div class="category-icon-wrapper" style="background-color: rgba(99, 102, 241, 0.08);">
-              <img src="assets/cloud_security.png" alt="Web Security" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Web Security</h3>
-            <span class="category-count">95+ tools</span>
-          </div>
-          <div class="category-card" data-cat="Forensics">
-            <div class="category-icon-wrapper" style="background-color: rgba(168, 85, 247, 0.08);">
-              <img src="assets/security_document.png" alt="Forensics" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Forensics</h3>
-            <span class="category-count">45+ tools</span>
-          </div>
-          <div class="category-card" data-cat="OSINT">
-            <div class="category-icon-wrapper" style="background-color: rgba(16, 185, 129, 0.08);">
-              <img src="assets/fingerprint.png" alt="OSINT" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>OSINT</h3>
-            <span class="category-count">75+ tools</span>
-          </div>
-          <div class="category-card" data-cat="Network">
-            <div class="category-icon-wrapper" style="background-color: rgba(6, 182, 212, 0.08);">
-              <img src="assets/network_map.png" alt="Network" style="width:32px;height:32px;object-fit:contain;">
-            </div>
-            <h3>Network</h3>
-            <span class="category-count">60+ tools</span>
-          </div>
+            `;
+          }).join('')}
         </div>
       </section>
 
@@ -1025,6 +879,7 @@ const templates = {
 // 4. View Router & Renderer
 const renderView = (pageName, params = {}) => {
   state.currentPage = pageName;
+  if (params.toolId) state.currentToolId = params.toolId;
   const contentDiv = document.getElementById('app-content');
   
   // Update nav active link
@@ -1212,7 +1067,11 @@ const bindPageEvents = (pageName) => {
     const launchBtn = document.getElementById('launch-platform-btn');
     if (launchBtn) {
       launchBtn.onclick = () => {
-        alert('Launching live container platform workspace interface. Readying terminal sockets...');
+        const toolId = paramsToId();
+        const tool = state.tools.find(t => t.id === toolId);
+        if (tool && tool.url && tool.url !== '#') {
+          window.open(tool.url, '_blank', 'noopener,noreferrer');
+        }
       };
     }
 
@@ -1332,7 +1191,7 @@ const bindPageEvents = (pageName) => {
 // Helper to determine active tool id on details page
 const paramsToId = () => {
   // Inside dynamic layout, state tracks detail parameter
-  return document.querySelector('.tool-details-wrapper') ? 'nmap' : 'nmap';
+  return state.currentToolId || 'nmap';
 };
 
 // 6. Tools Filter and Grid renderer
@@ -1341,9 +1200,11 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   if (!grid) return;
   
   const filtered = state.tools.filter(tool => {
+    const searchString = tool.tags ? tool.tags.join(' ').toLowerCase() : '';
     const matchesSearch = tool.name.toLowerCase().includes(searchQuery) ||
                           tool.subtitle.toLowerCase().includes(searchQuery) ||
-                          tool.description.toLowerCase().includes(searchQuery);
+                          tool.description.toLowerCase().includes(searchQuery) ||
+                          searchString.includes(searchQuery);
     
     const matchesCategory = categoryFilter === '' || tool.category === categoryFilter;
     const matchesType = typeFilter === '' || tool.type === typeFilter;
@@ -1449,12 +1310,19 @@ const drawAdminCharts = () => {
   // Category donut chart
   const ctxCategory = document.getElementById('categoryChart');
   if (ctxCategory) {
+    const categories = window.ACROVAULT_CATEGORIES || [];
+    const catLabels = categories.slice(0, 6).map(c => c.name);
+    catLabels.push('Others');
+    const catData = categories.slice(0, 6).map(cat => state.tools.filter(t => t.category === cat.name || t.category === cat.id).length);
+    const otherCount = state.tools.filter(t => !categories.slice(0, 6).find(c => c.name === t.category || c.id === t.category)).length;
+    catData.push(otherCount);
+
     new Chart(ctxCategory.getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: ['Reconnaissance', 'Vulnerability', 'Web Security', 'Forensics', 'OSINT', 'Network', 'Others'],
+        labels: catLabels,
         datasets: [{
-          data: [23, 18, 18, 15, 14, 12, 6],
+          data: catData,
           backgroundColor: [
             '#6366f1',
             '#ef4444',
@@ -1704,6 +1572,8 @@ const bindFloatingAvaChatEvents = () => {
 
 // 10. Initialization Setup
 document.addEventListener('DOMContentLoaded', () => {
+  initToolsData();
+  
   // Theme initialization
   document.documentElement.setAttribute('data-theme', state.theme);
   const toggleBtn = document.getElementById('theme-toggle-btn');
@@ -1817,4 +1687,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial page view render
   renderView('home');
+
+  const footerTools = document.getElementById('footer-tool-count');
+  if (footerTools) footerTools.textContent = `${state.tools.length}+ Tools`;
+  const footerCats = document.getElementById('footer-cat-count');
+  if (footerCats) footerCats.textContent = `${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 25}+ Categories`;
+
+  // Mobile hamburger menu
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileOverlay = document.getElementById('mobile-nav-overlay');
+  const mobileClose = document.getElementById('mobile-nav-close');
+
+  const openMobileNav = () => {
+    if (mobileOverlay) mobileOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeMobileNav = () => {
+    if (mobileOverlay) mobileOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  if (hamburgerBtn) hamburgerBtn.onclick = openMobileNav;
+  if (mobileClose) mobileClose.onclick = closeMobileNav;
+  if (mobileOverlay) {
+    mobileOverlay.onclick = (e) => {
+      if (e.target === mobileOverlay) closeMobileNav();
+    };
+  }
+
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.onclick = (e) => {
+      e.preventDefault();
+      closeMobileNav();
+      const page = link.getAttribute('data-page');
+      if (page === 'categories') {
+        if (state.currentPage !== 'home') renderView('home');
+        setTimeout(() => {
+          const catSect = document.getElementById('popular-categories-section');
+          if (catSect) catSect.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else {
+        renderView(page);
+      }
+      // Update active state
+      document.querySelectorAll('.mobile-nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    };
+  });
 });
