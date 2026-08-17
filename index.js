@@ -221,22 +221,27 @@ const templates = {
             <h2>Popular Categories</h2>
             <p>Explore tools grouped by security discipline and workflows</p>
           </div>
-          <div class="categories-header-actions">
-            <div class="categories-carousel-nav" id="categories-carousel-nav" style="${state.categoriesExpanded ? 'display: none;' : 'display: flex;'}">
-              <button class="carousel-arrow-btn prev-btn" id="cat-prev-btn" title="Slide Left" aria-label="Previous Categories">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              <button class="carousel-arrow-btn next-btn" id="cat-next-btn" title="Slide Right" aria-label="Next Categories">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-            </div>
-            <button class="view-all-link categories-toggle-btn" id="cat-view-all">
-              <span>${state.categoriesExpanded ? 'Show Carousel ◂' : `View All Categories (${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 34}) →`}</span>
-            </button>
-          </div>
+          <button class="view-all-link categories-toggle-btn" id="cat-view-all">
+            <span>${state.categoriesExpanded ? 'Show Carousel ◂' : `View All Categories (${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 34}) →`}</span>
+          </button>
         </div>
         
         <div class="categories-wrapper">
+          <!-- Left & Right Flank Floating Long Arrow Buttons -->
+          <button class="carousel-flank-btn prev-btn" id="cat-prev-btn" title="Slide Left" aria-label="Previous Categories" style="${state.categoriesExpanded ? 'display: none;' : ''}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+          
+          <button class="carousel-flank-btn next-btn" id="cat-next-btn" title="Slide Right" aria-label="Next Categories" style="${state.categoriesExpanded ? 'display: none;' : ''}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
           <div class="categories-container ${state.categoriesExpanded ? 'grid-view' : 'carousel-view'}" id="categories-track">
             ${(window.ACROVAULT_CATEGORIES || []).map(cat => {
               const count = state.tools.filter(t => t.category === cat.name || t.category === cat.id).length;
