@@ -271,13 +271,14 @@ const templates = {
         </div>
         
         <div class="tools-filters">
-          <div class="tools-search-box">
+          <div class="tools-search-box" id="tools-search-box-wrap">
             <svg class="tools-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Search by tool name, category (e.g. OSINT), tag, keyword..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}">
+            <input type="text" placeholder="Search 148+ tools, categories (e.g. OSINT), tags..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}" autocomplete="off">
             <button class="tools-search-clear" id="tools-search-clear" style="${state.searchQuery ? 'display:flex;' : 'display:none;'}" title="Clear search">✕</button>
+            <div class="search-suggestions-dropdown" id="tools-search-dropdown" style="display: none;"></div>
           </div>
           <div class="tools-dropdowns">
             <select id="filter-category" class="filter-select" aria-label="Filter by category">
@@ -310,8 +311,8 @@ const templates = {
     return `
       <div class="tool-details-wrapper">
         <div class="breadcrumbs">
-          <a href="#" data-page="home">Home</a> &gt; 
-          <a href="#" data-page="home">Tools</a> &gt; 
+          <a href="#" class="breadcrumb-link" data-action="home">Home</a> &gt; 
+          <a href="#" class="breadcrumb-link" data-action="tools">Tools</a> &gt; 
           <span>${tool.name}</span>
         </div>
         
@@ -946,6 +947,19 @@ const renderView = (pageName, params = {}) => {
   }
 };
 
+// Helpers for search suggestions
+const escapeHtml = (str) => {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+};
+
+const highlightMatch = (text, query) => {
+  if (!query || !text) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+};
+
 // 5. Page Event Binding
 const bindPageEvents = (pageName) => {
   // Global search input handling
@@ -1074,6 +1088,7 @@ const bindPageEvents = (pageName) => {
     // Featured Tools Search Box & Filter Dropdowns
     const toolsSearchInput = document.getElementById('tools-search-input');
     const toolsSearchClear = document.getElementById('tools-search-clear');
+    const toolsSearchDropdown = document.getElementById('tools-search-dropdown');
     const globalSearchInput = document.getElementById('global-search-input');
     const filterCat = document.getElementById('filter-category');
     const filterType = document.getElementById('filter-type');
@@ -1090,10 +1105,139 @@ const bindPageEvents = (pageName) => {
       filterAndRenderToolsList(searchVal.toLowerCase(), cat, type);
     };
 
+    // YouTube-style guided suggestions renderer
+    const renderSuggestions = (query = '') => {
+      if (!toolsSearchDropdown) return;
+      const q = query.toLowerCase().trim();
+
+      if (!q) {
+        // Quick Trending Chips
+        const popularTags = ['OSINT', 'Nmap', 'Port Scanners', 'Malware Analysis', 'Wireshark', 'Forensics', 'Exploit', 'Network'];
+        toolsSearchDropdown.innerHTML = `
+          <div class="suggestions-header">Quick Category & Trending Searches</div>
+          <div class="suggestions-chips-grid">
+            ${popularTags.map(tag => `
+              <button type="button" class="suggestion-chip-btn" data-query="${tag}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>${tag}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        toolsSearchDropdown.style.display = 'block';
+        bindSuggestionItemEvents();
+        return;
+      }
+
+      // Matching tools
+      const matchingTools = state.tools.filter(t => {
+        const tagsStr = (t.tags || []).join(' ').toLowerCase();
+        const catStr = (t.category || '').toLowerCase();
+        return t.name.toLowerCase().includes(q) ||
+               t.subtitle.toLowerCase().includes(q) ||
+               catStr.includes(q) ||
+               tagsStr.includes(q);
+      }).slice(0, 6);
+
+      // Matching categories
+      const matchingCats = (window.ACROVAULT_CATEGORIES || []).filter(c => c.name.toLowerCase().includes(q)).slice(0, 3);
+
+      if (matchingTools.length === 0 && matchingCats.length === 0) {
+        toolsSearchDropdown.innerHTML = `
+          <div class="suggestions-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>No tools matching "<strong>${escapeHtml(query)}</strong>"</span>
+          </div>
+        `;
+        toolsSearchDropdown.style.display = 'block';
+        return;
+      }
+
+      let html = '';
+
+      if (matchingCats.length > 0) {
+        html += `
+          <div class="suggestions-section-title">Matching Categories</div>
+          <div class="suggestions-cats-list">
+            ${matchingCats.map(c => `
+              <div class="suggestion-cat-item" data-cat="${escapeHtml(c.name)}">
+                <span class="suggestion-cat-icon">📁</span>
+                <span class="suggestion-cat-name">${highlightMatch(c.name, query)}</span>
+                <span class="suggestion-arrow">→</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      if (matchingTools.length > 0) {
+        html += `
+          <div class="suggestions-section-title">Matching Tools (${matchingTools.length})</div>
+          <div class="suggestions-tools-list">
+            ${matchingTools.map(tool => `
+              <div class="suggestion-tool-item" data-id="${tool.id}">
+                <img src="${tool.icon}" alt="" class="suggestion-tool-icon">
+                <div class="suggestion-tool-info">
+                  <span class="suggestion-tool-name">${highlightMatch(tool.name, query)}</span>
+                  <span class="suggestion-tool-cat">${tool.category}</span>
+                </div>
+                <span class="suggestion-jump-btn">Open ↗</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      toolsSearchDropdown.innerHTML = html;
+      toolsSearchDropdown.style.display = 'block';
+      bindSuggestionItemEvents();
+    };
+
+    const bindSuggestionItemEvents = () => {
+      if (!toolsSearchDropdown) return;
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-tool-item').forEach(item => {
+        item.onclick = (e) => {
+          e.stopPropagation();
+          const toolId = item.getAttribute('data-id');
+          toolsSearchDropdown.style.display = 'none';
+          renderView('tool', { toolId });
+        };
+      });
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-cat-item').forEach(item => {
+        item.onclick = (e) => {
+          e.stopPropagation();
+          const cat = item.getAttribute('data-cat');
+          if (filterCat) filterCat.value = cat;
+          if (toolsSearchInput) toolsSearchInput.value = '';
+          if (globalSearchInput) globalSearchInput.value = '';
+          toolsSearchDropdown.style.display = 'none';
+          applyFilters();
+        };
+      });
+
+      toolsSearchDropdown.querySelectorAll('.suggestion-chip-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const q = btn.getAttribute('data-query');
+          if (toolsSearchInput) toolsSearchInput.value = q;
+          if (globalSearchInput) globalSearchInput.value = q;
+          toolsSearchDropdown.style.display = 'none';
+          applyFilters();
+        };
+      });
+    };
+
     if (toolsSearchInput) {
       toolsSearchInput.addEventListener('input', (e) => {
         if (globalSearchInput) globalSearchInput.value = e.target.value;
         applyFilters();
+        renderSuggestions(e.target.value);
+      });
+
+      toolsSearchInput.addEventListener('focus', () => {
+        renderSuggestions(toolsSearchInput.value);
       });
     }
 
@@ -1108,18 +1252,57 @@ const bindPageEvents = (pageName) => {
       toolsSearchClear.onclick = () => {
         if (toolsSearchInput) toolsSearchInput.value = '';
         if (globalSearchInput) globalSearchInput.value = '';
+        if (toolsSearchDropdown) toolsSearchDropdown.style.display = 'none';
         toolsSearchInput.focus();
         applyFilters();
       };
     }
 
+    // Hide dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const wrap = document.getElementById('tools-search-box-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        if (toolsSearchDropdown) toolsSearchDropdown.style.display = 'none';
+      }
+    });
+
     if (filterCat) filterCat.onchange = applyFilters;
     if (filterType) filterType.onchange = applyFilters;
 
   } else if (pageName === 'tool') {
+    // 1. Back to tools button
+    const backBtn = document.getElementById('detail-back-btn');
+    if (backBtn) {
+      backBtn.onclick = (e) => {
+        e.preventDefault();
+        renderView('home');
+        setTimeout(() => {
+          const toolsSect = document.getElementById('tools-showcase-section');
+          if (toolsSect) toolsSect.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      };
+    }
+
+    // 2. Breadcrumb links
+    document.querySelectorAll('.breadcrumb-link').forEach(link => {
+      link.onclick = (e) => {
+        e.preventDefault();
+        const action = link.getAttribute('data-action');
+        renderView('home');
+        if (action === 'tools') {
+          setTimeout(() => {
+            const toolsSect = document.getElementById('tools-showcase-section');
+            if (toolsSect) toolsSect.scrollIntoView({ behavior: 'smooth' });
+          }, 50);
+        }
+      };
+    });
+
+    // 3. Add to favorites toggle
+    const favBtn = document.getElementById('favorite-toggle-btn');
     if (favBtn) {
       favBtn.onclick = () => {
-        const toolId = paramsToId();
+        const toolId = favBtn.getAttribute('data-id') || paramsToId();
         const index = state.favorites.indexOf(toolId);
         if (index > -1) {
           state.favorites.splice(index, 1);
@@ -1131,7 +1314,7 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Detail page Launch platform button
+    // 4. Detail page Launch platform button
     const launchBtn = document.getElementById('launch-platform-btn');
     if (launchBtn) {
       launchBtn.onclick = () => {
@@ -1143,7 +1326,15 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Inner details AVA actions
+    // 5. Related tool card clicks
+    document.querySelectorAll('.related-tool-card').forEach(card => {
+      card.onclick = () => {
+        const toolId = card.getAttribute('data-tool');
+        if (toolId) renderView('tool', { toolId });
+      };
+    });
+
+    // 6. Inner details AVA actions
     document.querySelectorAll('.tool-ava-btn').forEach(btn => {
       btn.onclick = () => {
         const q = btn.getAttribute('data-query');
