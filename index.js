@@ -12,6 +12,7 @@ const state = {
   theme: localStorage.getItem('theme') || 'light',
   currentPage: 'home',
   heroMode: 'vault', // 'vault', 'assistant', or 'robot'
+  categoriesExpanded: false, // false = horizontal carousel, true = full grid
   billingCycle: 'monthly', // 'monthly' or 'yearly'
   avaChatOpen: false,
   favorites: getStoredFavorites(),
@@ -220,23 +221,37 @@ const templates = {
             <h2>Popular Categories</h2>
             <p>Explore tools grouped by security discipline and workflows</p>
           </div>
-          <a href="#" class="view-all-link" id="cat-view-all">View All Categories &rarr;</a>
+          <div class="categories-header-actions">
+            <div class="categories-carousel-nav" id="categories-carousel-nav" style="${state.categoriesExpanded ? 'display: none;' : 'display: flex;'}">
+              <button class="carousel-arrow-btn prev-btn" id="cat-prev-btn" title="Slide Left" aria-label="Previous Categories">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="carousel-arrow-btn next-btn" id="cat-next-btn" title="Slide Right" aria-label="Next Categories">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+            <button class="view-all-link categories-toggle-btn" id="cat-view-all">
+              <span>${state.categoriesExpanded ? 'Show Carousel ◂' : `View All Categories (${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 34}) →`}</span>
+            </button>
+          </div>
         </div>
         
-        <div class="categories-grid">
-          ${(window.ACROVAULT_CATEGORIES || []).map(cat => {
-            const count = state.tools.filter(t => t.category === cat.name || t.category === cat.id).length;
-            const iconPath = CAT_ASSET_MAP[cat.id] || 'assets/security_status.png';
-            return `
-            <div class="category-card" data-cat="${cat.name}">
-              <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
-                <img src="${iconPath}" alt="${cat.name}" style="width:32px;height:32px;object-fit:contain;">
+        <div class="categories-wrapper">
+          <div class="categories-container ${state.categoriesExpanded ? 'grid-view' : 'carousel-view'}" id="categories-track">
+            ${(window.ACROVAULT_CATEGORIES || []).map(cat => {
+              const count = state.tools.filter(t => t.category === cat.name || t.category === cat.id).length;
+              const iconPath = CAT_ASSET_MAP[cat.id] || 'assets/security_status.png';
+              return `
+              <div class="category-card" data-cat="${cat.name}">
+                <div class="category-icon-wrapper" style="background-color: rgba(59, 130, 246, 0.08);">
+                  <img src="${iconPath}" alt="${cat.name}" style="width:32px;height:32px;object-fit:contain;">
+                </div>
+                <h3>${cat.name}</h3>
+                <span class="category-count">${count} tools</span>
               </div>
-              <h3>${cat.name}</h3>
-              <span class="category-count">${count} tools</span>
-            </div>
-            `;
-          }).join('')}
+              `;
+            }).join('')}
+          </div>
         </div>
       </section>
 
@@ -951,7 +966,45 @@ const bindPageEvents = (pageName) => {
     const categoriesBtn = document.getElementById('hero-categories-btn');
     if (categoriesBtn) {
       categoriesBtn.onclick = () => {
-        document.getElementById('popular-categories-section').scrollIntoView({ behavior: 'smooth' });
+        state.categoriesExpanded = true;
+        renderView('home');
+        setTimeout(() => {
+          const catSect = document.getElementById('popular-categories-section');
+          if (catSect) catSect.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      };
+    }
+
+    // Categories Carousel left/right navigation arrows
+    const catPrev = document.getElementById('cat-prev-btn');
+    const catNext = document.getElementById('cat-next-btn');
+    const catTrack = document.getElementById('categories-track');
+    
+    if (catPrev && catTrack) {
+      catPrev.onclick = () => {
+        const scrollAmount = Math.max(catTrack.clientWidth * 0.75, 240);
+        catTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      };
+    }
+    
+    if (catNext && catTrack) {
+      catNext.onclick = () => {
+        const scrollAmount = Math.max(catTrack.clientWidth * 0.75, 240);
+        catTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      };
+    }
+
+    // Toggle between Carousel & Full Grid View
+    const viewAllCats = document.getElementById('cat-view-all');
+    if (viewAllCats) {
+      viewAllCats.onclick = (e) => {
+        e.preventDefault();
+        state.categoriesExpanded = !state.categoriesExpanded;
+        renderView('home');
+        setTimeout(() => {
+          const catSect = document.getElementById('popular-categories-section');
+          if (catSect) catSect.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
       };
     }
 
@@ -967,15 +1020,6 @@ const bindPageEvents = (pageName) => {
         }
       };
     });
-
-    // View All links
-    const viewAllCats = document.getElementById('cat-view-all');
-    if (viewAllCats) {
-      viewAllCats.onclick = (e) => {
-        e.preventDefault();
-        document.getElementById('popular-categories-section').scrollIntoView({ behavior: 'smooth' });
-      };
-    }
 
     const viewAllTools = document.getElementById('tools-view-all');
     if (viewAllTools) {
@@ -1584,11 +1628,10 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const page = link.getAttribute('data-page');
       
-      // Special logic for Categories menu: scroll to categories on home
+      // Special logic for Categories menu: expand & scroll to categories on home
       if (page === 'categories') {
-        if (state.currentPage !== 'home') {
-          renderView('home');
-        }
+        state.categoriesExpanded = true;
+        renderView('home');
         setTimeout(() => {
           const catSect = document.getElementById('popular-categories-section');
           if (catSect) catSect.scrollIntoView({ behavior: 'smooth' });
