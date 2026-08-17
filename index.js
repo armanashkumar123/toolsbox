@@ -165,46 +165,6 @@ const renderMarkdown = (text) => {
 // 3. UI Template Generators
 const templates = {
   home: () => {
-    let heroImageHtml = '';
-
-    if (state.heroMode === 'assistant') {
-      heroImageHtml = `
-        <div class="hero-assistant-container">
-          <div class="hero-assistant-box">
-            <div class="hero-assistant-header">
-              <div class="hero-assistant-avatar-wrapper">
-                <img src="assets/ava_floating_happy.png" alt="AVA Assistant" class="hero-assistant-img">
-                <span class="hero-ava-status-pulse"></span>
-              </div>
-              <div class="hero-assistant-info">
-                <div class="hero-assistant-title-row">
-                  <h4>AVA 2.0</h4>
-                  <span class="hero-assistant-badge">AI Assistant</span>
-                </div>
-                <p>Your cyber security intelligence co-pilot. Ask me anything!</p>
-              </div>
-            </div>
-            <div class="hero-assistant-chat-preview" id="hero-ava-chat-preview" style="display:none;"></div>
-            <div class="hero-assistant-suggestions">
-              <button class="suggestion-btn" data-query="Find a tool for network scanning"><span>⚡ Find network scanner</span> <span>&rarr;</span></button>
-              <button class="suggestion-btn" data-query="Show OSINT tools"><span>🔍 Show OSINT tools</span> <span>&rarr;</span></button>
-              <button class="suggestion-btn" data-query="What tools are for digital forensics?"><span>🛡️ Digital forensics tools</span> <span>&rarr;</span></button>
-            </div>
-            <div class="hero-assistant-input-container">
-              <input type="text" placeholder="Ask AVA about tools, recon, forensics..." id="hero-ava-input" class="hero-assistant-input">
-              <button class="hero-assistant-send-btn" id="hero-ava-send" title="Send query">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-              </button>
-            </div>
-          </div>
-        </div>`;
-    } else if (state.heroMode === 'robot') {
-      heroImageHtml = `<img src="assets/ava_cyber_agent.png" alt="AVA 3D Cyber Agent" class="hero-image ava-robot-graphic">`;
-    } else {
-      // Default: 'vault'
-      heroImageHtml = `<img src="assets/vault.png" alt="AcroVault 3D Vault" class="hero-image">`;
-    }
-    
     // Tools filtering options
     const categoryOptions = ['All Categories', ...new Set(state.tools.map(t => t.category))];
     const typeOptions = ['All Types', ...new Set(state.tools.map(t => t.type))];
@@ -229,21 +189,7 @@ const templates = {
         </div>
         
         <div class="hero-image-container">
-          ${heroImageHtml}
-          <div class="hero-mode-switch" id="hero-mode-switch">
-            <button class="hero-mode-btn ${state.heroMode === 'vault' ? 'active' : ''}" data-mode="vault" title="Safe Vault">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Safe Vault</span>
-            </button>
-            <button class="hero-mode-btn ${state.heroMode === 'robot' ? 'active' : ''}" data-mode="robot" title="3D Cyber Agent">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><circle cx="15" cy="9" r="2"></circle><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-              <span>3D Cyber Agent</span>
-            </button>
-            <button class="hero-mode-btn ${state.heroMode === 'assistant' ? 'active' : ''}" data-mode="assistant" title="AI Assistant">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span>AI Assistant</span>
-            </button>
-          </div>
+          <img src="assets/vault.png" alt="AcroVault 3D Vault" class="hero-image">
         </div>
       </section>
 
@@ -1007,67 +953,6 @@ const bindPageEvents = (pageName) => {
       categoriesBtn.onclick = () => {
         document.getElementById('popular-categories-section').scrollIntoView({ behavior: 'smooth' });
       };
-    }
-
-    // Hero mode segmented buttons
-    document.querySelectorAll('.hero-mode-btn').forEach(btn => {
-      btn.onclick = () => {
-        const mode = btn.getAttribute('data-mode');
-        if (mode && state.heroMode !== mode) {
-          state.heroMode = mode;
-          renderView('home');
-        }
-      };
-    });
-
-    // Bind Hero Assistant box events if visible
-    if (state.heroMode === 'assistant') {
-      const heroSend = document.getElementById('hero-ava-send');
-      const heroInput = document.getElementById('hero-ava-input');
-      const chatPreview = document.getElementById('hero-ava-chat-preview');
-      
-      const triggerHeroMessage = (text) => {
-        if (!text) return;
-        if (heroInput) heroInput.value = '';
-
-        // Show live in hero chat card
-        if (chatPreview) {
-          chatPreview.style.display = 'block';
-          chatPreview.innerHTML = `
-            <div style="margin-bottom:0.35rem; color:var(--text-muted); font-size:0.825rem;"><strong>You:</strong> ${text}</div>
-            <div style="color:var(--primary-color);"><strong>AVA:</strong> <em>Analyzing security data...</em></div>
-          `;
-        }
-
-        // Also log to floating chat
-        appendChatMessage('user', text);
-        
-        setTimeout(() => {
-          const response = getAvaResponse(text);
-          if (chatPreview) {
-            chatPreview.innerHTML = `
-              <div style="margin-bottom:0.35rem; color:var(--text-muted); font-size:0.8rem;"><strong>You:</strong> ${text}</div>
-              <div style="line-height:1.45; font-size:0.85rem;">${renderMarkdown(response)}</div>
-            `;
-          }
-          appendChatMessage('bot', response);
-        }, 400);
-      };
-      
-      if (heroSend && heroInput) {
-        heroSend.onclick = () => {
-          triggerHeroMessage(heroInput.value.trim());
-        };
-        heroInput.onkeydown = (e) => {
-          if (e.key === 'Enter') triggerHeroMessage(heroInput.value.trim());
-        };
-      }
-      
-      document.querySelectorAll('.suggestion-btn').forEach(btn => {
-        btn.onclick = () => {
-          triggerHeroMessage(btn.getAttribute('data-query'));
-        };
-      });
     }
 
     // Category card clicks (filters tools)
