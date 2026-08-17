@@ -195,21 +195,21 @@ const templates = {
       </section>
 
       <!-- Stats counter -->
-      <div class="stats-banner">
+      <div class="stats-banner" id="stats-banner">
         <div class="stat-item">
-          <div class="stat-number">${state.tools.length}+</div>
+          <div class="stat-number" data-target="${state.tools.length}" data-suffix="+">0+</div>
           <div class="stat-label">Premium Tools</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 25}+</div>
+          <div class="stat-number" data-target="${window.ACROVAULT_CATEGORIES ? window.ACROVAULT_CATEGORIES.length : 34}" data-suffix="+">0+</div>
           <div class="stat-label">Categories</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">10K+</div>
+          <div class="stat-number" data-target="10" data-suffix="K+">0K+</div>
           <div class="stat-label">Daily Users</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">99.9%</div>
+          <div class="stat-number" data-target="99.9" data-suffix="%" data-decimal="true">0.0%</div>
           <div class="stat-label">Uptime</div>
         </div>
       </div>
@@ -276,7 +276,7 @@ const templates = {
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Search 148+ tools, categories (e.g. OSINT), tags..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}" autocomplete="off">
+            <input type="text" placeholder="Search tools, OSINT, categories, tags..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}" autocomplete="off">
             <button class="tools-search-clear" id="tools-search-clear" style="${state.searchQuery ? 'display:flex;' : 'display:none;'}" title="Clear search">✕</button>
             <div class="search-suggestions-dropdown" id="tools-search-dropdown" style="display: none;"></div>
           </div>
@@ -982,6 +982,62 @@ const bindPageEvents = (pageName) => {
   if (pageName === 'home') {
     // Render initial tools grid list
     filterAndRenderToolsList('');
+
+    // Animated Stats Counter with smooth cubic easing
+    const animateCountNumbers = () => {
+      const statElements = document.querySelectorAll('.stat-number[data-target]');
+      if (!statElements || statElements.length === 0) return;
+
+      statElements.forEach(el => {
+        const target = parseFloat(el.getAttribute('data-target'));
+        const suffix = el.getAttribute('data-suffix') || '';
+        const isDecimal = el.getAttribute('data-decimal') === 'true';
+        const duration = 1600;
+        const startTime = performance.now();
+
+        const updateCount = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = target * easeOut;
+
+          if (isDecimal) {
+            el.textContent = currentVal.toFixed(1) + suffix;
+          } else {
+            el.textContent = Math.floor(currentVal) + suffix;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCount);
+          } else {
+            if (isDecimal) {
+              el.textContent = target.toFixed(1) + suffix;
+            } else {
+              el.textContent = target + suffix;
+            }
+          }
+        };
+
+        requestAnimationFrame(updateCount);
+      });
+    };
+
+    const statsBanner = document.getElementById('stats-banner');
+    if (statsBanner) {
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCountNumbers();
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        observer.observe(statsBanner);
+      } else {
+        animateCountNumbers();
+      }
+    }
 
     // Hero Browse button
     const browseBtn = document.getElementById('hero-browse-btn');
