@@ -874,6 +874,7 @@ a {
   padding-top: 0.75rem;
 }
 
+/* Dynamic Glowing Cyber Tag Pills with Color Mixing */
 .badge-tag {
   font-family: var(--font-sans);
   font-size: 0.75rem;
@@ -886,35 +887,134 @@ a {
   gap: 0.35rem;
   letter-spacing: 0.02em;
   line-height: 1.2;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.09) 100%);
-  color: #4f46e5;
-  border: 1px solid rgba(99, 102, 241, 0.22);
-  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.06);
+  transition: all var(--transition-fast);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: all var(--transition-fast);
 }
 
-[data-theme="dark"] .badge-tag {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.16) 100%);
-  color: #e0e7ff;
-  border: 1px solid rgba(129, 140, 248, 0.35);
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.18);
-}
-
-.badge-tag:hover {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.18) 100%);
-  border-color: var(--primary-color);
+/* Dynamic Variant 1: Cyber Indigo / Violet */
+.tool-card-tags .badge-tag:nth-child(4n+1),
+.badge-tag {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.15) 100%);
   color: #4338ca;
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.28), 0 2px 6px rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+.tool-card-tags .badge-tag:nth-child(4n+1):hover,
+.badge-tag:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(168, 85, 247, 0.25) 100%);
+  border-color: #6366f1;
+  color: #312e81;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.35), 0 2px 8px rgba(168, 85, 247, 0.25);
+}
+
+/* Dynamic Variant 2: Cyber Neon Cyan / Electric Blue */
+.tool-card-tags .badge-tag:nth-child(4n+2) {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(59, 130, 246, 0.15) 100%);
+  color: #0369a1;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  box-shadow: 0 1px 4px rgba(6, 182, 212, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.tool-card-tags .badge-tag:nth-child(4n+2):hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.22) 0%, rgba(59, 130, 246, 0.25) 100%);
+  border-color: #06b6d4;
+  color: #0c4a6e;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.35), 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
+/* Dynamic Variant 3: Holographic Purple / Fuchsia */
+.tool-card-tags .badge-tag:nth-child(4n+3) {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(236, 72, 153, 0.15) 100%);
+  color: #7e22ce;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 1px 4px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.tool-card-tags .badge-tag:nth-child(4n+3):hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.22) 0%, rgba(236, 72, 153, 0.25) 100%);
+  border-color: #a855f7;
+  color: #581c87;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.35), 0 2px 8px rgba(236, 72, 153, 0.25);
+}
+
+/* Dynamic Variant 4: Emerald / Teal Cyber Matrix */
+.tool-card-tags .badge-tag:nth-child(4n+4) {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.15) 100%);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.tool-card-tags .badge-tag:nth-child(4n+4):hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(6, 182, 212, 0.25) 100%);
+  border-color: #10b981;
+  color: #064e3b;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.35), 0 2px 8px rgba(6, 182, 212, 0.25);
+}
+
+/* Dark Mode Glowing Cyber Tag Overrides */
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+1),
+[data-theme="dark"] .badge-tag {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(168, 85, 247, 0.25) 100%);
+  color: #e0e7ff;
+  border: 1px solid rgba(129, 140, 248, 0.45);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.25);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+1):hover,
 [data-theme="dark"] .badge-tag:hover {
-  background: linear-gradient(135deg, rgba(129, 140, 248, 0.3) 0%, rgba(192, 132, 252, 0.28) 100%);
-  border-color: #c084fc;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(168, 85, 247, 0.38) 100%);
+  border-color: #a5b4fc;
   color: #ffffff;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.5), 0 0 6px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.55), 0 0 8px rgba(168, 85, 247, 0.45);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+2) {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.22) 0%, rgba(59, 130, 246, 0.25) 100%);
+  color: #e0f2fe;
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+2):hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.35) 0%, rgba(59, 130, 246, 0.38) 100%);
+  border-color: #67e8f9;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(6, 182, 212, 0.55), 0 0 8px rgba(59, 130, 246, 0.45);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+3) {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.22) 0%, rgba(236, 72, 153, 0.25) 100%);
+  color: #fae8ff;
+  border: 1px solid rgba(192, 132, 252, 0.45);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+3):hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(236, 72, 153, 0.38) 100%);
+  border-color: #d8b4fe;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55), 0 0 8px rgba(236, 72, 153, 0.45);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+4) {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(6, 182, 212, 0.25) 100%);
+  color: #d1fae5;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="dark"] .tool-card-tags .badge-tag:nth-child(4n+4):hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.38) 100%);
+  border-color: #6ee7b7;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.55), 0 0 8px rgba(6, 182, 212, 0.45);
 }
 
 .badge-tag.pro-tag {
