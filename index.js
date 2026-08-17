@@ -271,12 +271,22 @@ const templates = {
         </div>
         
         <div class="tools-filters">
-          <select id="filter-category" class="filter-select">
-            ${categoryOptions.map(cat => `<option value="${cat === 'All Categories' ? '' : cat}">${cat}</option>`).join('')}
-          </select>
-          <select id="filter-type" class="filter-select">
-            ${typeOptions.map(t => `<option value="${t === 'All Types' ? '' : t}">${t}</option>`).join('')}
-          </select>
+          <div class="tools-search-box">
+            <svg class="tools-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Search by tool name, category (e.g. OSINT), tag, keyword..." id="tools-search-input" class="tools-search-input" value="${state.searchQuery || ''}">
+            <button class="tools-search-clear" id="tools-search-clear" style="${state.searchQuery ? 'display:flex;' : 'display:none;'}" title="Clear search">✕</button>
+          </div>
+          <div class="tools-dropdowns">
+            <select id="filter-category" class="filter-select" aria-label="Filter by category">
+              ${categoryOptions.map(cat => `<option value="${cat === 'All Categories' ? '' : cat}">${cat}</option>`).join('')}
+            </select>
+            <select id="filter-type" class="filter-select" aria-label="Filter by type">
+              ${typeOptions.map(t => `<option value="${t === 'All Types' ? '' : t}">${t}</option>`).join('')}
+            </select>
+          </div>
         </div>
 
         <div class="tools-grid" id="tools-grid-list">
@@ -318,9 +328,9 @@ const templates = {
                 <h1>${tool.name}</h1>
                 <span class="tool-subtitle">${tool.subtitle}</span>
                 <div class="tool-badges-row">
-                  <span class="badge-tag network">${tool.category}</span>
-                  <span class="badge-tag scanner">${tool.type}</span>
-                  <span class="badge-tag free">${tool.pricing} Tool</span>
+                  <span class="badge-tag">${tool.category}</span>
+                  <span class="badge-tag">${tool.pricing || 'Free'} Tool</span>
+                  ${tool.tags && tool.tags.length > 0 ? `<span class="badge-tag">${tool.tags[0]}</span>` : ''}
                 </div>
                 <div class="tool-action-buttons">
                   <button class="primary-btn" id="launch-platform-btn">Launch Platform &rarr;</button>
@@ -1061,16 +1071,47 @@ const bindPageEvents = (pageName) => {
       };
     }
 
-    // Filter selector changes
+    // Featured Tools Search Box & Filter Dropdowns
+    const toolsSearchInput = document.getElementById('tools-search-input');
+    const toolsSearchClear = document.getElementById('tools-search-clear');
+    const globalSearchInput = document.getElementById('global-search-input');
     const filterCat = document.getElementById('filter-category');
     const filterType = document.getElementById('filter-type');
     
     const applyFilters = () => {
       const cat = filterCat ? filterCat.value : '';
       const type = filterType ? filterType.value : '';
-      const searchVal = document.getElementById('global-search-input') ? document.getElementById('global-search-input').value : '';
-      filterAndRenderToolsList(searchVal.toLowerCase().trim(), cat, type);
+      const searchVal = (toolsSearchInput ? toolsSearchInput.value : (globalSearchInput ? globalSearchInput.value : '')).trim();
+      
+      if (toolsSearchClear) {
+        toolsSearchClear.style.display = searchVal ? 'flex' : 'none';
+      }
+      
+      filterAndRenderToolsList(searchVal.toLowerCase(), cat, type);
     };
+
+    if (toolsSearchInput) {
+      toolsSearchInput.addEventListener('input', (e) => {
+        if (globalSearchInput) globalSearchInput.value = e.target.value;
+        applyFilters();
+      });
+    }
+
+    if (globalSearchInput) {
+      globalSearchInput.addEventListener('input', (e) => {
+        if (toolsSearchInput) toolsSearchInput.value = e.target.value;
+        applyFilters();
+      });
+    }
+
+    if (toolsSearchClear) {
+      toolsSearchClear.onclick = () => {
+        if (toolsSearchInput) toolsSearchInput.value = '';
+        if (globalSearchInput) globalSearchInput.value = '';
+        toolsSearchInput.focus();
+        applyFilters();
+      };
+    }
 
     if (filterCat) filterCat.onchange = applyFilters;
     if (filterType) filterType.onchange = applyFilters;
@@ -1282,12 +1323,20 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   const grid = document.getElementById('tools-grid-list');
   if (!grid) return;
   
+  const searchClean = (searchQuery || '').toLowerCase().trim();
+  
   const filtered = state.tools.filter(tool => {
     const searchString = tool.tags ? tool.tags.join(' ').toLowerCase() : '';
-    const matchesSearch = tool.name.toLowerCase().includes(searchQuery) ||
-                          tool.subtitle.toLowerCase().includes(searchQuery) ||
-                          tool.description.toLowerCase().includes(searchQuery) ||
-                          searchString.includes(searchQuery);
+    const categoryString = (tool.category || '').toLowerCase();
+    const typeString = (tool.type || '').toLowerCase();
+    
+    const matchesSearch = !searchClean ||
+                          tool.name.toLowerCase().includes(searchClean) ||
+                          tool.subtitle.toLowerCase().includes(searchClean) ||
+                          tool.description.toLowerCase().includes(searchClean) ||
+                          categoryString.includes(searchClean) ||
+                          typeString.includes(searchClean) ||
+                          searchString.includes(searchClean);
     
     const matchesCategory = categoryFilter === '' || tool.category === categoryFilter;
     const matchesType = typeFilter === '' || tool.type === typeFilter;
