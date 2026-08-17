@@ -1306,6 +1306,7 @@ const filterAndRenderToolsList = (searchQuery = '', categoryFilter = '', typeFil
   }
   
   grid.innerHTML = filtered.map(tool => {
+    const isPremium = (tool.pricing || '').toLowerCase() === 'premium';
     const tagsHtml = (tool.tags || []).map(t => `<span class="badge-tag">${t}</span>`).join('');
     const premiumRibbon = isPremium ? `<div class="tool-card-premium-ribbon">Pro</div>` : '';
     
